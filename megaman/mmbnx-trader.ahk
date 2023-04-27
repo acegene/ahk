@@ -161,7 +161,7 @@ LB := gui_trader_selection.AddListBox('w230', ['3 Chip', '10 Chip', 'Bugfrag', '
 gui_trader_selection.AddButton('wp Default', 'OK').OnEvent('Click', TraderSelection)
 gui_trader_selection.Show
 
-+Esc:: {
+Esc:: {
     ClearHeldKeysE("j k")
     ExitApp
 }

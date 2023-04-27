@@ -2,7 +2,7 @@
 #SingleInstance Force
 
 #include "%A_ScriptDir%\mmbn-lib\mmbn3-armor-comp.ahk"
-#include "%A_ScriptDir%\mmbn-lib\mmbn3-battle.ahk"
+#include "%A_ScriptDir%\mmbn-lib\mmbn3-misc.ahk"
 
 #include <keypress-utils>
 #include <string-utils>
@@ -12,7 +12,6 @@
 ;; * can reach after first Flashman arc during Beastman arc
 ;; max bugfrags 9999
 ;; max chip duplicates 99
-;; TODO: new fights are added when game is complete
 ;; TODO: always selects top option during style change prompt (i.e. upgrade fully then force)
 
 UpdateLoopTooltip(loops_completed, title, x_ratio := 0.005, y_ratio := 0.01, which_tool_tip := 1) {
@@ -21,22 +20,6 @@ UpdateLoopTooltip(loops_completed, title, x_ratio := 0.005, y_ratio := 0.01, whi
     x_client := x_ratio * w_win
     y_client := y_ratio * h_win
     ToolTip("loops_completed=" . loops_completed, x_client, y_client, which_tool_tip)
-}
-
-WalkUntilBattle() {
-    while (true) {
-        CoordMode("Mouse", "Client")
-        WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
-        x_client_health_bar := x_ratio_health_bar_battle * w_win
-        y_client_health_bar := y_ratio_health_bar_battle * h_win
-        rgb_health_bar_actual := PixelGetColor(x_client_health_bar, y_client_health_bar, "RGB")
-        if (rgb_health_bar_actual = rgb_health_bar) {
-            break
-        }
-        HoldKeyE("j", 50)
-        HoldTwoKeyE("a", "k", 1000)
-        HoldTwoKeyE("d", "k", 900)
-    }
 }
 
 PrintBattleDebug() {
@@ -52,10 +35,12 @@ PrintBattleDebug() {
     global ru := PixelGetColor(x_ratio_r * w_win, y_ratio_u * h_win, "RGB")
     global rm := PixelGetColor(x_ratio_r * w_win, y_ratio_m * h_win, "RGB")
     global rd := PixelGetColor(x_ratio_r * w_win, y_ratio_d * h_win, "RGB")
-    MsgBox(GenerateDebugStr("lu lm ld mu mm md ru rm rd x_ratio_l x_ratio_m x_ratio_r y_ratio_u y_ratio_m y_ratio_d w_win h_win"))
+    MsgBox(GenerateDebugStr("lu lm ld mu mm md ru rm rd x_ratio_l x_ratio_m x_ratio_r y_ratio_u y_ratio_m y_ratio_d w_win h_win main_menu_tm"))
 }
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
+num_battles_until_save := 100
+start_battle_chip_state := { chip_slots_to_send: [1, 2, 3, 4, 5], num_chips_to_use: 0, post_chip_sleeps: [] }
 
 Sleep 1000
 
@@ -66,22 +51,25 @@ RepeatHoldKeyForDurationE("k", 50, 2500)
 Loop {
     MaximizeAndFocusWindow(title_megaman_collection_1)
 
-    WalkUntilBattle()
+    WalkUntilBattle(title_megaman_collection_1)
 
-    fight_executed := ExecuteArmorCompBattleIfDetected()
+    fight_executed := ExecuteArmorCompBattleIfDetected(start_battle_chip_state)
 
     if (!fight_executed) {
         PrintBattleDebug()
     }
 
-    RepeatHoldKeyForDurationE("k", 50, 1000)
+    ShootAndContinueUntilBattleOver(title_megaman_collection_1)
 
-    RepeatHoldKeyForDurationE("j", 50, 6500)
+    if (Mod(A_Index, num_battles_until_save) = 0) {
+        SaveProgressOrStartGame(title_megaman_collection_1)
+        JackOutThenIn()
+    }
 
     UpdateLoopTooltip(A_Index, title_megaman_collection_1)
 }
 
-+Esc:: {
-    ClearHeldKeysE("w a s d j k")
+Esc:: {
+    ClearHeldKeysE("w a s d j k e enter")
     ExitApp
 }

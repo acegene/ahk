@@ -1,4 +1,4 @@
-#include "%A_ScriptDir%\mmbn-lib\mmbn3-battle.ahk"
+#include "%A_ScriptDir%\mmbn-lib\mmbn3-misc.ahk"
 
 FindEnemyFieldColorMatches(rgb, w_win, h_win, w_ratio_offset, h_ratio_offset) {
     x_l_color_check := (x_ratio_l + w_ratio_offset) * w_win
