@@ -1,19 +1,14 @@
 #Requires AutoHotkey v2.0-a
 #SingleInstance Force
 
+#include "%A_ScriptDir%\mmbn-lib\mmbnx-chip-trader.ahk"
+
 #include <keypress-utils>
+#include <tool-tip-utils>
 #include <window-utils>
 
 ;; support:
 ;; * mmbn3: higsby_3 hospital_10, dnn_10, number
-
-UpdateLoopTooltip(loops_completed, loops_to_complete, title, x_ratio := 0.005, y_ratio := 0.01, which_tool_tip := 1) {
-    CoordMode("Mouse", "Client")
-    WinGetPos(&x_win, &y_win, &w_win, &h_win, title)
-    x_client := x_ratio * w_win
-    y_client := y_ratio * h_win
-    ToolTip("loops_completed=" . loops_completed "`n" . "loops_to_complete=" . loops_to_complete, x_client, y_client, which_tool_tip)
-}
 
 TradeBugfrags() {
     MaximizeAndFocusWindow(title_megaman_collection_1)
@@ -24,62 +19,13 @@ TradeBugfrags() {
 }
 
 TradeChips(chips_per_trade) {
-    user_input_loops_to_complete := InputBox("Please enter the number of trades:", "number_of_trades")
-    if (user_input_loops_to_complete.Result = "Cancel") {
-        ExitApp
-    }
-    else if (user_input_loops_to_complete.Result = "Timeout") {
-        ExitApp
-    } else if (!IsInteger(user_input_loops_to_complete.Value)) {
-        MsgBox("ERROR: value must be int given user_input_loops_to_complete.Value=" . user_input_loops_to_complete.Value)
-        ExitApp
-    }
-
-    num_trades := user_input_loops_to_complete.Value
-
     MaximizeAndFocusWindow(title_megaman_collection_1)
+    WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
     RepeatHoldKeyForDurationE("k", 50, 2500)
 
-    ;; enter dialog with trader
-    HoldKeyE("j", 50)
-    Sleep(200)
-    HoldKeyE("j", 50)
-    Sleep(1000)
+    chip_min_thresh := 10
 
-    Loop {
-        MaximizeAndFocusWindow(title_megaman_collection_1)
-        ;; click 'Insert X BtlChips?' or 'Try Again?'
-        HoldKeyE("j", 50)
-        Sleep(600)
-        ;; insert chips
-        Loop chips_per_trade {
-            HoldKeyE("j", 50)
-            Sleep(70)
-        }
-        Sleep(500)
-        ;; confirm trade
-        HoldKeyE("j", 50)
-        Sleep(1300)
-        ;; speed up text
-        HoldKeyE("j", 50)
-        Sleep(200)
-        ;; display chip
-        HoldKeyE("j", 50)
-        Sleep(200)
-        ;; speed up text
-        HoldKeyE("j", 50)
-        Sleep(1200)
-        HoldKeyE("j", 50)
-        Sleep(200)
-        HoldKeyE("j", 50)
-        Sleep(200)
-
-        UpdateLoopTooltip(A_Index, num_trades, title_megaman_collection_1)
-
-        if (A_Index = num_trades) {
-            break
-        }
-    }
+    Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade)
 }
 
 TradeNumber() {
@@ -136,7 +82,7 @@ TradeNumber() {
     }
 }
 
-TraderSelection(btn, info) {
+TradeSelection(btn, info) {
     trader_selection := LB.Value
     gui_trader_selection.Destroy()
 
@@ -158,7 +104,7 @@ title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
 gui_trader_selection := Gui(, 'Which Trader are you using?'), gui_trader_selection.SetFont('s10')
 LB := gui_trader_selection.AddListBox('w230', ['3 Chip', '10 Chip', 'Bugfrag', 'Number'])
-gui_trader_selection.AddButton('wp Default', 'OK').OnEvent('Click', TraderSelection)
+gui_trader_selection.AddButton('wp Default', 'OK').OnEvent('Click', TradeSelection)
 gui_trader_selection.Show
 
 Esc:: {
