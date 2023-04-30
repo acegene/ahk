@@ -68,6 +68,9 @@ TradeNumber() {
         "46823480", ;; Untrap
     ]
 
+    MaximizeAndFocusWindow(title_megaman_collection_1)
+    RepeatHoldKeyForDurationE("k", 50, 2500)
+
     for (lotto_code in lotto_codes_mmbn3) {
         RepeatHoldKeyForDurationE("j", 50, 2500)
         loop Parse lotto_code {

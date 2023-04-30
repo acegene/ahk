@@ -94,8 +94,8 @@ TravelAcdcStnAtAcdcToStn(to_stn) {
 
 ;; yoka
 TravelFrontOfZooAtYokaStnToHotelFront() {
-    HoldKeysE(["s", "k"], 3000)
-    HoldKeysE(["a", "k"], 2600)
+    HoldKeysE(["s", "k"], 300)
+    HoldKeysE(["a", "k"], 3400)
     Sleep(1000)
 }
 
@@ -182,9 +182,8 @@ TravelBeachStAtShorelineToBeachStn() {
 }
 
 TravelBeachStAtBeachStnToShoreline() {
-    HoldKeysE(["s", "a", "k"], 300)
-    HoldKeysE(["s", "d", "k"], 2300)
-    HoldKeysE(["s", "a", "k"], 1800)
+    HoldKeysE(["s", "a", "k"], 900)
+    HoldKeysE(["s", "k"], 3200)
     Sleep(1000)
 }
 

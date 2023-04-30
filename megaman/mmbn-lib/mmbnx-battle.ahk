@@ -20,11 +20,13 @@ ShootAndContinueUntilBattleOver(w_win, h_win) {
 StartBattle(start_battle_chip_state) {
     HoldKeyE("enter", 50)
     Sleep(100)
-    Loop 5 {
-        HoldKeyE("d", 50)
-        Sleep(100)
-        HoldKeyE("k", 50)
-        Sleep(100)
+    if (start_battle_chip_state.num_chips_to_use != 0) {
+        Loop 5 {
+            HoldKeyE("d", 50)
+            Sleep(100)
+            HoldKeyE("k", 50)
+            Sleep(100)
+        }
     }
     for chip_slot in start_battle_chip_state.chip_slots_to_send {
         HoldKeyE("enter", 50)
@@ -104,14 +106,14 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
 
         battles += 1
 
-        if (zenny_battle_stop_thresh != "" && Mod(A_Index, num_battles_until_save) = 0) {
+        if (num_battles_until_save != "" && Mod(A_Index, num_battles_until_save) = 0) {
             SaveProgressOrStartGame(w_win, h_win)
             JackOutThenIn()
         }
 
         if (num_battles_check_zenny != "" && Mod(A_Index, num_battles_check_zenny) = 0) {
             zenny := GetZenny(w_win, h_win)
-            if (zenny >= zenny_battle_stop_thresh) {
+            if (zenny_battle_stop_thresh != "" && zenny >= zenny_battle_stop_thresh) {
                 break
             }
         }

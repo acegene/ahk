@@ -45,14 +45,14 @@ Mmbn3InsertChipsChipTrader(chips_per_trade) {
 }
 
 Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg := ToolTipCfg(), num_attempts_to_enter_trader := 3) {
-    Mmbn3InitializeChipTrader()
     trader_in := 0
     trader_out := 0
     num_fails_enter_trader := 0
+    Mmbn3InitializeChipTrader()
     while (True) {
         Loop num_attempts_to_enter_trader {
             Mmbn3EnterInsertChipsMenuChipTrader()
-            if (ratio_rgb_chip_trader_insert_menu.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+            if (ratio_rgb_chip_trader_insert_menu_blue.DoesWindowMatchRatioRgbs(w_win, h_win) || ratio_rgb_chip_trader_insert_menu_white.DoesWindowMatchRatioRgbs(w_win, h_win)) {
                 break
             }
             num_fails_enter_trader += 1
@@ -61,6 +61,7 @@ Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, too
                 ExitApp(1)
             }
             RepeatHoldKeyForDurationE("k", 50, 2500)
+            Mmbn3InitializeChipTrader()
         }
         digits_2d := mmbn3_digits_chip_trader.GetChars2D(w_win, h_win)
         highest_chip_count := Integer(Join(digits_2d[1]))
@@ -109,4 +110,5 @@ mmbn3_digits_chip_trader := CharGridColorChecker(
     mmbn3_rgb_chip_trader_chip_count,
 )
 
-ratio_rgb_chip_trader_insert_menu := RatioRgbs([0.708073], [0.489352], [0x759be8])
+ratio_rgb_chip_trader_insert_menu_blue := RatioRgbs([0.708073], [0.489352], [0xadadad])
+ratio_rgb_chip_trader_insert_menu_white := RatioRgbs([0.708073], [0.489352], [0x759be8])

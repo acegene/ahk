@@ -14,12 +14,13 @@
 #include <window-utils>
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
-start_battle_chip_state := { chip_slots_to_send: [], num_chips_to_use: 0, post_chip_sleeps: [] }
+
+start_battle_chip_state := { chip_slots_to_send: [1], num_chips_to_use: 0, post_chip_sleeps: [] }
 max_num_chips := 99
 
-num_battles_check_zenny := 10
-num_battles_per_save := 100
-num_battles_max := 300
+num_battles_check_zenny := 20
+num_battles_per_save := 50
+num_battles_max := ""
 
 total_battles := 0
 
@@ -48,8 +49,11 @@ tool_tip_cfg_summary := ToolTipCfg("ul", 3)
 
 MaximizeAndFocusWindow(title_megaman_collection_1)
 WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
+
 RepeatHoldKeyForDurationE("k", 50, 2500)
-Sleep(1000)
+
+; TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader()
+; TravelArmorCompToHospLobbyAtChipTrader()
 
 while (True) {
     trade_summary := Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg_trader)
