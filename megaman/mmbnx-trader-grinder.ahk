@@ -13,7 +13,7 @@
 TradeBugfrags() {
     MaximizeAndFocusWindow(title_megaman_collection_1)
     RepeatHoldKeyForDurationE("k", 50, 2500)
-    while (True) {
+    while (true) {
         HoldKeyE("j", 50)
     }
 }

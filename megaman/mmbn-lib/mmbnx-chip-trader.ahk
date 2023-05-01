@@ -44,28 +44,53 @@ Mmbn3InsertChipsChipTrader(chips_per_trade) {
     Sleep(400)
 }
 
-Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg := ToolTipCfg(), num_attempts_to_enter_trader := 3) {
+Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg := ToolTipCfg(), check_only_top_chip := true, num_enter_trader_attempts := 3) {
     trader_in := 0
     trader_out := 0
     num_fails_enter_trader := 0
     Mmbn3InitializeChipTrader()
-    while (True) {
-        Loop num_attempts_to_enter_trader {
+    while (true) {
+        Loop num_enter_trader_attempts {
             Mmbn3EnterInsertChipsMenuChipTrader()
-            if (ratio_rgb_chip_trader_insert_menu_blue.DoesWindowMatchRatioRgbs(w_win, h_win) || ratio_rgb_chip_trader_insert_menu_white.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+            if (ratio_rgb_chip_trader_insert_menu_blue.DoesWindowMatchRatioRgbs(w_win, h_win) ||
+                ratio_rgb_chip_trader_insert_menu_white.DoesWindowMatchRatioRgbs(w_win, h_win)) {
                 break
             }
             num_fails_enter_trader += 1
-            if (num_attempts_to_enter_trader = A_Index) {
+            if (num_enter_trader_attempts = A_Index) {
                 MsgBox("ERROR: expected to be in chip trader")
                 ExitApp(1)
             }
             RepeatHoldKeyForDurationE("k", 50, 2500)
             Mmbn3InitializeChipTrader()
         }
-        digits_2d := mmbn3_digits_chip_trader.GetChars2D(w_win, h_win)
-        highest_chip_count := Integer(Join(digits_2d[1]))
-        tool_tip_cfg.DisplayMsg(MapToStr(Map("trader_in", trader_in, "trader_out", trader_out, "chip_min_thresh", chip_min_thresh, "chips_per_trade", chips_per_trade, "num_fails_enter_trader", num_fails_enter_trader, "highest_chip_count", highest_chip_count)) . JoinN(digits_2d, 2, [" ", "`n"]), w_win, h_win)
+        if (check_only_top_chip) {
+            digits_row := mmbn3_digits_chip_trader.GetCharsRow(1, w_win, h_win)
+            highest_chip_count := Integer(Join(digits_row))
+            trader_summary := Map(
+                "chip_min_thresh", chip_min_thresh,
+                "chips_per_trade", chips_per_trade,
+                "digits_row", Join(digits_row, ""),
+                "highest_chip_count", highest_chip_count,
+                "num_fails_enter_trader", num_fails_enter_trader,
+                "trader_in", trader_in,
+                "trader_out", trader_out,
+            )
+            tool_tip_cfg.DisplayMsg(MapToStr(trader_summary), w_win, h_win)
+        } else {
+            digits_2d := mmbn3_digits_chip_trader.GetChars2D(w_win, h_win)
+            highest_chip_count := Integer(Join(digits_2d[1]))
+            trader_summary := Map(
+                "chip_min_thresh", chip_min_thresh,
+                "chips_per_trade", chips_per_trade,
+                "highest_chip_count", highest_chip_count,
+                "num_fails_enter_trader", num_fails_enter_trader,
+                "trader_in", trader_in,
+                "trader_out", trader_out,
+            )
+            tool_tip_cfg.DisplayMsg(MapToStr(trader_summary) .
+                JoinN(digits_2d, 2, ["", "`n"]), w_win, h_win)
+        }
         if (highest_chip_count < chip_min_thresh + chips_per_trade) {
             break
         }

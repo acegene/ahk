@@ -7,7 +7,7 @@
 #include <window-utils>
 
 Mmbn3SpamChipOrder() {
-    While (True) {
+    While (true) {
         HoldKeyE("j", 50)
         Sleep(200)
         HoldKeyE("j", 50)

@@ -56,8 +56,14 @@ RepeatHoldKeyForDurationE("k", 50, 2500)
 ; TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader()
 ; TravelArmorCompToHospLobbyAtChipTrader()
 
-while (True) {
-    trade_summary := Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg_trader)
+while (true) {
+    trade_summary := Mmbn3TradeUntilMinChipThresh(
+        w_win,
+        h_win,
+        chip_min_thresh,
+        chips_per_trade,
+        tool_tip_cfg_trader
+    )
     total_trader_in += trade_summary.trader_in
     total_trader_out += trade_summary.trader_out
     total_fails_enter_trader += trade_summary.num_fails_enter_trader
@@ -71,7 +77,17 @@ while (True) {
             TravelVendingCompAtGamblerToHospLobbyAtChipTrader()
         } else if (zenny_gain_method = "armor_comp") {
             TravelHospLobbyAtChipTraderToArmorComp()
-            battle_summary := BattleLoop(w_win, h_win, ExecuteArmorCompBattleIfDetected, start_battle_chip_state, num_battles_per_save, num_battles_max, num_battles_check_zenny, zenny_use_stop_thresh, tool_tip_cfg_battle)
+            battle_summary := BattleLoop(
+                w_win,
+                h_win,
+                ExecuteArmorCompBattleIfDetected,
+                start_battle_chip_state,
+                num_battles_per_save,
+                num_battles_max,
+                num_battles_check_zenny,
+                zenny_use_stop_thresh,
+                tool_tip_cfg_battle
+            )
             total_battles += battle_summary.battles
             TravelArmorCompToHospLobbyAtChipTrader()
         } else {
@@ -89,7 +105,7 @@ while (True) {
 
     total_chips_ordered += chips_per_chip_order
     total_zenny_spent += zenny_per_chip_orders
-    summary_map := Map(
+    main_summary := Map(
         "chips_per_chip_order", chips_per_chip_order,
         "find_chip_start_index", find_chip_start_index,
         "find_chip_index", find_chip_index,
@@ -104,12 +120,12 @@ while (True) {
         "zenny_gain_method", zenny_gain_method,
         "zenny_per_chip_orders", zenny_per_chip_orders,
     )
-    tool_tip_cfg_summary.DisplayMsg(MapToStr(summary_map), w_win, h_win)
+    tool_tip_cfg_summary.DisplayMsg(MapToStr(main_summary), w_win, h_win)
 
     TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader()
 }
 
-Esc:: {
+$Esc:: {
     ClearHeldKeysE("w a s d j k e enter")
     ExitApp
 }

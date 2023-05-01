@@ -110,8 +110,8 @@ ExecuteArmorCompBattleIfDetected(start_battle_chip_state) {
         HoldKeyE("j", 50)
         RepeatHoldKeyForDurationE("k", 50, 15000)
     } else {
-        return False
+        return false
     }
 
-    return True
+    return true
 }

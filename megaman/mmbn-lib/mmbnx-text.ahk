@@ -55,7 +55,9 @@ class CharGridColorChecker extends CharGrid {
             for (char_bound in char_bounds_row) {
                 check_locations := []
                 for (check_ratio_2d in char_check_ratios) {
-                    check_locations.Push(Point2D(char_bound.x_l + (check_ratio_2d.x * w_char), char_bound.y_u + (check_ratio_2d.y * h_char)))
+                    check_locations.Push(Point2D(
+                        char_bound.x_l + (check_ratio_2d.x * w_char),
+                        char_bound.y_u + (check_ratio_2d.y * h_char)))
                 }
                 char_check_locations.Push(check_locations)
             }
@@ -66,7 +68,12 @@ class CharGridColorChecker extends CharGrid {
     GetChar(row, column, w_win, h_win, null_str := "0") {
         char_locations_found := []
         for (char_check_location in this.char_check_locations_2d[row][column]) {
-            char_locations_found.Push(IsRatioColorEqualToColor(w_win, h_win, char_check_location.x, char_check_location.y, this.rgb_check))
+            char_locations_found.Push(IsRatioColorEqualToColor(
+                w_win,
+                h_win,
+                char_check_location.x,
+                char_check_location.y,
+                this.rgb_check))
         }
         for (key, val in this.char_check_map) {
             if (IsArrEq(val, char_locations_found)) {
@@ -80,9 +87,14 @@ class CharGridColorChecker extends CharGrid {
 
         char_check_location_str := "char_check_location:`n"
         for (char_check_location in this.char_check_locations_2d[row][column]) {
-            char_check_location_str .= "    x=" . char_check_location.x ", y=" . char_check_location.y . "; rgb=" . GetRatioColor(w_win, h_win, char_check_location.x, char_check_location.y) . "`n"
+            char_check_location_str .= "    x=" .
+                char_check_location.x ", y=" .
+                char_check_location.y . "; rgb=" .
+                GetRatioColor(w_win, h_win, char_check_location.x, char_check_location.y) . "`n"
         }
-        MsgBox("ERROR: for (row=" . row . ", column=" . column . "); could not match any char to char_locations_found=" . Join(char_locations_found, ",") . "`n" . char_check_location_str)
+        MsgBox("ERROR: for (row=" . row . ", column=" .
+            column . "); could not match any char to char_locations_found=" .
+            Join(char_locations_found, ",") . "`n" . char_check_location_str)
         ExitApp(1)
     }
 
@@ -116,15 +128,15 @@ mmbn3_digit_check_ratios := [
 
 ;; chip trader chip count, zenny, bugfrags, hp
 mmbn3_digit_check_map := Map(
-    "0", [True, True, True, True, True, True],
-    "1", [False, False, False, False, False, True],
-    "2", [True, False, True, True, True, True],
-    "3", [True, False, False, False, True, True],
-    "4", [False, False, True, True, True, False],
-    "5", [True, True, True, False, False, True],
-    "6", [True, True, True, True, False, True],
-    "7", [True, True, False, False, True, True],
-    "8", [True, True, False, True, True, True],
-    "9", [True, True, True, False, True, True],
-    "NULL", [False, False, False, False, False, False]
+    "0", [true, true, true, true, true, true],
+    "1", [false, false, false, false, false, true],
+    "2", [true, false, true, true, true, true],
+    "3", [true, false, false, false, true, true],
+    "4", [false, false, true, true, true, false],
+    "5", [true, true, true, false, false, true],
+    "6", [true, true, true, true, false, true],
+    "7", [true, true, false, false, true, true],
+    "8", [true, true, false, true, true, true],
+    "9", [true, true, true, false, true, true],
+    "NULL", [false, false, false, false, false, false]
 )

@@ -30,7 +30,17 @@ WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 MaximizeAndFocusWindow(title_megaman_collection_1)
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
-BattleLoop(w_win, h_win, ExecuteArmorCompBattleIfDetected, start_battle_chip_state, num_battles_until_save, "", num_battles_check_zenny, "", tool_tip_cfg_battle)
+BattleLoop(
+    w_win,
+    h_win,
+    ExecuteArmorCompBattleIfDetected,
+    start_battle_chip_state,
+    num_battles_until_save,
+    "",
+    num_battles_check_zenny,
+    "",
+    tool_tip_cfg_battle
+)
 
 Esc:: {
     ClearHeldKeysE("w a s d j k e enter")

@@ -139,7 +139,7 @@ GamblerLoop(w_win, h_win, zenny_to_gain := "", tool_tip_cfg_gambler := ToolTipCf
         }
         num_runs += 1
 
-        gambler_summary_map := Map(
+        gambler_summary := Map(
             "gamble_win", gamble_result.gamble_win,
             "fails_until_reset", fails_until_reset,
             "sleeps_increment", Join(sleeps_increment, " "),
@@ -157,7 +157,7 @@ GamblerLoop(w_win, h_win, zenny_to_gain := "", tool_tip_cfg_gambler := ToolTipCf
             "zenny_to_gain", zenny_to_gain,
             "zenny_won", zenny_won,
         )
-        tool_tip_cfg_gambler.DisplayMsg(MapToStr(gambler_summary_map), w_win, h_win)
+        tool_tip_cfg_gambler.DisplayMsg(MapToStr(gambler_summary), w_win, h_win)
 
         if (zenny_to_gain != "" && zenny_won >= zenny_to_gain) {
             break

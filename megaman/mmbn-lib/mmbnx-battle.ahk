@@ -122,7 +122,15 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
             break
         }
 
-        tool_tip_cfg.DisplayMsg(MapToStr(Map("battles", battles, "num_battles_until_save", num_battles_until_save, "num_battles_max", num_battles_max, "num_battles_check_zenny", num_battles_check_zenny, "zenny_battle_stop_thresh", zenny_battle_stop_thresh, "zenny", zenny)), w_win, h_win)
+        trade_summary := Map(
+            "battles", battles,
+            "num_battles_check_zenny", num_battles_check_zenny,
+            "num_battles_max", num_battles_max,
+            "num_battles_until_save", num_battles_until_save,
+            "zenny", zenny,
+            "zenny_battle_stop_thresh", zenny_battle_stop_thresh,
+        )
+        tool_tip_cfg.DisplayMsg(MapToStr(trade_summary), w_win, h_win)
     }
 
     return {
