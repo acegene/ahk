@@ -52,19 +52,39 @@ StartGame() {
     Sleep(3000)
 }
 
+ResetGame() {
+    HoldKeyE("esc", 50)
+    Sleep(1000)
+    HoldKeyE("w", 50)
+    Sleep(200)
+    HoldKeyE("w", 50)
+    Sleep(200)
+    HoldKeyE("j", 50)
+    Sleep(500)
+    HoldKeyE("a", 50)
+    Sleep(200)
+    HoldKeyE("j", 50)
+    Sleep(2000)
+    StartGame()
+}
+
+SaveProgress() {
+    HoldKeyE("enter", 50)
+    Sleep(300)
+    HoldKeyE("w", 50)
+    Sleep(100)
+    HoldKeyE("j", 50)
+    Sleep(1000)
+    HoldKeyE("j", 50)
+    Sleep(700)
+    HoldKeyE("j", 50)
+    RepeatHoldKeyForDurationE("k", 50, 1500)
+}
+
 SaveProgressOrStartGame(w_win, h_win) {
     if (ratio_rgbs_health_bar_net.DoesWindowMatchRatioRgbs(w_win, h_win)) {
         ;; in net
-        HoldKeyE("enter", 50)
-        Sleep(300)
-        HoldKeyE("w", 50)
-        Sleep(100)
-        HoldKeyE("j", 50)
-        Sleep(1000)
-        HoldKeyE("j", 50)
-        Sleep(700)
-        HoldKeyE("j", 50)
-        RepeatHoldKeyForDurationE("k", 50, 1500)
+        SaveProgress()
     } else if (ratio_rgbs_main_menu_tm.DoesWindowMatchRatioRgbs(w_win, h_win)) {
         ;; in main menu
         StartGame()
@@ -94,3 +114,6 @@ ratio_rgbs_health_bar_battle := RatioRgbs([0.631250], [0.098148], [rgb_health_ba
 ratio_rgbs_health_bar_net := RatioRgbs([0.253906], [0.098148], [rgb_health_bar])
 
 ratio_rgbs_main_menu_tm := RatioRgbs([0.794792, 0.797656], [0.127778, 0.140741], [0x000000, 0xffffff])
+
+ratio_rgbs_megaman_back := RatioRgbs([0.499740], [0.391204], [0x0b9bdd])
+ratio_rgbs_megaman_side_foot := RatioRgbs([0.499479], [0.511111], [0x0b9bdd])

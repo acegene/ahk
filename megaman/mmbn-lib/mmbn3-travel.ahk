@@ -2,6 +2,7 @@
 
 #include <keypress-utils>
 
+;; helper functions
 PurchaseTicketFromStnToStn(from_stn, to_stn) {
     ;; initial prompt to enter ticket selection
     HoldKeyE("j", 50)
@@ -41,40 +42,41 @@ PurchaseTicketFromStnToStn(from_stn, to_stn) {
     RepeatHoldKeyForDurationE("k", 50, 1000)
 }
 
+TravelHospLobbyAtChipTraderToHospLobbyAtVendingComp() {
+    HoldKeysE(["w", "k"], 200)
+    HoldKeysE(["d", "k"], 50)
+    Sleep(1000)
+}
+
+TravelHospLobbyAtVendingCompToHospLobbyAtChipTrader() {
+    HoldKeysE(["a", "k"], 200)
+    HoldKeysE(["s", "k"], 50)
+    Sleep(1000)
+}
+
+TravelHospLobbyAtVendingCompToVendingCompAtGambler(w_win, h_win) {
+    SaveProgress()
+    while (true) {
+        JackIn()
+        HoldKeysE(["d", "k"], 3000)
+        HoldKeysE(["a", "k"], 1000)
+        Sleep(300)
+        if (ratio_rgbs_megaman_side_foot.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+            Sleep(1000)
+            break
+        } else {
+            ResetGame()
+        }
+    }
+    HoldKeyE("s", 200)
+    Sleep(100)
+    HoldKeyE("a", 200)
+    Sleep(100)
+    HoldKeyE("w", 200)
+    Sleep(1000)
+}
+
 ;; acdc
-TravelAcdcAtAcdcStnToHisbys() {
-    HoldKeysE(["s", "a", "k"], 300)
-    HoldKeysE(["w", "a", "k"], 2500)
-    HoldKeysE(["w", "d", "k"], 4300)
-    HoldKeysE(["w", "a", "k"], 600)
-    Sleep(1000)
-}
-
-TravelAcdcAtHisbysToAcdcStn() {
-    HoldKeysE(["s", "d", "k"], 400)
-    HoldKeysE(["s", "a", "k"], 4300)
-    HoldKeysE(["s", "d", "k"], 2500)
-    HoldKeysE(["w", "d", "k"], 400)
-    HoldKeysE(["w", "a", "k"], 300)
-    Sleep(1000)
-}
-
-TravelHigsbysAtAcdcToHigsbysChipShop() {
-    HoldKeysE(["w", "a", "k"], 100)
-    HoldKeysE(["d", "w", "k"], 1300)
-}
-
-TravelHigsbysAtHigsbysChipShopToAcdc() {
-    HoldKeysE(["s", "d", "k"], 100)
-    HoldKeysE(["s", "a", "k"], 1500)
-    Sleep(1000)
-}
-
-TravelAcdcStnAtGateToAcdc() {
-    HoldKeysE(["s", "k"], 1000)
-    Sleep(1000)
-}
-
 TravelAcdcStnAtAcdcToStn(to_stn) {
     HoldKeysE(["w", "a", "k"], 500)
     HoldKeysE(["w", "k"], 2000)
@@ -92,52 +94,40 @@ TravelAcdcStnAtAcdcToStn(to_stn) {
     Sleep(1000)
 }
 
-;; yoka
-TravelFrontOfZooAtYokaStnToHotelFront() {
-    HoldKeysE(["s", "k"], 300)
-    HoldKeysE(["a", "k"], 3400)
-    Sleep(1000)
-}
-
-TravelFrontOfZooAtHotelFrontToYokaStn() {
-    HoldKeysE(["d", "k"], 1500)
-    HoldKeysE(["w", "k"], 200)
-    HoldKeysE(["w", "d", "k"], 1500)
-    HoldKeysE(["a", "k"], 500)
-    Sleep(1000)
-}
-
-TravelHotelFrontAtFrontOfZooToHotelLobby() {
-    HoldKeysE(["a", "k"], 4000)
-    HoldKeysE(["d", "k"], 1500)
-    HoldKeysE(["w", "k"], 300)
-    Sleep(1000)
-}
-
-TravelHotelFrontAtHotelLobbyToFrontOfZoo() {
-    HoldKeysE(["s", "k"], 3200)
-    HoldKeysE(["d", "k"], 1200)
-    Sleep(1000)
-}
-
-TravelHotelLobbyAtHotelFrontToArmorComp() {
-    HoldKeysE(["w", "k"], 1600)
-    RepeatHoldKeysForDurationE(["w", "e", "k"], 50, 4000)
-    Sleep(5000)
-}
-
-TravelHotelLobbyAtArmorCompToHotelFront() {
-    JackOut()
-    HoldKeysE(["s", "k"], 2000)
-    HoldKeysE(["a", "k"], 1200)
-    Sleep(1000)
-}
-
-TravelYokaStnAtGateToFrontOfZoo() {
+TravelAcdcStnAtGateToAcdc() {
     HoldKeysE(["s", "k"], 1000)
     Sleep(1000)
 }
 
+TravelAcdcAtHisbysToAcdcStn() {
+    HoldKeysE(["s", "d", "k"], 400)
+    HoldKeysE(["s", "a", "k"], 4300)
+    HoldKeysE(["s", "d", "k"], 2500)
+    HoldKeysE(["w", "d", "k"], 400)
+    HoldKeysE(["w", "a", "k"], 300)
+    Sleep(1000)
+}
+
+TravelAcdcAtAcdcStnToHisbys() {
+    HoldKeysE(["s", "a", "k"], 300)
+    HoldKeysE(["w", "a", "k"], 2500)
+    HoldKeysE(["w", "d", "k"], 4300)
+    HoldKeysE(["w", "a", "k"], 600)
+    Sleep(1000)
+}
+
+TravelHigsbysAtHigsbysChipShopToAcdc() {
+    HoldKeysE(["s", "d", "k"], 100)
+    HoldKeysE(["s", "a", "k"], 1500)
+    Sleep(1000)
+}
+
+TravelHigsbysAtAcdcToHigsbysChipShop() {
+    HoldKeysE(["w", "a", "k"], 100)
+    HoldKeysE(["d", "w", "k"], 1300)
+}
+
+;; yoka
 TravelYokaStnAtFrontOfZooToStn(to_stn) {
     HoldKeysE(["w", "a", "k"], 500)
     HoldKeysE(["w", "k"], 2000)
@@ -155,24 +145,66 @@ TravelYokaStnAtFrontOfZooToStn(to_stn) {
     Sleep(1000)
 }
 
+TravelYokaStnAtGateToFrontOfZoo() {
+    HoldKeysE(["s", "k"], 1000)
+    Sleep(1000)
+}
+
+TravelFrontOfZooAtHotelFrontToYokaStn() {
+    HoldKeysE(["d", "k"], 1500)
+    HoldKeysE(["w", "k"], 200)
+    HoldKeysE(["w", "d", "k"], 1500)
+    HoldKeysE(["a", "k"], 500)
+    Sleep(1000)
+}
+
+TravelFrontOfZooAtYokaStnToHotelFront() {
+    HoldKeysE(["s", "k"], 300)
+    HoldKeysE(["a", "k"], 3400)
+    Sleep(1000)
+}
+
+TravelHotelFrontAtHotelLobbyToFrontOfZoo() {
+    HoldKeysE(["s", "k"], 3200)
+    HoldKeysE(["d", "k"], 1200)
+    Sleep(1000)
+}
+
+TravelHotelFrontAtFrontOfZooToHotelLobby() {
+    HoldKeysE(["a", "k"], 4000)
+    HoldKeysE(["d", "k"], 1500)
+    HoldKeysE(["w", "k"], 300)
+    Sleep(1000)
+}
+
+TravelHotelLobbyAtArmorCompToHotelFront() {
+    JackOut()
+    HoldKeysE(["s", "k"], 2000)
+    HoldKeysE(["a", "k"], 1200)
+    Sleep(1000)
+}
+
+TravelHotelLobbyAtHotelFrontToArmorComp() {
+    HoldKeysE(["w", "k"], 1600)
+    RepeatHoldKeysForDurationE(["w", "e", "k"], 50, 4000)
+    Sleep(5000)
+}
+
 ;; beach
-TravelHospLobbyAtChipTraderToShoreline() {
-    HoldKeysE(["s", "d", "k"], 1300)
-    Sleep(1000)
+TravelBeachStnAtBeachStToStn(to_stn) {
+    HoldKeysE(["w", "k"], 1200)
+    PurchaseTicketFromStnToStn("beach", to_stn)
+    HoldKeysE(["s", "k"], 400)
+    HoldKeysE(["d", "k"], 1400)
+    Sleep(100)
+    HoldKeyE("j", 50)
+    Sleep(500)
+    HoldKeyE("j", 50)
+    Sleep(1500)
 }
 
-TravelHospLobbyAtShorelineToChipTrader() {
-    HoldKeysE(["w", "a", "k"], 1300)
-    Sleep(1000)
-}
-
-TravelShorelineAtHospLobbyToBeachSt() {
-    HoldKeysE(["d", "k"], 3500)
-    Sleep(1000)
-}
-
-TravelShorelineAtBeachStToHospLobby() {
-    HoldKeysE(["a", "k"], 3200)
+TravelBeachStnAtGateToBeachSt() {
+    HoldKeysE(["s", "k"], 1500)
     Sleep(1000)
 }
 
@@ -187,21 +219,36 @@ TravelBeachStAtBeachStnToShoreline() {
     Sleep(1000)
 }
 
-TravelBeachStnAtGateToBeachSt() {
-    HoldKeysE(["s", "k"], 1500)
+TravelShorelineAtHospLobbyToBeachSt() {
+    HoldKeysE(["d", "k"], 3500)
     Sleep(1000)
 }
 
-TravelBeachStnAtBeachStToStn(to_stn) {
-    HoldKeysE(["w", "k"], 1200)
-    PurchaseTicketFromStnToStn("beach", to_stn)
-    HoldKeysE(["s", "k"], 400)
-    HoldKeysE(["d", "k"], 1400)
-    Sleep(100)
-    HoldKeyE("j", 50)
-    Sleep(500)
-    HoldKeyE("j", 50)
-    Sleep(1500)
+TravelShorelineAtBeachStToHospLobby() {
+    HoldKeysE(["a", "k"], 3200)
+    Sleep(1000)
+}
+
+TravelHospLobbyAtChipTraderToShoreline() {
+    HoldKeysE(["s", "d", "k"], 1400)
+    Sleep(1000)
+}
+
+TravelHospLobbyAtShorelineToHospLobbyAtChipTrader() {
+    HoldKeysE(["w", "k"], 1600)
+    HoldKeysE(["a", "k"], 200)
+    HoldKeysE(["s", "k"], 50)
+    Sleep(1000)
+}
+
+TravelHospLobbyAtChipTraderToVendingCompAtGambler(w_win, h_win) {
+    TravelHospLobbyAtChipTraderToHospLobbyAtVendingComp()
+    TravelHospLobbyAtVendingCompToVendingCompAtGambler(w_win, h_win)
+}
+
+TravelVendingCompAtGamblerToHospLobbyAtChipTrader() {
+    JackOut()
+    TravelHospLobbyAtVendingCompToHospLobbyAtChipTrader()
 }
 
 ;; combination
@@ -212,7 +259,7 @@ TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader() {
     TravelBeachStnAtGateToBeachSt()
     TravelBeachStAtBeachStnToShoreline()
     TravelShorelineAtBeachStToHospLobby()
-    TravelHospLobbyAtShorelineToChipTrader()
+    TravelHospLobbyAtShorelineToHospLobbyAtChipTrader()
 }
 
 TravelArmorCompToHospLobbyAtChipTrader() {
@@ -223,7 +270,7 @@ TravelArmorCompToHospLobbyAtChipTrader() {
     TravelBeachStnAtGateToBeachSt()
     TravelBeachStAtBeachStnToShoreline()
     TravelShorelineAtBeachStToHospLobby()
-    TravelHospLobbyAtShorelineToChipTrader()
+    TravelHospLobbyAtShorelineToHospLobbyAtChipTrader()
 }
 
 TravelHospLobbyAtChipTraderToHigsbysAtHigsbysChipShop() {

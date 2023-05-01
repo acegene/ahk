@@ -129,5 +129,3 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
         battles: battles,
     }
 }
-
-ratio_rgbs_megaman_side_foot := RatioRgbs([0.499479], [0.511111], [0x0b9bdd])
