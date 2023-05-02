@@ -25,6 +25,7 @@ zenny_per_chip := 100
 zenny_per_gamble_win := 64000
 
 chip_min_thresh := 10
+chip_trader_type := "hospital" ;; hospital or dnn
 find_chip_start_index := 118 ; max value of guard * is #133; NOTE: index is less if missing chips
 num_battles_check_zenny := 20
 num_battles_max := ""
@@ -68,6 +69,17 @@ WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
+if (chip_trader_type = "hospital") {
+    travel_chip_trader_to_vending_comp_at_gambler := TravelHospLobbyAtChipTraderToVendingCompAtGambler
+    travel_chip_trader_to_armor_comp := TravelHospLobbyAtChipTraderToArmorComp
+} else if (chip_trader_type = "dnn") {
+    travel_chip_trader_to_vending_comp_at_gambler := TravelTVStnHallAtChipTraderToVendingCompAtGambler
+    travel_chip_trader_to_armor_comp := TravelTVStnHallAtChipTraderToArmorComp
+} else {
+    MsgBox("FATAL: unexpected chip_trader_type=" . chip_trader_type)
+    ExitApp(1)
+}
+
 ; TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader()
 ; TravelArmorCompToHospLobbyAtChipTrader()
 
@@ -89,22 +101,20 @@ while (true) {
 
     zenny := GetZenny(w_win, h_win)
     if (zenny <= Min(zenny_gain_start_thresh + zenny_per_chip_orders, zenny_max)) {
-
-
         if (zenny_gain_method = "gamble") {
             zenny_non_wasteful_gamble_limit := zenny_max - Mod((zenny_max - zenny), zenny_per_gamble_win)
             zenny_to_gamble_for := Min(zenny_gain_stop_thresh - zenny, zenny_non_wasteful_gamble_limit - zenny)
             if (zenny_to_gamble_for > 0) {
-                duration_travel += TimedCallTruncated("S", TravelHospLobbyAtChipTraderToVendingCompAtGambler, w_win, h_win)
+                duration_travel += TimedCallTruncated("S", travel_chip_trader_to_vending_comp_at_gambler, w_win, h_win)
                 timed_gambler_summary := TimedCallTruncatedWReturn("S", GamblerLoop, w_win, h_win, zenny_to_gamble_for, tool_tip_cfg_gambler)
                 duration_gambler += timed_gambler_summary["duration"]
                 total_gamble_runs += timed_gambler_summary["ret_val"]["num_runs"]
                 total_gamble_wins += timed_gambler_summary["ret_val"]["num_wins"]
                 zenny_gained_gambler += timed_gambler_summary["ret_val"]["zenny_won"]
-                duration_travel += TimedCallTruncated("S", TravelVendingCompAtGamblerToHospLobbyAtChipTrader)
+                duration_travel += TimedCallTruncated("S", TravelVendingCompAtGamblerToHigsbysAtHigsbysChipShop)
             }
         } else if (zenny_gain_method = "armor_comp") {
-            duration_travel += TimedCallTruncated("S", TravelHospLobbyAtChipTraderToArmorComp)
+            duration_travel += TimedCallTruncated("S", travel_chip_trader_to_armor_comp)
             timed_battle_summary := TimedCallTruncatedWReturn(
                 "S",
                 BattleLoop,
@@ -120,14 +130,12 @@ while (true) {
             duration_battle += timed_battle_summary["duration"]
             total_battles += timed_battle_summary["ret_val"]["battles"]
             zenny_gained_battle += timed_battle_summary["ret_val"]["zenny_gained"]
-            duration_travel += TimedCallTruncated("S", TravelArmorCompToHospLobbyAtChipTrader)
+            duration_travel += TimedCallTruncated("S", TravelArmorCompToHigsbysAtHigsbysChipShop)
         } else {
             MsgBox("FATAL: unexpected zenny_gain_method=" . zenny_gain_method)
             ExitApp(1)
         }
     }
-
-    duration_travel += TimedCallTruncated("S", TravelHospLobbyAtChipTraderToHigsbysAtHigsbysChipShop)
 
     chips_per_chip_order := Min(max_chips_per_chip_orders, max_num_chips - highest_chip_count)
     zenny_per_chip_orders := zenny_per_chip * chips_per_chip_order
