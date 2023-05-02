@@ -2,6 +2,7 @@
 
 #include <keypress-utils>
 #include <string-utils>
+#include <timer-utils>
 #include <window-utils>
 
 InitiateGambler() {
@@ -13,10 +14,10 @@ InitiateGambler() {
     Sleep(700)
 }
 
-Gamble(w_win, h_win, number_of_wins, sleeps_pre_gamble) {
+Gamble(w_win, h_win, number_of_wins, round_sleeps) {
     number_of_wins_actual := 0
     Loop number_of_wins {
-        Sleep(sleeps_pre_gamble[A_Index])
+        Sleep(round_sleeps[A_Index])
         ;; click "Yes" or "Try Again?"
         HoldKeyE("j", 50)
         Sleep(100)
@@ -74,77 +75,91 @@ Gamble(w_win, h_win, number_of_wins, sleeps_pre_gamble) {
 }
 
 GamblerLoop(w_win, h_win, zenny_to_gain := "", tool_tip_cfg_gambler := ToolTipCfg()) {
+    timer_gambler := Timer()
+
     num_rounds_to_win := 3 ;; 4 times bankrupts gambler
     zenny_gambler_base := 1000
-    fails_until_reset := 20
+    fails_until_reset := 25
     reset_sleep := 5000
-    sleeps_pre_gamble := [0, 0, 0]
-    sleeps_increment := [100, 100, 100]
-    sleeps_redos_per_round_win := [2, 2]
+    round_sleeps := [0, 0, 0]
+    round_sleeps_redos_win := [2, 2]
+    sleep_increments := [100, 100, 100]
 
+    round_sleeps_redos_default := [0, 0]
+    round_sleeps_redos := round_sleeps_redos_default
     zenny_per_win := (4 ** num_rounds_to_win) * zenny_gambler_base
-    sleeps_retries_since_win_default := [0, 0]
-    sleeps_redos_per_round := sleeps_retries_since_win_default
 
+    duration_cycle := 0
+    duration_total := 0
     gamble_win := false
-    zenny_won := 0
-    num_resets := 0
     num_losses := 0
     num_losses_consecutive := 0
-    num_wins := 0
-    num_runs := 0
     num_no_megaman_back := 0
+    num_resets := 0
+    num_runs := 0
+    num_wins := 0
+    zenny_won := 0
 
     SaveProgress()
     ResetGame()
+    duration_startup := timer_gambler.ElapsedSecTruncated()
+    duration_total += duration_startup
     while (true) {
+        timer_gambler.Reset()
         InitiateGambler()
-        gamble_result := Gamble(w_win, h_win, num_rounds_to_win, sleeps_pre_gamble)
+        gamble_result := Gamble(w_win, h_win, num_rounds_to_win, round_sleeps)
 
         if (gamble_result.gamble_win) {
-            sleeps_pre_gamble := [0.0, 0.0, 0.0]
-            sleeps_redos_per_round := sleeps_retries_since_win_default
+            round_sleeps := [0, 0, 0]
+            round_sleeps_redos := round_sleeps_redos_default
             num_wins += 1
             num_losses_consecutive := 0
             zenny_won += zenny_per_win
         } else if (gamble_result.number_of_wins_actual = num_rounds_to_win) {
-            Loop gamble_result.number_of_wins_actual - 1 {
-                sleeps_redos_per_round[A_Index] := sleeps_redos_per_round_win[A_Index]
-            }
+            round_sleeps_redos := round_sleeps_redos_default
             num_wins += 1
             num_no_megaman_back += 1
             num_losses_consecutive := 0
         } else {
             Loop gamble_result.number_of_wins_actual {
-                sleeps_redos_per_round[A_Index] := sleeps_redos_per_round_win[A_Index]
+                round_sleeps_redos[A_Index] := round_sleeps_redos_win[A_Index]
             }
-            if (gamble_result.number_of_wins_actual < sleeps_redos_per_round.Length && sleeps_redos_per_round[gamble_result.number_of_wins_actual + 1] > 0) {
-                sleeps_redos_per_round[gamble_result.number_of_wins_actual + 1] -= 1
+            if (gamble_result.number_of_wins_actual < round_sleeps_redos.Length && round_sleeps_redos[gamble_result.number_of_wins_actual + 1] > 0) {
+                round_sleeps_redos[gamble_result.number_of_wins_actual + 1] -= 1
             } else {
-                sleeps_pre_gamble[gamble_result.number_of_wins_actual + 1] += sleeps_increment[gamble_result.number_of_wins_actual + 1]
+                round_sleeps[gamble_result.number_of_wins_actual + 1] += sleep_increments[gamble_result.number_of_wins_actual + 1]
                 Loop num_rounds_to_win - (gamble_result.number_of_wins_actual + 1) {
-                    sleeps_pre_gamble[A_Index + gamble_result.number_of_wins_actual + 1] := 0
+                    round_sleeps[A_Index + gamble_result.number_of_wins_actual + 1] := 0
+                }
+                Loop Max(num_rounds_to_win - (gamble_result.number_of_wins_actual + 2), 0) {
+                    round_sleeps_redos[A_Index + gamble_result.number_of_wins_actual + 1] := 0
                 }
             }
             num_losses += 1
             num_losses_consecutive += 1
-            if (num_losses_consecutive > fails_until_reset) {
+            if (num_losses_consecutive >= fails_until_reset) {
                 num_losses_consecutive := 0
-                sleeps_pre_gamble := [0.0, 0.0, 0.0]
-                sleeps_redos_per_round := sleeps_retries_since_win_default
+                round_sleeps := [0, 0, 0]
+                round_sleeps_redos := round_sleeps_redos_default
                 num_resets += 1
                 Sleep(reset_sleep)
                 SaveProgress()
+                ResetGame()
             }
         }
         num_runs += 1
 
+        duration_cycle := timer_gambler.ElapsedSecTruncated()
+        duration_total += duration_cycle
         gambler_summary := Map(
             "gamble_win", gamble_result.gamble_win,
+            "duration_cycle", duration_cycle,
+            "duration_startup", duration_startup,
+            "duration_total", duration_total,
             "fails_until_reset", fails_until_reset,
-            "sleeps_increment", Join(sleeps_increment, " "),
-            "sleeps_pre_gamble", Join(sleeps_pre_gamble, " "),
-            "sleeps_redos_per_round", Join(sleeps_redos_per_round, " "),
+            "sleep_increments", Join(sleep_increments, " "),
+            "round_sleeps", Join(round_sleeps, " "),
+            "round_sleeps_redos", Join(round_sleeps_redos, " "),
             "num_losses", num_losses,
             "num_losses_consecutive", num_losses_consecutive,
             "num_no_megaman_back", num_no_megaman_back,
@@ -160,7 +175,7 @@ GamblerLoop(w_win, h_win, zenny_to_gain := "", tool_tip_cfg_gambler := ToolTipCf
         tool_tip_cfg_gambler.DisplayMsg(MapToStr(gambler_summary), w_win, h_win)
 
         if (zenny_to_gain != "" && zenny_won >= zenny_to_gain) {
-            break
+            return gambler_summary
         }
     }
 }

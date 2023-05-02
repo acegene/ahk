@@ -93,6 +93,9 @@ PrintBattleDebug(w_win, h_win) {
 BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save := 100, num_battles_max := "", num_battles_check_zenny := "", zenny_battle_stop_thresh := "", tool_tip_cfg := ToolTipCfg()) {
     battles := 0
     zenny := "NULL"
+    zenny_gained := 0
+
+    zenny_initial := GetZenny(w_win, h_win)
     Loop {
         WalkUntilBattle(w_win, h_win)
 
@@ -111,29 +114,31 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
             JackOutThenIn()
         }
 
-        if (num_battles_check_zenny != "" && Mod(A_Index, num_battles_check_zenny) = 0) {
-            zenny := GetZenny(w_win, h_win)
-            if (zenny_battle_stop_thresh != "" && zenny >= zenny_battle_stop_thresh) {
-                break
-            }
-        }
-
-        if (num_battles_max != "" && battles >= num_battles_max) {
-            break
-        }
-
-        trade_summary := Map(
+        battle_summary := Map(
             "battles", battles,
             "num_battles_check_zenny", num_battles_check_zenny,
             "num_battles_max", num_battles_max,
             "num_battles_until_save", num_battles_until_save,
             "zenny", zenny,
             "zenny_battle_stop_thresh", zenny_battle_stop_thresh,
+            "zenny_gained", zenny_gained,
         )
-        tool_tip_cfg.DisplayMsg(MapToStr(trade_summary), w_win, h_win)
+
+        if (num_battles_check_zenny != "" && Mod(A_Index, num_battles_check_zenny) = 0) {
+            zenny := GetZenny(w_win, h_win)
+            if (zenny_battle_stop_thresh != "" && zenny >= zenny_battle_stop_thresh) {
+                battle_summary["zenny_gained"] := zenny - zenny_initial
+                break
+            }
+        }
+
+        if (num_battles_max != "" && battles >= num_battles_max) {
+            battle_summary["zenny_gained"] := GetZenny(w_win, h_win) - zenny_initial
+            break
+        }
+
+        tool_tip_cfg.DisplayMsg(MapToStr(battle_summary), w_win, h_win)
     }
 
-    return {
-        battles: battles,
-    }
+    return battle_summary
 }

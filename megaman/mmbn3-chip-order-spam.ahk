@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0-a
 #SingleInstance Force
+#include <optimizations-gaming>
 
 #include "%A_ScriptDir%\mmbn-lib\mmbnx-chip-order.ahk"
 

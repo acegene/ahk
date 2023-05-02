@@ -65,12 +65,10 @@ Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, too
             Mmbn3InitializeChipTrader()
         }
         if (check_only_top_chip) {
-            digits_row := mmbn3_digits_chip_trader.GetCharsRow(1, w_win, h_win)
-            highest_chip_count := Integer(Join(digits_row))
+            highest_chip_count := Integer(Join(mmbn3_digits_chip_trader.GetCharsRow(1, w_win, h_win)))
             trader_summary := Map(
                 "chip_min_thresh", chip_min_thresh,
                 "chips_per_trade", chips_per_trade,
-                "digits_row", Join(digits_row, ""),
                 "highest_chip_count", highest_chip_count,
                 "num_fails_enter_trader", num_fails_enter_trader,
                 "trader_in", trader_in,
@@ -100,12 +98,7 @@ Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, too
     }
     RepeatHoldKeyForDurationE("k", 50, 2500)
 
-    return {
-        trader_in: trader_in,
-        trader_out: trader_out,
-        num_fails_enter_trader: num_fails_enter_trader,
-        highest_chip_count: highest_chip_count
-    }
+    return trader_summary
 }
 
 mmbn3_x_ratio_l_chip_trader_digit_1_edge := 0.528646
