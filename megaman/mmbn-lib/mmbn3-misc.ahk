@@ -1,13 +1,15 @@
+#include "%A_ScriptDir%\mmbn-lib\mmbnx-ratio-rgbs.ahk"
+
 #include <keypress-utils>
 #include <window-utils>
 
 ;;;; net actions
 WalkUntilBattle(w_win, h_win) {
     while (true) {
-        if (ratio_rgbs_health_bar_battle.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+        if (mmbn3_ratio_rgbs_health_bar_battle.DoesWindowMatchRatioRgbs(w_win, h_win)) {
             break
         }
-        if (ratio_rgbs_main_menu_tm.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+        if (mmbn3_ratio_rgbs_main_menu_tm.DoesWindowMatchRatioRgbs(w_win, h_win)) {
             StartGame()
         }
         HoldKeyE("j", 50)
@@ -82,10 +84,10 @@ SaveProgress() {
 }
 
 SaveProgressOrStartGame(w_win, h_win) {
-    if (ratio_rgbs_health_bar_net.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+    if (mmbn3_ratio_rgbs_health_bar_net.DoesWindowMatchRatioRgbs(w_win, h_win)) {
         ;; in net
         SaveProgress()
-    } else if (ratio_rgbs_main_menu_tm.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+    } else if (mmbn3_ratio_rgbs_main_menu_tm.DoesWindowMatchRatioRgbs(w_win, h_win)) {
         ;; in main menu
         StartGame()
     } else {
@@ -108,12 +110,3 @@ x_ratio_r := x_ratio_m + w_square
 y_ratio_m := 0.5 * (y_ratio_u_field_edge + y_ratio_d_field_edge)
 y_ratio_u := y_ratio_m - h_square
 y_ratio_d := y_ratio_m + h_square
-
-rgb_health_bar := 0x3f5975
-ratio_rgbs_health_bar_battle := RatioRgbs([0.631250], [0.098148], [rgb_health_bar])
-ratio_rgbs_health_bar_net := RatioRgbs([0.253906], [0.098148], [rgb_health_bar])
-
-ratio_rgbs_main_menu_tm := RatioRgbs([0.794792, 0.797656], [0.127778, 0.140741], [0x000000, 0xffffff])
-
-ratio_rgbs_megaman_back := RatioRgbs([0.499740], [0.391204], [0x0b9bdd])
-ratio_rgbs_megaman_side_foot := RatioRgbs([0.499479], [0.511111], [0x0b9bdd])

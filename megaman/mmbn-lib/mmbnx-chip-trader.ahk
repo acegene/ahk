@@ -1,3 +1,4 @@
+#include "%A_ScriptDir%\mmbn-lib\mmbnx-ratio-rgbs.ahk"
 #include "%A_ScriptDir%\mmbn-lib\mmbnx-text.ahk"
 
 #include <geometry-utils>
@@ -52,8 +53,8 @@ Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, too
     while (true) {
         Loop num_enter_trader_attempts {
             Mmbn3EnterInsertChipsMenuChipTrader()
-            if (ratio_rgb_chip_trader_insert_menu_blue.DoesWindowMatchRatioRgbs(w_win, h_win) ||
-                ratio_rgb_chip_trader_insert_menu_white.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+            if (mmbn3_ratio_rgb_chip_trader_insert_menu_blue.DoesWindowMatchRatioRgbs(w_win, h_win) ||
+                mmbn3_ratio_rgb_chip_trader_insert_menu_white.DoesWindowMatchRatioRgbs(w_win, h_win)) {
                 break
             }
             num_fails_enter_trader += 1
@@ -127,6 +128,3 @@ mmbn3_digits_chip_trader := CharGridColorChecker(
     mmbn3_digit_check_map,
     mmbn3_rgb_chip_trader_chip_count,
 )
-
-ratio_rgb_chip_trader_insert_menu_blue := RatioRgbs([0.708073], [0.489352], [0xadadad])
-ratio_rgb_chip_trader_insert_menu_white := RatioRgbs([0.708073], [0.489352], [0x759be8])

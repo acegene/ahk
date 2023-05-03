@@ -1,7 +1,9 @@
+#include "%A_ScriptDir%\mmbn-lib\mmbnx-ratio-rgbs.ahk"
+
 #include <keypress-utils>
 #include <window-utils>
 
-Mmbn3InitiateChipOrder() {
+Mmbn3InitiateChipOrder(w_win, h_win) {
     HoldKeyE("j", 50)
     Sleep(200)
     HoldKeyE("j", 50)
@@ -14,12 +16,17 @@ Mmbn3InitiateChipOrder() {
     Sleep(100)
     HoldKeyE("j", 50)
     Sleep(1500)
+    if (!mmbn3_ratio_rgbs_chip_order_menu.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+        MsgBox("ERROR: expected to be in chip order menu")
+        ExitApp(1)
+    }
 }
 
 Mmbn3FindAndOrderChipOrderGuard(find_chip_start_index, chips_per_chip_orders) {
-    starting_index := 1
-    offset_for_chip_to_top := 4
-    chips_per_page_flip := 5
+    static starting_index := 1
+    static offset_for_chip_to_top := 4
+    static chips_per_page_flip := 5
+    static duration_chip_order_purchase := 3000
 
     index_increments_left := find_chip_start_index + offset_for_chip_to_top - starting_index
     while (true) {
@@ -40,7 +47,7 @@ Mmbn3FindAndOrderChipOrderGuard(find_chip_start_index, chips_per_chip_orders) {
 
     find_chip_actual_index := find_chip_start_index
     while (true) {
-        if (ratio_rgbs_chip_order_entry_1_guard.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+        if (mmbn3_ratio_rgbs_chip_order_entry_1_guard.DoesWindowMatchRatioRgbs(w_win, h_win)) {
             Loop offset_for_chip_to_top {
                 HoldKeyE("w", 50)
                 Sleep(100)
@@ -59,15 +66,7 @@ Mmbn3FindAndOrderChipOrderGuard(find_chip_start_index, chips_per_chip_orders) {
     }
 }
 
-Mmbn3ChipOrderGuardLoop(find_chip_start_index, chips_per_chip_orders) {
-    Mmbn3InitiateChipOrder()
+Mmbn3ChipOrderGuardLoop(w_win, h_win, find_chip_start_index, chips_per_chip_orders) {
+    Mmbn3InitiateChipOrder(w_win, h_win)
     return Mmbn3FindAndOrderChipOrderGuard(find_chip_start_index, chips_per_chip_orders)
 }
-
-ratio_rgbs_chip_order_entry_1_guard := RatioRgbs(
-    [0.177865, 0.194271, 0.412240, 0.537240, 0.537240, 0.537240, 0.190365, 0.531771, 0.541927],
-    [0.144444, 0.129167, 0.144444, 0.123611, 0.141667, 0.161111, 0.147222, 0.161111, 0.161111],
-    [0x242c2c, 0x242c2c, 0x242c2c, 0x242c2c, 0x242c2c, 0x242c2c, 0xbab697, 0xbab697, 0xbab697],
-)
-
-duration_chip_order_purchase := 3000

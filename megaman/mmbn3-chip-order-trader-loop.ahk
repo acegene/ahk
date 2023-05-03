@@ -70,9 +70,11 @@ WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
 if (chip_trader_type = "hospital") {
+    travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelHospLobbyAtChipTraderToHigsbysAtHigsbysChipShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelHospLobbyAtChipTraderToVendingCompAtGambler
     travel_chip_trader_to_armor_comp := TravelHospLobbyAtChipTraderToArmorComp
 } else if (chip_trader_type = "dnn") {
+    travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelTVStnHallAtChipTraderToHigsbysAtHigsbysChipShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelTVStnHallAtChipTraderToVendingCompAtGambler
     travel_chip_trader_to_armor_comp := TravelTVStnHallAtChipTraderToArmorComp
 } else {
@@ -112,6 +114,8 @@ while (true) {
                 total_gamble_wins += timed_gambler_summary["ret_val"]["num_wins"]
                 zenny_gained_gambler += timed_gambler_summary["ret_val"]["zenny_won"]
                 duration_travel += TimedCallTruncated("S", TravelVendingCompAtGamblerToHigsbysAtHigsbysChipShop)
+            } else {
+                duration_travel += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_higsbys_chip_shop)
             }
         } else if (zenny_gain_method = "armor_comp") {
             duration_travel += TimedCallTruncated("S", travel_chip_trader_to_armor_comp)
@@ -135,11 +139,13 @@ while (true) {
             MsgBox("FATAL: unexpected zenny_gain_method=" . zenny_gain_method)
             ExitApp(1)
         }
+    } else {
+        duration_travel += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_higsbys_chip_shop)
     }
 
     chips_per_chip_order := Min(max_chips_per_chip_orders, max_num_chips - highest_chip_count)
     zenny_per_chip_orders := zenny_per_chip * chips_per_chip_order
-    timed_chip_order_summary := TimedCallTruncatedWReturn("S", Mmbn3ChipOrderGuardLoop, find_chip_start_index, chips_per_chip_order)
+    timed_chip_order_summary := TimedCallTruncatedWReturn("S", Mmbn3ChipOrderGuardLoop, w_win, h_win, find_chip_start_index, chips_per_chip_order)
     duration_chip_order += timed_chip_order_summary["duration"]
     find_chip_actual_index := timed_chip_order_summary["ret_val"].find_chip_actual_index
 

@@ -57,6 +57,14 @@ class RatioRgbs {
         }
         return false
     }
+
+    GetWindowRatioRgbs(w_win, h_win) {
+        rgbs := []
+        Loop this.rgbs.Length {
+            rgbs.Push(PixelGetColor(this.x_ratios[A_Index] * w_win, this.y_ratios[A_Index] * h_win, "RGB"))
+        }
+        return rgbs
+    }
 }
 
 GetRatioColor(w_win, h_win, x_ratio, y_ratio) {

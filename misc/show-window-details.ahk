@@ -1,59 +1,113 @@
+#Requires AutoHotkey v2.0-a
 #SingleInstance Force
-#NoEnv
+Persistent(true)
 
-#Persistent
-SetTimer, ShowWindowRatio, 500
+#include <optimizations>
 
-; Boolean variable to toggle ToolTip freeze
-ToolTipFrozen := false
-originalToolTipText := ""
+#include <string-utils>
+#include <tool-tip-utils>
 
-ShowWindowRatio:
-    CoordMode, Mouse, Relative
+MoveToolTip(direction) {
+    global tool_tip_cfg
+    if (direction = "~+Down") {
+        if (tool_tip_cfg.location = "ur") {
+            tool_tip_cfg.location := "dr"
+        } else if (tool_tip_cfg.location = "ul") {
+            tool_tip_cfg.location := "dl"
+        }
+    } else if (direction = "~+Up") {
+        if (tool_tip_cfg.location = "dr") {
+            tool_tip_cfg.location := "ur"
+        } else if (tool_tip_cfg.location = "dl") {
+            tool_tip_cfg.location := "ul"
+        }
+    } else if (direction = "~+Right") {
+        if (tool_tip_cfg.location = "ul") {
+            tool_tip_cfg.location := "ur"
+        } else if (tool_tip_cfg.location = "dl") {
+            tool_tip_cfg.location := "dr"
+        }
+    } else if (direction = "~+Left") {
+        if (tool_tip_cfg.location = "ur") {
+            tool_tip_cfg.location := "ul"
+        } else if (tool_tip_cfg.location = "dr") {
+            tool_tip_cfg.location := "dl"
+        }
+    } else {
+        MsgBox("FATAL: unexpected direction=" . direction)
+        ExitApp(1)
+    }
+}
 
-    tool_tip_x := A_ToolTipX
-    tool_tip_y := A_ToolTipY
+tool_tip_cfg := ToolTipCfg()
+frozen := false
+msg_map := Map()
 
+SetTimer(ShowWindowRatio, 500)
+
+ShowWindowRatio() {
+    global msg_map
     if (frozen) {
-        ToolTip, %originalToolTipText%, %tool_tip_x%, %tool_tip_y%, 1
+        CoordMode("Mouse", "Client")
+        WinGetPos(&unused_x, &unused_y, &w_win, &h_win, "A")
+        ; tool_tip_cfg.DisplayMsg(MapToStr(msg_map), w_win, h_win)
         return
     }
 
-    ; Check if the mouse is hovering over the ToolTip
-    tool_tip_width := A_ToolTipWidth
-    tool_tip_height := A_ToolTipHeight
-    tool_tip_mouse_over := (mouse_x >= tool_tip_x && mouse_x <= tool_tip_x + tool_tip_width && mouse_y >= tool_tip_y && mouse_y <= tool_tip_y + tool_tip_height)
+    win_class := WinGetClass("A")
+    win_pid := WinGetPID("A")
+    win_title := WinGetTitle("A")
 
+    CoordMode("Mouse", "Client")
+    MouseGetPos(&mouse_cli_x, &mouse_cli_y)
+    WinGetPos(&x_win_cli, &y_win_cli, &win_cli_w, &win_cli_h, "A")
+    mouse_cli_x_ratio := mouse_cli_x / win_cli_w
+    mouse_cli_y_ratio := mouse_cli_y / win_cli_h
 
-    WinGetPos, win_origin_x, win_origin_y, win_width, win_height, A
-    WinGetTitle, win_title, A
-    WinGetClass, win_class, A
-    WinGet, win_pid, PID, A
-    MouseGetPos, mouse_x, mouse_y
-    win_ratio_x := mouse_x / win_width
-    win_ratio_y := mouse_y / win_height
+    CoordMode("Mouse", "Window")
+    MouseGetPos(&mouse_win_x, &mouse_win_y)
+    WinGetPos(&x_win_win, &y_win_win, &win_win_w, &win_win_h, "A")
+    mouse_win_x_ratio := mouse_win_x / win_win_w
+    mouse_win_y_ratio := mouse_win_y / win_win_h
 
-    CoordMode, Mouse, Client
-    MouseGetPos, mouse_x_client, mouse_y_client
-    WinGetPos, win_origin_x_client, win_origin_y_client, win_width_client, win_height_client, A
-    win_ratio_x_client := mouse_x_client / win_width_client
-    win_ratio_y_client := mouse_y_client / win_height_client
+    CoordMode("Pixel", "Client")
+    rgb := PixelGetColor(mouse_cli_x, mouse_cli_y, "RGB")
 
-    ; Update the ToolTip position if the mouse is hovering over it
-    if (tool_tip_mouse_over) {
-        tool_tip_x := mouse_x + 20
-        tool_tip_y := mouse_y + 20
-    }
+    msg_map := Map(
+        "frozen", frozen,
+        "win_cli_h", win_cli_h,
+        "win_win_h", win_win_h,
+        "rgb", rgb,
+        "win_cli_w", win_cli_w,
+        "win_win_w", win_win_w,
+        "win_class", win_class,
+        "win_pid", win_pid,
+        "win_title", win_title,
+        "mouse_cli_x", mouse_cli_x,
+        "mouse_cli_x_ratio", mouse_cli_x_ratio,
+        "mouse_win_x", mouse_win_x,
+        "mouse_win_x_ratio", mouse_win_x_ratio,
+        "mouse_cli_y", mouse_cli_y,
+        "mouse_cli_y_ratio", mouse_cli_y_ratio,
+        "mouse_win_y", mouse_win_y,
+        "mouse_win_y_ratio", mouse_win_y_ratio,
+        "tool_tip_cfg.location", tool_tip_cfg.location,
+    )
 
-    PixelGetColor, color, mouse_x, mouse_y, RGB
+    CoordMode("ToolTip", "Client")
+    tool_tip_cfg.DisplayMsg(MapToStr(msg_map), win_cli_w, win_cli_h)
+}
 
-    ; Show the ToolTip with the updated position
-    originalToolTipText := "win_ratio_x:" . win_ratio_x . "`nwin_ratio_y:" . win_ratio_y . "`nwin_origin_x:" . win_origin_x . "`nwin_origin_y:" . win_origin_y . "`nmouse_x:" . mouse_x . "`nmouse_y:" . mouse_y . "`nwin_width:" . win_width . "`nwin_height:" . win_height . "`nwin_ratio_x_client:" . win_ratio_x_client . "`nwin_ratio_y_client:" . win_ratio_y_client . "`nwin_origin_x_client:" . win_origin_x_client . "`nwin_origin_y_client:" . win_origin_y_client . "`nmouse_x_client:" . mouse_x_client . "`nmouse_y_client:" . mouse_y_client . "`nwin_width_client:" . win_width_client . "`nwin_height_client:" . win_height_client . "`nwin_title:" . win_title . "`nwin_class:" . win_class . "`nwin_pid:" . win_pid . "`ncolor:" . color
-    ToolTip, %originalToolTipText%, %tool_tip_x%, %tool_tip_y%, 1
-    return
+~+Down::
+~+Left::
+~+Right::
+~+Up:: {
+    MoveToolTip(A_ThisHotkey)
+}
 
-    ~^Space::
+~^Space:: {
+    global frozen
     frozen := !frozen
-    return
+}
 
-    Esc:: ExitApp
+Esc:: ExitApp

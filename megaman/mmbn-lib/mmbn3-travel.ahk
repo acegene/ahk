@@ -63,7 +63,7 @@ TravelHospLobbyAtVendingCompToVendingCompAtGambler(w_win, h_win) {
         HoldKeysE(["d", "k"], 3000)
         HoldKeysE(["a", "k"], 1000)
         Sleep(300)
-        if (ratio_rgbs_megaman_side_foot.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+        if (mmbn3_ratio_rgbs_megaman_side_foot.DoesWindowMatchRatioRgbs(w_win, h_win)) {
             Sleep(1000)
             break
         } else {

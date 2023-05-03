@@ -1,4 +1,5 @@
 #include "%A_ScriptDir%\mmbn-lib\mmbn3-misc.ahk"
+#include "%A_ScriptDir%\mmbn-lib\mmbnx-ratio-rgbs.ahk"
 
 #include <keypress-utils>
 #include <string-utils>
@@ -31,7 +32,7 @@ Gamble(w_win, h_win, number_of_wins, round_sleeps) {
         Sleep(200)
         HoldKeyE("j", 50)
         Sleep(2500)
-        is_success := ratio_rgbs_gambler_success_win_round.DoesWindowMatchRatioRgbs(w_win, h_win)
+        is_success := mmbn3_ratio_rgbs_gambler_success_win_round.DoesWindowMatchRatioRgbs(w_win, h_win)
         if (!is_success) {
             SendEvent("{k up}")
             ResetGame()
@@ -59,7 +60,7 @@ Gamble(w_win, h_win, number_of_wins, round_sleeps) {
     Sleep(100)
     HoldKeysE(["w", "k"], 300)
     Sleep(500)
-    if (ratio_rgbs_megaman_back.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+    if (mmbn3_ratio_rgbs_megaman_back.DoesWindowMatchRatioRgbs(w_win, h_win)) {
         SaveProgress()
         return {
             number_of_wins_actual: number_of_wins_actual,
@@ -179,5 +180,3 @@ GamblerLoop(w_win, h_win, zenny_to_gain := "", tool_tip_cfg_gambler := ToolTipCf
         }
     }
 }
-
-ratio_rgbs_gambler_success_win_round := RatioRgbs([0.249479], [0.349074], [0x0648a4])

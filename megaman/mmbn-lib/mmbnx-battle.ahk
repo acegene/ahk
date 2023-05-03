@@ -7,7 +7,7 @@
 
 ShootAndContinueUntilBattleOver(w_win, h_win) {
     while (true) {
-        if (ratio_rgbs_megaman_side_foot.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+        if (mmbn3_ratio_rgbs_megaman_side_foot.DoesWindowMatchRatioRgbs(w_win, h_win)) {
             break
         }
         HoldKeyE("k", 50)
