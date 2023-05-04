@@ -61,9 +61,9 @@ Mmbn3FindAndOrderChipOrderGuard(find_chip_start_index, chips_per_chip_orders) {
 
     RepeatHoldKeyForDurationE("j", 50, duration_chip_order_purchase * chips_per_chip_orders)
     RepeatHoldKeyForDurationE("k", 50, 5000)
-    return {
-        find_chip_actual_index: find_chip_actual_index,
-    }
+    return Map(
+        "find_chip_actual_index", find_chip_actual_index,
+    )
 }
 
 Mmbn3ChipOrderGuardLoop(w_win, h_win, find_chip_start_index, chips_per_chip_orders) {

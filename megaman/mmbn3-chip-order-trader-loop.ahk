@@ -50,7 +50,7 @@ duration_gambler := 0
 duration_travel := 0
 duration_total := 0
 highest_chip_count := chip_min_thresh
-find_chip_actual_index := ""
+find_chip_actual_index := find_chip_start_index
 total_battles := 0
 total_chips_ordered := 0
 total_gamble_runs := 0
@@ -145,9 +145,9 @@ while (true) {
 
     chips_per_chip_order := Min(max_chips_per_chip_orders, max_num_chips - highest_chip_count)
     zenny_per_chip_orders := zenny_per_chip * chips_per_chip_order
-    timed_chip_order_summary := TimedCallTruncatedWReturn("S", Mmbn3ChipOrderGuardLoop, w_win, h_win, find_chip_start_index, chips_per_chip_order)
+    timed_chip_order_summary := TimedCallTruncatedWReturn("S", Mmbn3ChipOrderGuardLoop, w_win, h_win, find_chip_actual_index, chips_per_chip_order)
     duration_chip_order += timed_chip_order_summary["duration"]
-    find_chip_actual_index := timed_chip_order_summary["ret_val"].find_chip_actual_index
+    find_chip_actual_index := timed_chip_order_summary["ret_val"]["find_chip_actual_index"]
 
     total_chips_ordered += chips_per_chip_order
     total_zenny_spent += zenny_per_chip_orders
