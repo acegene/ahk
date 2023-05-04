@@ -73,10 +73,12 @@ if (chip_trader_type = "hospital") {
     travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelHospLobbyAtChipTraderToHigsbysAtHigsbysChipShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelHospLobbyAtChipTraderToVendingCompAtGambler
     travel_chip_trader_to_armor_comp := TravelHospLobbyAtChipTraderToArmorComp
+    travel_higsbys_at_higsbys_chip_shop_to_chip_trader := TravelHigsbysAtHigsbysChipShopToTVStnHallAtChipTrader
 } else if (chip_trader_type = "dnn") {
     travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelTVStnHallAtChipTraderToHigsbysAtHigsbysChipShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelTVStnHallAtChipTraderToVendingCompAtGambler
     travel_chip_trader_to_armor_comp := TravelTVStnHallAtChipTraderToArmorComp
+    travel_higsbys_at_higsbys_chip_shop_to_chip_trader := TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader
 } else {
     MsgBox("FATAL: unexpected chip_trader_type=" . chip_trader_type)
     ExitApp(1)
@@ -178,7 +180,7 @@ while (true) {
     )
     tool_tip_cfg_summary.DisplayMsg(MapToStr(main_summary), w_win, h_win)
 
-    duration_travel += TimedCallTruncated("S", TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader)
+    duration_travel += TimedCallTruncated("S", travel_higsbys_at_higsbys_chip_shop_to_chip_trader)
 }
 
 $Esc:: {
