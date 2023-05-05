@@ -18,6 +18,7 @@
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
+bugfrags_max := 9999
 chips_per_trade := 10
 max_num_chips := 99
 zenny_max := 999999
@@ -34,6 +35,7 @@ num_battles_per_save := 50
 start_battle_chip_state := ChooseStartBattleChipState("team")
 zenny_gain_start := 500000
 zenny_gain_stop := 999999
+zenny_per_bugfrag_battle := 30
 
 max_chips_per_chip_orders := max_num_chips - chip_min_thresh
 zenny_per_chip_orders := zenny_per_chip * max_chips_per_chip_orders
@@ -59,7 +61,6 @@ total_gamble_wins := 0
 total_fails_enter_trader := 0
 total_trader_in := 0
 total_trader_out := 0
-total_zenny_gained := 0
 total_zenny_spent := 0
 zenny_gained_battle := 0
 zenny_gained_gambler := 0
@@ -101,7 +102,8 @@ while (true) {
     highest_chip_count := timed_trade_summary["ret_val"]["highest_chip_count"]
 
     pet_text := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
-    if (pet_text["bugfrags"] < bugfrags_gain_stop) {
+    bugfrags_zenny_start := Max(zenny_max - ((bugfrags_gain_stop - pet_text["bugfrags"]) * zenny_per_bugfrag_battle), 0)
+    if (pet_text["bugfrags"] < bugfrags_gain_stop && pet_text["zenny"] < bugfrags_zenny_start) {
         duration_travel += TimedCallTruncated("S", travel_chip_trader_to_armor_comp)
         timed_battle_summary := TimedCallTruncatedWReturn(
             "S",
@@ -152,6 +154,7 @@ while (true) {
         "bugfrags", pet_text["bugfrags"],
         "bugfrags_gained_battle", bugfrags_gained_battle,
         "bugfrags_gain_stop", bugfrags_gain_stop,
+        "bugfrags_zenny_start", bugfrags_zenny_start,
         "chips_per_chip_order", chips_per_chip_order,
         "find_chip_actual_index", find_chip_actual_index,
         "find_chip_start_index", find_chip_start_index,
@@ -173,6 +176,7 @@ while (true) {
         "zenny_gain_stop", zenny_gain_stop,
         "zenny_gained_battle", zenny_gained_battle,
         "zenny_gained_gambler", zenny_gained_gambler,
+        "zenny_per_bugfrag_battle", zenny_per_bugfrag_battle,
         "zenny_per_chip_orders", zenny_per_chip_orders,
     )
     tool_tip_cfg_summary.DisplayMsg(MapToStr(main_summary), w_win, h_win)
