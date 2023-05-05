@@ -16,15 +16,17 @@
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
-num_battles_check_zenny := 10
+grind_guard_chips := false
+num_battles_check_text := 10
 num_battles_max := ""
-num_battles_until_save := 50
-
-start_battle_chip_state := { chip_slots_to_send: [1], num_chips_to_use: 0, post_chip_sleeps: [] }
+num_battles_until_save := 20
+start_battle_chip_state := ChooseStartBattleChipState("team")
 
 zenny_battle_stop_thresh := 999999
 
 tool_tip_cfg_battle := ToolTipCfg("ur", 2)
+
+battle_func := grind_guard_chips ? ExecuteArmorCompBattleIfDetectedWMettaurStall : ExecuteArmorCompBattleIfDetected
 
 WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
@@ -34,13 +36,14 @@ RepeatHoldKeyForDurationE("k", 50, 2500)
 BattleLoop(
     w_win,
     h_win,
-    ExecuteArmorCompBattleIfDetected,
+    battle_func,
     start_battle_chip_state,
     num_battles_until_save,
     "",
-    num_battles_check_zenny,
+    num_battles_check_text,
     "",
-    tool_tip_cfg_battle
+    "",
+    tool_tip_cfg_battle,
 )
 
 Esc:: {

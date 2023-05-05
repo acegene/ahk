@@ -43,11 +43,11 @@ class CharGrid {
 }
 
 class CharGridColorChecker extends CharGrid {
-    __new(x_l_char_1_edge, y_u_char_1_edge, w_char, h_char, row_displacement, column_displacement, num_rows, num_columns, char_check_ratios, char_check_map, rgb_check) {
+    __new(x_l_char_1_edge, y_u_char_1_edge, w_char, h_char, row_displacement, column_displacement, num_rows, num_columns, char_check_ratios, char_check_map, rgbs_check) {
         super.__new(x_l_char_1_edge, y_u_char_1_edge, w_char, h_char, row_displacement, column_displacement, num_rows, num_columns)
 
         this.char_check_map := char_check_map
-        this.rgb_check := rgb_check
+        this.rgbs_check := rgbs_check
 
         this.char_check_locations_2d := []
         for (char_bounds_row in this.char_bounds_2d) {
@@ -65,15 +65,19 @@ class CharGridColorChecker extends CharGrid {
         }
     }
 
+    __IsRatioColorEqualToAnyColor__(w_win, h_win, char_check_location) {
+        for (rgb in this.rgbs_check) {
+            if (IsRatioColorEqualToColor(w_win, h_win, char_check_location.x, char_check_location.y, rgb)) {
+                return true
+            }
+        }
+        return false
+    }
+
     GetChar(row, column, w_win, h_win, null_str := "0") {
         char_locations_found := []
         for (char_check_location in this.char_check_locations_2d[row][column]) {
-            char_locations_found.Push(IsRatioColorEqualToColor(
-                w_win,
-                h_win,
-                char_check_location.x,
-                char_check_location.y,
-                this.rgb_check))
+            char_locations_found.Push(this.__IsRatioColorEqualToAnyColor__(w_win, h_win, char_check_location))
         }
         for (key, val in this.char_check_map) {
             if (IsArrEq(val, char_locations_found)) {

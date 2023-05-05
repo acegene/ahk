@@ -48,32 +48,18 @@ StartBattle(start_battle_chip_state) {
     }
 }
 
-StartBattleSendChip1() {
-    HoldKeyE("enter", 50)
-    Sleep(200)
-    HoldKeyE("d", 50)
-    Sleep(200)
-    HoldKeyE("j", 50)
-    Sleep(200)
-    HoldKeyE("enter", 50)
-    Sleep(200)
-    HoldKeyE("j", 50)
-    Sleep(1300)
-}
 
-StartBattleUseTimestopChip1(timestop_duration) {
-    HoldKeyE("enter", 50)
-    Sleep(200)
-    HoldKeyE("d", 50)
-    Sleep(200)
-    HoldKeyE("j", 50)
-    Sleep(200)
-    HoldKeyE("enter", 50)
-    Sleep(200)
-    HoldKeyE("j", 50)
-    Sleep(1320)
-    HoldKeyE("j", 50)
-    Sleep(timestop_duration)
+ChooseStartBattleChipState(start_battle_chip_state_str) {
+    if (start_battle_chip_state_str = "custom") {
+        return { chip_slots_to_send: [1, 2, 3, 4, 5], num_chips_to_use: 0, post_chip_sleeps: [] }
+    } else if (start_battle_chip_state_str = "none") {
+        return { chip_slots_to_send: [], num_chips_to_use: 0, post_chip_sleeps: [] }
+    } else if (start_battle_chip_state_str = "team") {
+        return { chip_slots_to_send: [1], num_chips_to_use: 0, post_chip_sleeps: [] }
+    }
+
+    MsgBox("FATAL: unexpected start_battle_chip_state_str=" . start_battle_chip_state_str)
+    ExitApp(1)
 }
 
 PrintBattleDebug(w_win, h_win) {
@@ -90,12 +76,12 @@ PrintBattleDebug(w_win, h_win) {
     MsgBox(GenerateDebugStr("lu lm ld mu mm md ru rm rd x_ratio_l x_ratio_m x_ratio_r y_ratio_u y_ratio_m y_ratio_d"))
 }
 
-BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save := 100, num_battles_max := "", num_battles_check_zenny := "", zenny_battle_stop_thresh := "", tool_tip_cfg := ToolTipCfg()) {
+BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save := 100, num_battles_max := "", num_battles_check_text := "", bugfrags_stop := "", zenny_stop := "", tool_tip_cfg := ToolTipCfg()) {
     battles := 0
-    zenny := "NULL"
-    zenny_gained := 0
 
-    zenny_initial := GetZenny(w_win, h_win)
+    pet_text_initial := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
+    bugfrags_initial := pet_text_initial["bugfrags"]
+    zenny_initial := pet_text_initial["zenny"]
     Loop {
         WalkUntilBattle(w_win, h_win)
 
@@ -116,24 +102,36 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
 
         battle_summary := Map(
             "battles", battles,
-            "num_battles_check_zenny", num_battles_check_zenny,
+            "bugfrags_initial", bugfrags_initial,
+            "bugfrags_stop", bugfrags_stop,
+            "num_battles_check_text", num_battles_check_text,
             "num_battles_max", num_battles_max,
             "num_battles_until_save", num_battles_until_save,
-            "zenny", zenny,
-            "zenny_battle_stop_thresh", zenny_battle_stop_thresh,
-            "zenny_gained", zenny_gained,
+            "zenny_initial", zenny_initial,
+            "zenny_stop", zenny_stop,
         )
 
-        if (num_battles_check_zenny != "" && Mod(A_Index, num_battles_check_zenny) = 0) {
-            zenny := GetZenny(w_win, h_win)
-            if (zenny_battle_stop_thresh != "" && zenny >= zenny_battle_stop_thresh) {
-                battle_summary["zenny_gained"] := zenny - zenny_initial
+        if (num_battles_check_text != "" && Mod(A_Index, num_battles_check_text) = 0) {
+            pet_text := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
+            battle_summary["bugfrags"] := pet_text["bugfrags"]
+            battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - bugfrags_initial
+            battle_summary["zenny"] := pet_text["zenny"]
+            battle_summary["zenny_gained"] := pet_text["zenny"] - zenny_initial
+
+            if (bugfrags_stop != "" && pet_text["bugfrags"] >= bugfrags_stop) {
+                break
+            }
+            if (zenny_stop != "" && pet_text["zenny"] >= zenny_stop) {
                 break
             }
         }
 
         if (num_battles_max != "" && battles >= num_battles_max) {
-            battle_summary["zenny_gained"] := GetZenny(w_win, h_win) - zenny_initial
+            pet_text := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
+            battle_summary["bugfrags"] := pet_text["bugfrags"]
+            battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - bugfrags_initial
+            battle_summary["zenny"] := pet_text["zenny"]
+            battle_summary["zenny_gained"] := pet_text["zenny"] - zenny_initial
             break
         }
 

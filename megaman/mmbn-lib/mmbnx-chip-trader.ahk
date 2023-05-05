@@ -111,7 +111,7 @@ mmbn3_y_ratio_d_chip_trader_chip_1_edge := 0.304167
 
 mmbn3_y_ratio_u_chip_trader_chip_7_edge := 0.781944
 
-mmbn3_rgb_chip_trader_chip_count := 0xf2fcfc
+mmbn3_rgb_chip_trader_chip_count := [0xf2fcfc]
 mmbn3_chip_trader_num_rows := 7
 mmbn3_chip_trader_num_columns := 2
 

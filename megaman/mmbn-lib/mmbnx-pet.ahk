@@ -4,13 +4,27 @@
 #include <keypress-utils>
 #include <string-utils>
 
-GetZenny(w_win, h_win) {
+GetPetText(w_win, h_win, text_list) {
     HoldKeyE("enter", 50)
     Sleep(1000)
-    zenny := Integer(Join(mmbn3_digits_pet_zenny.GetCharsRow(1, w_win, h_win)))
+    ret_dict := Map()
+    for (text in text_list) {
+        if (text = "bugfrags") {
+            ret_dict["bugfrags"] := Integer(Join(mmbn3_digits_pet_bugfrags.GetCharsRow(1, w_win, h_win)))
+        } else if (text = "current_health") {
+            ret_dict["current_health"] := Integer(Join(mmbn3_digits_pet_current_health.GetCharsRow(1, w_win, h_win)))
+        } else if (text = "total_health") {
+            ret_dict["total_health"] := Integer(Join(mmbn3_digits_pet_total_health.GetCharsRow(1, w_win, h_win)))
+        } else if (text = "zenny") {
+            ret_dict["zenny"] := Integer(Join(mmbn3_digits_pet_zenny.GetCharsRow(1, w_win, h_win)))
+        } else {
+            MsgBox("FATAL: unexpected text=" . text)
+            ExitApp(1)
+        }
+    }
     HoldKeyE("k", 50)
     Sleep(500)
-    return zenny
+    return ret_dict
 }
 
 mmbn3_x_ratio_l_pet_zenny_digit_1_edge := 0.603646
@@ -20,20 +34,84 @@ mmbn3_x_ratio_l_pet_zenny_digit_6_edge := 0.728646
 mmbn3_y_ratio_u_pet_zenny_digit_edge := 0.415741
 mmbn3_y_ratio_d_pet_zenny_digit_edge := 0.469907
 
-mmbn3_rgb_pet_digit := 0xfdffff
+mmbn3_digit_width := mmbn3_x_ratio_r_pet_zenny_digit_1_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge
+mmbn3_digit_height := mmbn3_y_ratio_d_pet_zenny_digit_edge - mmbn3_y_ratio_u_pet_zenny_digit_edge
+mmbn3_digit_x_displacement := (mmbn3_x_ratio_l_pet_zenny_digit_6_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge) / 5.0
+mmbn3_rgbs_pet_digit := [0xfdffff, 0xfcffff]
 mmbn3_pet_zenny_num_rows := 1
 mmbn3_pet_zenny_num_columns := 6
 
 mmbn3_digits_pet_zenny := CharGridColorChecker(
     mmbn3_x_ratio_l_pet_zenny_digit_1_edge,
     mmbn3_y_ratio_u_pet_zenny_digit_edge,
-    mmbn3_x_ratio_r_pet_zenny_digit_1_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge,
-    mmbn3_y_ratio_d_pet_zenny_digit_edge - mmbn3_y_ratio_u_pet_zenny_digit_edge,
+    mmbn3_digit_width,
+    mmbn3_digit_height,
     0.0,
-    (mmbn3_x_ratio_l_pet_zenny_digit_6_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge) / 5.0,
+    mmbn3_digit_x_displacement,
     mmbn3_pet_zenny_num_rows,
     mmbn3_pet_zenny_num_columns,
     mmbn3_digit_check_ratios,
     mmbn3_digit_check_map,
-    mmbn3_rgb_pet_digit,
+    mmbn3_rgbs_pet_digit,
+)
+
+mmbn3_x_ratio_l_pet_bugfrag_digit_1_edge := 0.6 * (mmbn3_x_ratio_l_pet_zenny_digit_6_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge) + mmbn3_x_ratio_l_pet_zenny_digit_1_edge
+mmbn3_x_ratio_l_pet_bugfrag_digit_4_edge := mmbn3_x_ratio_l_pet_zenny_digit_6_edge + mmbn3_digit_width
+mmbn3_y_ratio_u_pet_bugfrag_digit_edge := 0.592592
+
+mmbn3_pet_bugfrag_num_rows := 1
+mmbn3_pet_bugfrag_num_columns := 4
+
+mmbn3_digits_pet_bugfrags := CharGridColorChecker(
+    mmbn3_x_ratio_l_pet_bugfrag_digit_1_edge,
+    mmbn3_y_ratio_u_pet_bugfrag_digit_edge,
+    mmbn3_digit_width,
+    mmbn3_digit_height,
+    0.0,
+    mmbn3_digit_x_displacement,
+    mmbn3_pet_bugfrag_num_rows,
+    mmbn3_pet_bugfrag_num_columns,
+    mmbn3_digit_check_ratios,
+    mmbn3_digit_check_map,
+    mmbn3_rgbs_pet_digit,
+)
+
+mmbn3_x_ratio_l_pet_current_health_digit_1_edge := mmbn3_x_ratio_l_pet_zenny_digit_1_edge - (0.4 * (mmbn3_x_ratio_l_pet_zenny_digit_6_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge))
+mmbn3_y_ratio_u_pet_current_health_digit_edge := 0.237500
+
+mmbn3_pet_current_health_num_rows := 1
+mmbn3_pet_current_health_num_columns := 4
+
+mmbn3_digits_pet_current_health := CharGridColorChecker(
+    mmbn3_x_ratio_l_pet_current_health_digit_1_edge,
+    mmbn3_y_ratio_u_pet_current_health_digit_edge,
+    mmbn3_digit_width,
+    mmbn3_digit_height,
+    0.0,
+    mmbn3_digit_x_displacement,
+    mmbn3_pet_current_health_num_rows,
+    mmbn3_pet_current_health_num_columns,
+    mmbn3_digit_check_ratios,
+    mmbn3_digit_check_map,
+    mmbn3_rgbs_pet_digit,
+)
+
+mmbn3_x_ratio_l_pet_total_health_digit_1_edge := mmbn3_x_ratio_l_pet_bugfrag_digit_1_edge
+mmbn3_y_ratio_u_pet_total_health_digit_edge := mmbn3_y_ratio_u_pet_current_health_digit_edge
+
+mmbn3_pet_total_health_num_rows := 1
+mmbn3_pet_total_health_num_columns := 4
+
+mmbn3_digits_pet_total_health := CharGridColorChecker(
+    mmbn3_x_ratio_l_pet_total_health_digit_1_edge,
+    mmbn3_y_ratio_u_pet_total_health_digit_edge,
+    mmbn3_digit_width,
+    mmbn3_digit_height,
+    0.0,
+    mmbn3_digit_x_displacement,
+    mmbn3_pet_total_health_num_rows,
+    mmbn3_pet_total_health_num_columns,
+    mmbn3_digit_check_ratios,
+    mmbn3_digit_check_map,
+    mmbn3_rgbs_pet_digit,
 )

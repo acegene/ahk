@@ -3,7 +3,7 @@
 
 #include <keypress-utils>
 
-ExecuteArmorCompBattleIfDetected(start_battle_chip_state) {
+ExecuteArmorCompBattleIfDetected(start_battle_chip_state, grind_guard_chips := false) {
     CoordMode("Mouse", "Client")
     WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
@@ -29,6 +29,9 @@ ExecuteArmorCompBattleIfDetected(start_battle_chip_state) {
         HoldKeyE("k", 50)
     } else if (existing_mettaur = 128 && existing_mettaur2 = 5) {
         StartBattle(start_battle_chip_state)
+        if (grind_guard_chips) {
+            MettaurStall(false)
+        }
         Sleep(780)
         HoldKeyE("k", 50)
         Sleep(1200)
@@ -37,6 +40,9 @@ ExecuteArmorCompBattleIfDetected(start_battle_chip_state) {
         HoldKeyE("k", 50)
     } else if (existing_mettaur = 40 && existing_mettaur2 = 2) {
         StartBattle(start_battle_chip_state)
+        if (grind_guard_chips) {
+            MettaurStall(true)
+        }
         Sleep(380)
         HoldKeyE("k", 50)
         Sleep(1650)
@@ -53,6 +59,9 @@ ExecuteArmorCompBattleIfDetected(start_battle_chip_state) {
         HoldKeyE("k", 50)
     } else if (existing_mettaur = 0 && existing_mettaur2 = 273) {
         StartBattle(start_battle_chip_state)
+        if (grind_guard_chips) {
+            MettaurStall(false)
+        }
         Sleep(730)
         HoldKeyE("k", 50)
         Sleep(800)
@@ -69,6 +78,9 @@ ExecuteArmorCompBattleIfDetected(start_battle_chip_state) {
         HoldKeyE("k", 50)
     } else if (existing_mettaur = 0 && existing_mettaur2 = 84) {
         StartBattle(start_battle_chip_state)
+        if (grind_guard_chips) {
+            MettaurStall(false)
+        }
         Sleep(780)
         HoldKeyE("k", 50)
         Sleep(750)
@@ -114,4 +126,8 @@ ExecuteArmorCompBattleIfDetected(start_battle_chip_state) {
     }
 
     return true
+}
+
+ExecuteArmorCompBattleIfDetectedWMettaurStall(start_battle_chip_state) {
+    return ExecuteArmorCompBattleIfDetected(start_battle_chip_state, true)
 }

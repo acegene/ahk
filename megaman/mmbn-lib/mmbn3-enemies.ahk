@@ -69,6 +69,27 @@ FindJapanMan(w_win, h_win) {
     return FindEnemyFieldColorMatches(rgb_japan_man, w_win, h_win, w_ratio_japan_man, h_ratio_japan_man)
 }
 
+MettaurStall(is_active_mettaur_megaman_aligned) {
+    static duration_sleep := 400
+    static num_cycles := 10
+
+    duration_sleep_start := is_active_mettaur_megaman_aligned ? 0 : 350
+    duration_sleep_end := is_active_mettaur_megaman_aligned ? duration_sleep : 100
+
+    Sleep(duration_sleep_start)
+    Loop num_cycles - 1 {
+        HoldKeyE("s", 50)
+        Sleep(duration_sleep)
+        HoldKeyE("w", 50)
+        Sleep(duration_sleep)
+    }
+    HoldKeyE("s", 50)
+    Sleep(duration_sleep)
+    HoldKeyE("w", 50)
+
+    Sleep(duration_sleep_end)
+}
+
 rgb_mettaur := 0xffd400
 rgb_mettaur2 := 0xff4862
 x_ratio_m_mettaur := 0.695052
