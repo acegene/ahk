@@ -32,6 +32,7 @@ find_chip_start_index := 118 ; max value of guard * is #133; NOTE: index is less
 num_battles_check_text := 20
 num_battles_max := ""
 num_battles_per_save := 50
+health_heal_ratio := 0.7
 start_battle_chip_state := ChooseStartBattleChipState("team")
 zenny_gain_start := 500000
 zenny_gain_stop := 999999
@@ -113,6 +114,7 @@ while (true) {
             ExecuteArmorCompBattleIfDetected,
             start_battle_chip_state,
             num_battles_per_save,
+            health_heal_ratio,
             num_battles_max,
             num_battles_check_text,
             bugfrags_gain_stop,

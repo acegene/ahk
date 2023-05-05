@@ -20,6 +20,7 @@ grind_guard_chips := false
 num_battles_check_text := 10
 num_battles_max := ""
 num_battles_until_save := 20
+health_heal_ratio := 0.7
 start_battle_chip_state := ChooseStartBattleChipState("team")
 
 zenny_battle_stop_thresh := 999999
@@ -39,6 +40,7 @@ BattleLoop(
     battle_func,
     start_battle_chip_state,
     num_battles_until_save,
+    health_heal_ratio,
     "",
     num_battles_check_text,
     "",

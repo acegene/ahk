@@ -2,6 +2,7 @@
 
 #include <keypress-utils>
 #include <string-utils>
+#include <timer-utils>
 #include <tool-tip-utils>
 #include <window-utils>
 
@@ -76,13 +77,32 @@ PrintBattleDebug(w_win, h_win) {
     MsgBox(GenerateDebugStr("lu lm ld mu mm md ru rm rd x_ratio_l x_ratio_m x_ratio_r y_ratio_u y_ratio_m y_ratio_d"))
 }
 
-BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save := 100, num_battles_max := "", num_battles_check_text := "", bugfrags_stop := "", zenny_stop := "", tool_tip_cfg := ToolTipCfg()) {
-    battles := 0
+BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save := 100, health_heal_ratio := "", num_battles_max := "", num_battles_check_text := "", bugfrags_stop := "", zenny_stop := "", tool_tip_cfg := ToolTipCfg()) {
+    timer_battles := Timer()
 
-    pet_text_initial := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
-    bugfrags_initial := pet_text_initial["bugfrags"]
-    zenny_initial := pet_text_initial["zenny"]
+    break_loop := false
+
+    pet_text_initial := GetPetText(w_win, h_win, ["bugfrags", "health_current", "health_total", "zenny"])
+    battle_summary := Map(
+        "battles", 0,
+        "bugfrags_initial", pet_text_initial["bugfrags"],
+        "bugfrags_stop", bugfrags_stop,
+        "duration_loop", 0,
+        "duration_total", 0,
+        "health_current", pet_text_initial["health_current"],
+        "health_heal_ratio", health_heal_ratio,
+        "health_total", pet_text_initial["health_total"],
+        "num_battles_check_text", num_battles_check_text,
+        "num_battles_max", num_battles_max,
+        "num_battles_until_save", num_battles_until_save,
+        "zenny_initial", pet_text_initial["zenny"],
+        "zenny_stop", zenny_stop,
+    )
+
+    battle_summary["duration_total"] := timer_battles.ElapsedSecTruncated()
     Loop {
+        timer_battles.Reset()
+
         WalkUntilBattle(w_win, h_win)
 
         battle_executed := fight_func(fight_func_param)
@@ -93,49 +113,48 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
 
         ShootAndContinueUntilBattleOver(w_win, h_win)
 
-        battles += 1
+        battle_summary["battles"] += 1
 
         if (num_battles_until_save != "" && Mod(A_Index, num_battles_until_save) = 0) {
             SaveProgressOrStartGame(w_win, h_win)
             JackOutThenIn()
         }
 
-        battle_summary := Map(
-            "battles", battles,
-            "bugfrags_initial", bugfrags_initial,
-            "bugfrags_stop", bugfrags_stop,
-            "num_battles_check_text", num_battles_check_text,
-            "num_battles_max", num_battles_max,
-            "num_battles_until_save", num_battles_until_save,
-            "zenny_initial", zenny_initial,
-            "zenny_stop", zenny_stop,
-        )
-
         if (num_battles_check_text != "" && Mod(A_Index, num_battles_check_text) = 0) {
-            pet_text := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
+            pet_text := GetPetText(w_win, h_win, ["bugfrags", "health_current", "health_total", "zenny"])
             battle_summary["bugfrags"] := pet_text["bugfrags"]
-            battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - bugfrags_initial
+            battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - battle_summary["bugfrags_initial"]
             battle_summary["zenny"] := pet_text["zenny"]
-            battle_summary["zenny_gained"] := pet_text["zenny"] - zenny_initial
+            battle_summary["zenny_gained"] := pet_text["zenny"] - battle_summary["zenny_initial"]
 
             if (bugfrags_stop != "" && pet_text["bugfrags"] >= bugfrags_stop) {
-                break
+                break_loop := true
             }
             if (zenny_stop != "" && pet_text["zenny"] >= zenny_stop) {
-                break
+                break_loop := true
+            }
+            if (health_heal_ratio != "" && (pet_text["health_current"] / pet_text["health_total"]) < health_heal_ratio) {
+                JackOutThenIn()
             }
         }
 
-        if (num_battles_max != "" && battles >= num_battles_max) {
+        if (num_battles_max != "" && battle_summary["battles"] >= num_battles_max) {
             pet_text := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
             battle_summary["bugfrags"] := pet_text["bugfrags"]
-            battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - bugfrags_initial
+            battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - battle_summary["bugfrags_initial"]
             battle_summary["zenny"] := pet_text["zenny"]
-            battle_summary["zenny_gained"] := pet_text["zenny"] - zenny_initial
-            break
+            battle_summary["zenny_gained"] := pet_text["zenny"] - battle_summary["zenny_initial"]
+            break_loop := true
         }
 
+
+        battle_summary["duration_loop"] := timer_battles.ElapsedSecTruncated()
+        battle_summary["duration_total"] += battle_summary["duration_loop"]
         tool_tip_cfg.DisplayMsg(MapToStr(battle_summary), w_win, h_win)
+
+        if (break_loop) {
+            break
+        }
     }
 
     return battle_summary
