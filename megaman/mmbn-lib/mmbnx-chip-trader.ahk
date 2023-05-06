@@ -111,7 +111,7 @@ mmbn3_y_ratio_d_chip_trader_chip_1_edge := 0.304167
 
 mmbn3_y_ratio_u_chip_trader_chip_7_edge := 0.781944
 
-mmbn3_rgb_chip_trader_chip_count := [0xf2fcfc]
+mmbn3_rgb_chip_trader_digit_background := [mmbn3_rgb_chip_trader_insert_menu_blue, mmbn3_rgb_chip_trader_insert_menu_white]
 mmbn3_chip_trader_num_rows := 7
 mmbn3_chip_trader_num_columns := 2
 
@@ -126,5 +126,5 @@ mmbn3_digits_chip_trader := CharGridColorChecker(
     mmbn3_chip_trader_num_columns,
     mmbn3_digit_check_ratios,
     mmbn3_digit_check_map,
-    mmbn3_rgb_chip_trader_chip_count,
+    mmbn3_rgb_chip_trader_digit_background,
 )

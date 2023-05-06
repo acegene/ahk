@@ -1,3 +1,4 @@
+#include "%A_ScriptDir%\mmbn-lib\mmbnx-ratio-rgbs.ahk"
 #include "%A_ScriptDir%\mmbn-lib\mmbnx-text.ahk"
 
 #include <geometry-utils>
@@ -37,7 +38,7 @@ mmbn3_y_ratio_d_pet_zenny_digit_edge := 0.469907
 mmbn3_digit_width := mmbn3_x_ratio_r_pet_zenny_digit_1_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge
 mmbn3_digit_height := mmbn3_y_ratio_d_pet_zenny_digit_edge - mmbn3_y_ratio_u_pet_zenny_digit_edge
 mmbn3_digit_x_displacement := (mmbn3_x_ratio_l_pet_zenny_digit_6_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge) / 5.0
-mmbn3_rgbs_pet_digit := [0xfdffff, 0xfcffff]
+mmbn3_rgbs_pet_backgrounds := [mmbn3_rgb_pet_background_blue, mmbn3_rgb_pet_background_white]
 mmbn3_pet_zenny_num_rows := 1
 mmbn3_pet_zenny_num_columns := 6
 
@@ -52,7 +53,7 @@ mmbn3_digits_pet_zenny := CharGridColorChecker(
     mmbn3_pet_zenny_num_columns,
     mmbn3_digit_check_ratios,
     mmbn3_digit_check_map,
-    mmbn3_rgbs_pet_digit,
+    mmbn3_rgbs_pet_backgrounds,
 )
 
 mmbn3_x_ratio_l_pet_bugfrag_digit_1_edge := 0.6 * (mmbn3_x_ratio_l_pet_zenny_digit_6_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge) + mmbn3_x_ratio_l_pet_zenny_digit_1_edge
@@ -73,7 +74,7 @@ mmbn3_digits_pet_bugfrags := CharGridColorChecker(
     mmbn3_pet_bugfrag_num_columns,
     mmbn3_digit_check_ratios,
     mmbn3_digit_check_map,
-    mmbn3_rgbs_pet_digit,
+    mmbn3_rgbs_pet_backgrounds,
 )
 
 mmbn3_x_ratio_l_pet_health_current_digit_1_edge := mmbn3_x_ratio_l_pet_zenny_digit_1_edge - (0.4 * (mmbn3_x_ratio_l_pet_zenny_digit_6_edge - mmbn3_x_ratio_l_pet_zenny_digit_1_edge))
@@ -93,7 +94,7 @@ mmbn3_digits_pet_health_current := CharGridColorChecker(
     mmbn3_pet_health_current_num_columns,
     mmbn3_digit_check_ratios,
     mmbn3_digit_check_map,
-    mmbn3_rgbs_pet_digit,
+    mmbn3_rgbs_pet_backgrounds,
 )
 
 mmbn3_x_ratio_l_pet_health_total_digit_1_edge := mmbn3_x_ratio_l_pet_bugfrag_digit_1_edge
@@ -113,5 +114,5 @@ mmbn3_digits_pet_health_total := CharGridColorChecker(
     mmbn3_pet_health_total_num_columns,
     mmbn3_digit_check_ratios,
     mmbn3_digit_check_map,
-    mmbn3_rgbs_pet_digit,
+    mmbn3_rgbs_pet_backgrounds,
 )

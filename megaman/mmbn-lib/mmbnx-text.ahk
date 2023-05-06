@@ -119,28 +119,26 @@ class CharGridColorChecker extends CharGrid {
     }
 }
 
-;; chip trader chip count, zenny, bugfrags, hp
+;; digit ratios (based on digit height and width) of background for chip trader chip count, zenny, bugfrags, hp
 mmbn3_digit_check_ratios := [
-    Point2D(1.0 / 6.0, 0.1), ;; no 1, 4
-    Point2D(1.0 / 6.0, 0.3), ;; no 1, 2, 3, 4?
-    ; Point2D(1.0 / 6.0, 0.5), ;; no 1, 3?, 8?, 7
-    Point2D(1.2 / 6.0, 0.5), ;; no 1, 3?, 8?, 7
-    Point2D(1.0 / 6.0, 0.7), ;; no 1, 3, 5, 7, 9
-    Point2D(5.0 / 6.0, 0.3), ;; no 1, 5, 6
-    Point2D(3.0 / 6.0, 0.1), ;; no 4
+    Point2D(0.5 / 6.0, 0.35),
+    Point2D(1.0 / 6.0, 0.1),
+    Point2D(1.0 / 6.0, 0.75),
+    Point2D(5.0 / 6.0, 0.35),
+    Point2D(0.0 / 6.0, 0.49),
 ]
 
-;; chip trader chip count, zenny, bugfrags, hp
+;; background for digits of chip trader chip count, zenny, bugfrags, hp
 mmbn3_digit_check_map := Map(
-    "0", [true, true, true, true, true, true],
-    "1", [false, false, false, false, false, true],
-    "2", [true, false, true, true, true, true],
-    "3", [true, false, false, false, true, true],
-    "4", [false, false, true, true, true, false],
-    "5", [true, true, true, false, false, true],
-    "6", [true, true, true, true, false, true],
-    "7", [true, true, false, false, true, true],
-    "8", [true, true, false, true, true, true],
-    "9", [true, true, true, false, true, true],
-    "NULL", [false, false, false, false, false, false]
+    "0", [0, 0, 0, 0, 0],
+    "1", [1, 1, 1, 0, 1],
+    "2", [1, 0, 0, 0, 0],
+    "3", [1, 0, 1, 0, 1],
+    "4", [0, 1, 0, 0, 0],
+    "5", [0, 0, 1, 1, 0],
+    "6", [0, 0, 0, 1, 0],
+    "7", [0, 0, 1, 0, 1],
+    "8", [0, 0, 0, 0, 1],
+    "9", [0, 0, 1, 0, 0],
+    "NULL", [1, 1, 1, 1, 1],
 )

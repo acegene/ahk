@@ -7,8 +7,13 @@ mmbn3_ratio_rgbs_main_menu_tm := RatioRgbs([0.794792, 0.797656], [0.127778, 0.14
 mmbn3_ratio_rgbs_megaman_back := RatioRgbs([0.499740], [0.391204], [0x0b9bdd])
 mmbn3_ratio_rgbs_megaman_side_foot := RatioRgbs([0.499479], [0.511111], [0x0b9bdd])
 
-mmbn3_ratio_rgb_chip_trader_insert_menu_blue := RatioRgbs([0.708073], [0.489352], [0xadadad])
-mmbn3_ratio_rgb_chip_trader_insert_menu_white := RatioRgbs([0.708073], [0.489352], [0x759be8])
+mmbn3_rgb_pet_background_blue := 0xadadad
+mmbn3_rgb_pet_background_white := 0x759be8
+
+mmbn3_rgb_chip_trader_insert_menu_blue := mmbn3_rgb_pet_background_blue
+mmbn3_rgb_chip_trader_insert_menu_white := mmbn3_rgb_pet_background_white
+mmbn3_ratio_rgb_chip_trader_insert_menu_blue := RatioRgbs([0.708073], [0.489352], [mmbn3_rgb_chip_trader_insert_menu_blue])
+mmbn3_ratio_rgb_chip_trader_insert_menu_white := RatioRgbs([0.708073], [0.489352], [mmbn3_rgb_chip_trader_insert_menu_white])
 
 mmbn3_ratio_rgbs_gambler_success_win_round := RatioRgbs([0.249479], [0.349074], [0x0648a4])
 
