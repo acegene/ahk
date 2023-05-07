@@ -32,7 +32,7 @@ num_battles_check_text := 10
 num_battles_max := ""
 num_battles_per_save := 50
 health_heal_ratio := 0.7
-start_battle_chip_state := ChooseStartBattleChipState("none")
+start_battle_chip_state := ChooseStartBattleChipState("custom")
 zenny_gain_start := 500000
 zenny_gain_stop := 999999
 zenny_per_bugfrag_battle := 30
@@ -125,7 +125,7 @@ while (true) {
             num_battles_max,
             num_battles_check_text,
             bugfrags_gain_stop,
-            zenny_gain_stop,
+            "",
             tool_tip_cfg_battle
         )
         duration_battle += timed_battle_summary["duration"]

@@ -31,16 +31,23 @@ StartBattle(start_battle_chip_state) {
             HoldKeyE("k", 50)
             Sleep(100)
         }
-    }
-    for chip_slot in start_battle_chip_state.chip_slots_to_send {
         HoldKeyE("enter", 50)
         Sleep(100)
-        Loop chip_slot {
-            HoldKeyE("d", 50)
-            Sleep(100)
-            HoldKeyE("j", 50)
+    }
+
+    prev_chip_slot := 0
+    for chip_slot in start_battle_chip_state.chip_slots_to_send {
+        slots_differential := chip_slot - prev_chip_slot
+        key_direction := slots_differential > 0 ? "d" : "a"
+
+        Loop Abs(slots_differential) {
+            HoldKeyE(key_direction, 50)
             Sleep(100)
         }
+
+        HoldKeyE("j", 50)
+        Sleep(100)
+        prev_chip_slot := chip_slot
     }
     HoldKeyE("enter", 50)
     Sleep(200)
