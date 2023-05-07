@@ -12,6 +12,7 @@ ShootAndContinueUntilBattleOver(w_win, h_win) {
             return "battle_over"
         }
         if (mmbn3_ratio_rgbs_main_menu_tm.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+            StartGame()
             return "main_menu"
         }
         HoldKeyE("k", 50)
