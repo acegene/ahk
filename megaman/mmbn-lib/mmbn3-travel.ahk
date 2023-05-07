@@ -15,6 +15,9 @@ PurchaseTicketFromStnToStn(from_stn, to_stn) {
         if (to_stn = "beach") {
             keys.Push("s")
             keys.Push("j")
+        } else if (to_stn = "yoka") {
+            keys.Push("d")
+            keys.Push("j")
         }
     } else if (from_stn = "yoka") {
         if (to_stn = "acdc") {
@@ -121,6 +124,17 @@ TravelAcdcAtAcdcStnToHisbys() {
 TravelHigsbysAtHigsbysChipShopToAcdc() {
     HoldKeysE(["s", "d", "k"], 100)
     HoldKeysE(["s", "a", "k"], 1500)
+    Sleep(1000)
+}
+
+TravelHigsbysAtHigsbysChipTraderToAcdc() {
+    HoldKeysE(["a", "k"], 900)
+    Sleep(1000)
+}
+
+TravelHisgsbysAtAcdcToHigsbysAtHigsbysChipTrader() {
+    HoldKeysE(["d", "s", "k"], 550)
+    HoldKeysE(["d", "w", "k"], 300)
     Sleep(1000)
 }
 
@@ -315,6 +329,13 @@ TravelTVStnHallAtTVStnLobbyToTVStnHallAtChipTrader() {
 }
 
 ;; combination
+TravelHigsbysAtHigsbysChipShopToHigsbysAtHigsbysChipTrader() {
+    HoldKeysE(["s", "a", "k"], 1100)
+    HoldKeysE(["d", "s", "k"], 600)
+    HoldKeysE(["d", "w", "k"], 200)
+    Sleep(1000)
+}
+
 TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader() {
     TravelHigsbysAtHigsbysChipShopToAcdc()
     TravelAcdcAtHisbysToAcdcStn()
@@ -333,6 +354,34 @@ TravelHigsbysAtHigsbysChipShopToTVStnHallAtChipTrader() {
     TravelBeachStAtBeachStnToTVStnLobby()
     TravelTVStnLobbyAtBeachStToTVStnHall()
     TravelTVStnHallAtTVStnLobbyToTVStnHallAtChipTrader()
+}
+
+TravelHigsbysAtHigsbysChipTraderToVendingCompAtGambler(w_win, h_win) {
+    TravelHigsbysAtHigsbysChipTraderToAcdc()
+    TravelAcdcAtHisbysToAcdcStn()
+    TravelAcdcStnAtAcdcToStn("beach")
+    TravelBeachStnAtGateToBeachSt()
+    TravelBeachStAtBeachStnToShoreline()
+    TravelShorelineAtBeachStToHospLobby()
+    TravelHospLobbyAtShorelineToHospLobbyAtChipTrader()
+    TravelHospLobbyAtChipTraderToVendingCompAtGambler(w_win, h_win)
+}
+
+TravelHigsbysAtHigsbysChipTraderToHigsbysAtHigsbysChipShop() {
+    HoldKeysE(["a", "k"], 450)
+    HoldKeysE(["w", "k"], 450)
+    HoldKeysE(["d", "w", "k"], 1000)
+    Sleep(1000)
+}
+
+TravelHigsbysAtHigsbysChipTraderToArmorComp() {
+    TravelHigsbysAtHigsbysChipTraderToAcdc()
+    TravelAcdcAtHisbysToAcdcStn()
+    TravelAcdcStnAtAcdcToStn("yoka")
+    TravelYokaStnAtGateToFrontOfZoo()
+    TravelFrontOfZooAtYokaStnToHotelFront()
+    TravelHotelFrontAtFrontOfZooToHotelLobby()
+    TravelHotelLobbyAtHotelFrontToArmorComp()
 }
 
 TravelArmorCompToHospLobbyAtChipTrader() {

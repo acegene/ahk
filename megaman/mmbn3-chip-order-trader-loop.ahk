@@ -19,7 +19,6 @@
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
 bugfrags_max := 9999
-chips_per_trade := 10
 max_num_chips := 99
 zenny_max := 999999
 zenny_per_chip := 100
@@ -27,7 +26,7 @@ zenny_per_gamble_win := 64000
 
 bugfrags_gain_stop := 9999 ;; max 9999
 chip_min_thresh := 10
-chip_trader_type := "hospital" ;; hospital or dnn
+chip_trader_type := "dnn" ;; higbys, hospital, or dnn
 find_chip_start_index := 118 ; max value of guard * is #133; NOTE: index is less if missing chips
 num_battles_check_text := 20
 num_battles_max := ""
@@ -71,12 +70,20 @@ WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
-if (chip_trader_type = "hospital") {
+if (chip_trader_type = "higbys") {
+    chips_per_trade := 3
+    travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelHigsbysAtHigsbysChipTraderToHigsbysAtHigsbysChipShop
+    travel_chip_trader_to_vending_comp_at_gambler := TravelHigsbysAtHigsbysChipTraderToVendingCompAtGambler
+    travel_chip_trader_to_armor_comp := TravelHigsbysAtHigsbysChipTraderToArmorComp
+    travel_higsbys_at_higsbys_chip_shop_to_chip_trader := TravelHigsbysAtHigsbysChipShopToHigsbysAtHigsbysChipTrader
+} else if (chip_trader_type = "hospital") {
+    chips_per_trade := 10
     travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelHospLobbyAtChipTraderToHigsbysAtHigsbysChipShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelHospLobbyAtChipTraderToVendingCompAtGambler
     travel_chip_trader_to_armor_comp := TravelHospLobbyAtChipTraderToArmorComp
     travel_higsbys_at_higsbys_chip_shop_to_chip_trader := TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader
 } else if (chip_trader_type = "dnn") {
+    chips_per_trade := 10
     travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelTVStnHallAtChipTraderToHigsbysAtHigsbysChipShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelTVStnHallAtChipTraderToVendingCompAtGambler
     travel_chip_trader_to_armor_comp := TravelTVStnHallAtChipTraderToArmorComp
