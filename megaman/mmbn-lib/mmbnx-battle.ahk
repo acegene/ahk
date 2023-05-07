@@ -9,7 +9,10 @@
 ShootAndContinueUntilBattleOver(w_win, h_win) {
     while (true) {
         if (mmbn3_ratio_rgbs_megaman_side_foot.DoesWindowMatchRatioRgbs(w_win, h_win)) {
-            break
+            return "battle_over"
+        }
+        if (mmbn3_ratio_rgbs_main_menu_tm.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+            return "main_menu"
         }
         HoldKeyE("k", 50)
         Sleep(100)
@@ -81,12 +84,14 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
     timer_battles := Timer()
 
     break_loop := false
+    deaths := 0
 
     pet_text_initial := GetPetText(w_win, h_win, ["bugfrags", "health_current", "health_total", "zenny"])
     battle_summary := Map(
         "battles", 0,
         "bugfrags_initial", pet_text_initial["bugfrags"],
         "bugfrags_stop", bugfrags_stop,
+        "deaths", deaths,
         "duration_loop", 0,
         "duration_total", 0,
         "health_current", pet_text_initial["health_current"],
@@ -111,7 +116,9 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
             PrintBattleDebug(w_win, h_win)
         }
 
-        ShootAndContinueUntilBattleOver(w_win, h_win)
+        if (ShootAndContinueUntilBattleOver(w_win, h_win) = "main_menu") {
+            deaths += 0
+        }
 
         battle_summary["battles"] += 1
 

@@ -114,12 +114,8 @@ ExecuteArmorCompBattleIfDetected(start_battle_chip_state, grind_guard_chips := f
         Sleep(6800)
         HoldKeyE("k", 50)
     } else if (existing_japan_man = 16) {
-        HoldKeyE("enter", 50)
-        Sleep(200)
-        HoldKeyE("d", 50)
-        HoldKeyE("j", 50)
-        StartBattle(start_battle_chip_state)
-        HoldKeyE("j", 50)
+        start_battle_chip_state_japan_man := { chip_slots_to_send: [1], num_chips_to_use: 1, post_chip_sleeps: [100] }
+        StartBattle(start_battle_chip_state_japan_man)
         RepeatHoldKeyForDurationE("k", 50, 15000)
     } else {
         return false
