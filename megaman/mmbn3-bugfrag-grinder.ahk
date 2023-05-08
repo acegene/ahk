@@ -29,9 +29,9 @@ tool_tip_cfg_battle := ToolTipCfg("ur", 2)
 
 battle_func := grind_guard_chips ? ExecuteArmorCompBattleIfDetectedWMettaurStall : ExecuteArmorCompBattleIfDetected
 
+MaximizeAndFocusWindow(title_megaman_collection_1)
 WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
-MaximizeAndFocusWindow(title_megaman_collection_1)
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
 BattleLoop(

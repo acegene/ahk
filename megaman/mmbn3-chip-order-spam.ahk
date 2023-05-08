@@ -26,9 +26,9 @@ Mmbn3SpamChipOrder() {
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
+MaximizeAndFocusWindow(title_megaman_collection_1)
 WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
-MaximizeAndFocusWindow(title_megaman_collection_1)
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
 Mmbn3InitiateChipOrder(w_win, h_win)
