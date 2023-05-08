@@ -102,6 +102,23 @@ Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, too
     return trader_summary
 }
 
+Mmbn3GetTraderType(w_win, h_win) {
+    static ratio_rgbs_higsbys_at_chip_trader := RatioRgbs([0.591406, 0.842969], [0.467130, 0.868056], [0x005000, 0x005000])
+    static ratio_rgbs_hosp_lobby_at_chip_trader := RatioRgbs([0.665104, 0.666667], [0.129167, 0.267130], [0xffffe8, 0xffffe8])
+    static ratio_rgbs_tv_stn_hall_at_chip_trader := RatioRgbs([0.429167, 0.545573], [0.074074, 0.070370], [0xb6b69b, 0xb6b69b])
+
+    if (ratio_rgbs_higsbys_at_chip_trader.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+        return "higsbys"
+    } else if (ratio_rgbs_hosp_lobby_at_chip_trader.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+        return "hospital"
+    } else if (ratio_rgbs_tv_stn_hall_at_chip_trader.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+        return "dnn"
+    }
+
+    MsgBox("ERROR: could not discern chip trader type")
+    ExitApp(1)
+}
+
 mmbn3_x_ratio_l_chip_trader_digit_1_edge := 0.528646
 mmbn3_x_ratio_r_chip_trader_digit_1_edge := 0.546615
 mmbn3_x_ratio_l_chip_trader_digit_2_edge := 0.553646

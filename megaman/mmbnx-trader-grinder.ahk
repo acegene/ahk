@@ -19,12 +19,23 @@ TradeBugfrags() {
     }
 }
 
-TradeChips(chips_per_trade) {
+TradeChips() {
+    static chip_min_thresh := 10
+
     MaximizeAndFocusWindow(title_megaman_collection_1)
     WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
     RepeatHoldKeyForDurationE("k", 50, 2500)
 
-    chip_min_thresh := 10
+    chip_trader_type := Mmbn3GetTraderType(w_win, h_win)
+
+    if (chip_trader_type = "higsbys") {
+        chips_per_trade := 3
+    } else if (chip_trader_type = "hopital" || chip_trader_type = "dnn") {
+        chips_per_trade := 10
+    } else {
+        MsgBox("ERROR: unexpected chip_trader_type=" . chip_trader_type)
+        ExitApp(1)
+    }
 
     Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade)
 }
@@ -91,12 +102,10 @@ TradeSelection(btn, info) {
     gui_trader_selection.Destroy()
 
     if (trader_selection = 1) {
-        TradeChips(3)
+        TradeChips()
     } else if (trader_selection = 2) {
-        TradeChips(10)
-    } else if (trader_selection = 3) {
         TradeBugfrags()
-    } else if (trader_selection = 4) {
+    } else if (trader_selection = 3) {
         TradeNumber()
     } else {
         MsgBox("ERROR: unexpected selection value trader_selection=" . trader_selection)
@@ -107,7 +116,7 @@ TradeSelection(btn, info) {
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
 gui_trader_selection := Gui(, 'Which Trader are you using?'), gui_trader_selection.SetFont('s10')
-LB := gui_trader_selection.AddListBox('w230', ['3 Chip', '10 Chip', 'Bugfrag', 'Number'])
+LB := gui_trader_selection.AddListBox('w230', ['Chip', 'Bugfrag', 'Number'])
 gui_trader_selection.AddButton('wp Default', 'OK').OnEvent('Click', TradeSelection)
 gui_trader_selection.Show
 

@@ -26,7 +26,6 @@ zenny_per_gamble_win := 64000
 
 bugfrags_gain_stop := 9999 ;; max 9999
 chip_min_thresh := 10
-chip_trader_type := "dnn" ;; higsbys, hospital, or dnn
 find_chip_start_index := 118 ; max value of guard * is #133; NOTE: index is less if missing chips
 num_battles_check_text := 10
 num_battles_max := ""
@@ -69,6 +68,8 @@ MaximizeAndFocusWindow(title_megaman_collection_1)
 WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
 RepeatHoldKeyForDurationE("k", 50, 2500)
+
+chip_trader_type := Mmbn3GetTraderType(w_win, h_win)
 
 if (chip_trader_type = "higsbys") {
     chips_per_trade := 3

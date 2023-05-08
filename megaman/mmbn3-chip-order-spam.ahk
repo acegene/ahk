@@ -31,7 +31,7 @@ WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 MaximizeAndFocusWindow(title_megaman_collection_1)
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
-Mmbn3InitiateChipOrder()
+Mmbn3InitiateChipOrder(w_win, h_win)
 Mmbn3SpamChipOrder()
 
 Esc:: {
