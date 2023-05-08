@@ -3,9 +3,58 @@
 #include <optimizations-gaming>
 
 #include <keypress-utils>
+#include <tool-tip-utils>
 #include <window-utils>
 
+RepeatKey(key, repetetitons) {
+    Loop repetetitons {
+        HoldKeyE(key, 50)
+        Sleep(100)
+    }
+}
+
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
+
+tool_tip := ToolTipCfg()
+
+navicust_addition_error_codes := Map(
+    "AirShoes", { error_code: "ZN3UDOIQ", bug: "Custom-1" },
+    "AntiDamage", { error_code: "L3KJGUEO", bug: "Custom-1" },
+    "Block", { error_code: "ZBKDEU1W", bug: "" },
+    "BreakBuster", { error_code: "SI1IEMGO", bug: "Custom-1" },
+    "BreakCharge", { error_code: "SKDSHUEO", bug: "Custom-2" },
+    "FastGauge", { error_code: "XBCJF2RI", bug: "Custom-2" },
+    "FloatShoes", { error_code: "PEOTIR2G", bug: "" },
+    "GigaFolder1", { error_code: "KSIK1EIG", bug: "PoisonPanel" },
+    "HP100", { error_code: "JIEU1AWT", bug: "" },
+    "HP1000", { error_code: "CNJDU2EM", bug: "" },
+    "HP150", { error_code: "U2IEOSKW", bug: "" },
+    "HP200", { error_code: "ASK3IETN", bug: "" },
+    "HP250", { error_code: "SIE1TMSD", bug: "" },
+    "HP300", { error_code: "SEIUT1NG", bug: "" },
+    "HP350", { error_code: "GJHURIE2", bug: "" },
+    "HP400", { error_code: "AWE3ETSW", bug: "Custom-1" },
+    "HP450", { error_code: "3MZNBXH1", bug: "Custom-1" },
+    "HP500", { error_code: "2YTIWOAM", bug: "Custom-1" },
+    "HP550", { error_code: "O3IUTNWQ", bug: "Custom-1" },
+    "HP600", { error_code: "ZMJ1IGIE", bug: "Custom-2" },
+    "HP650", { error_code: "SRUEIT3A", bug: "Custom-2" },
+    "HP800", { error_code: "DMGEIO3W", bug: "Custom-2" },
+    "HP900", { error_code: "SM2UIROA", bug: "Custom-2" },
+    "Humor", { error_code: "SJH1UEKA", bug: "" },
+    "MegaFolder1", { error_code: "JDKGJ1U2", bug: "" },
+    "MegaFolder2", { error_code: "3DIVNEIQ", bug: "Custom-1" },
+    "MegaFolder3", { error_code: "URY33RRO", bug: "PoisonPanel" },
+    "MegaFolder4", { error_code: "FFIM1OWE", bug: "PoisonPanel" },
+    "MegaFolder5", { error_code: "SKFBM3UW", bug: "PoisonPanel" },
+    "Reflect", { error_code: "SK13EO1M", bug: "Custom-1" },
+    "ShadowShoes", { error_code: "GKHU1KHI", bug: "" },
+    "Shield", { error_code: "EIR3BM3I", bug: "" },
+    "SlowGauge", { error_code: "2BKD1UEW", bug: "" },
+    "SneakRun", { error_code: "UIEU2NGO", bug: "" },
+    "SuperArmor", { error_code: "KTEIUE2D", bug: "" },
+    "UnderShirt", { error_code: "SKJGURN2", bug: "" },
+)
 
 error_code_map := Map(
     "A1", "GYU2OPZQ",
@@ -37,6 +86,12 @@ error_code_map := Map(
     "S2G", "AX1RTDS3",
     "S2S", "F2AAFETG",
 )
+
+navicust_addition_error_codes_str := ""
+for (key, value in navicust_addition_error_codes) {
+    error_code_map[key] := value.error_code
+    navicust_addition_error_codes_str .= key . (value.bug != "" ? ("; BUG: " . value.bug) : "") . "`n"
+}
 
 char_move_map := Map(
     "A", 1,
@@ -70,19 +125,13 @@ char_move_map := Map(
     "3", 29,
 )
 
-RepeatKey(key, repetetitons) {
-    Loop repetetitons {
-        HoldKeyE(key, 50)
-        Sleep(100)
-    }
-}
-
-
 WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
 MaximizeAndFocusWindow(title_megaman_collection_1)
 Sleep(500)
 HoldKeyE("k", 50)
+
+tool_tip.DisplayMsg(navicust_addition_error_codes_str, w_win, h_win)
 
 error_code_user_input := InputBox("PROMPT: Please enter error code:")
 
@@ -105,7 +154,7 @@ if (error_code_user_input.Result = "OK") {
             RepeatKey("w", 1)
             RepeatKey("j", 1)
         } else if (char_index < 23) {
-            RepeatKey("d", char_index)
+            RepeatKey("d", char_index - 15)
             RepeatKey("j", 1)
         } else if (char_index < 31) {
             RepeatKey("a", 30 - char_index)
@@ -121,6 +170,8 @@ if (error_code_user_input.Result = "OK") {
 } else {
     ExitApp(1)
 }
+
+tool_tip.DisplayMsg("", w_win, h_win)
 
 Esc:: {
     ClearHeldKeysE("w a s d j k e enter")

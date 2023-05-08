@@ -26,7 +26,7 @@ zenny_per_gamble_win := 64000
 
 bugfrags_gain_stop := 9999 ;; max 9999
 chip_min_thresh := 10
-chip_trader_type := "dnn" ;; higbys, hospital, or dnn
+chip_trader_type := "dnn" ;; higsbys, hospital, or dnn
 find_chip_start_index := 118 ; max value of guard * is #133; NOTE: index is less if missing chips
 num_battles_check_text := 10
 num_battles_max := ""
@@ -70,24 +70,24 @@ WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
-if (chip_trader_type = "higbys") {
+if (chip_trader_type = "higsbys") {
     chips_per_trade := 3
-    travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelHigsbysAtHigsbysChipTraderToHigsbysAtHigsbysChipShop
-    travel_chip_trader_to_vending_comp_at_gambler := TravelHigsbysAtHigsbysChipTraderToVendingCompAtGambler
-    travel_chip_trader_to_armor_comp := TravelHigsbysAtHigsbysChipTraderToArmorComp
-    travel_higsbys_at_higsbys_chip_shop_to_chip_trader := TravelHigsbysAtHigsbysChipShopToHigsbysAtHigsbysChipTrader
+    travel_chip_trader_to_higsbys_at_chip_shop := TravelHigsbysAtChipTraderToHigsbysAtChipShop
+    travel_chip_trader_to_vending_comp_at_gambler := TravelHigsbysAtChipTraderToVendingCompAtGambler
+    travel_chip_trader_to_armor_comp := TravelHigsbysAtChipTraderToArmorComp
+    travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtChipShopToHigsbysAtChipTrader
 } else if (chip_trader_type = "hospital") {
     chips_per_trade := 10
-    travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelHospLobbyAtChipTraderToHigsbysAtHigsbysChipShop
+    travel_chip_trader_to_higsbys_at_chip_shop := TravelHospLobbyAtChipTraderToHigsbysAtChipShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelHospLobbyAtChipTraderToVendingCompAtGambler
     travel_chip_trader_to_armor_comp := TravelHospLobbyAtChipTraderToArmorComp
-    travel_higsbys_at_higsbys_chip_shop_to_chip_trader := TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader
+    travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtChipShopToHospLobbyAtChipTrader
 } else if (chip_trader_type = "dnn") {
     chips_per_trade := 10
-    travel_chip_trader_to_higsbys_at_higsbys_chip_shop := TravelTVStnHallAtChipTraderToHigsbysAtHigsbysChipShop
+    travel_chip_trader_to_higsbys_at_chip_shop := TravelTVStnHallAtChipTraderToHigsbysAtChipShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelTVStnHallAtChipTraderToVendingCompAtGambler
     travel_chip_trader_to_armor_comp := TravelTVStnHallAtChipTraderToArmorComp
-    travel_higsbys_at_higsbys_chip_shop_to_chip_trader := TravelHigsbysAtHigsbysChipShopToTVStnHallAtChipTrader
+    travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtChipShopToTVStnHallAtChipTrader
 } else {
     MsgBox("FATAL: unexpected chip_trader_type=" . chip_trader_type)
     ExitApp(1)
@@ -132,7 +132,7 @@ while (true) {
         total_battles += timed_battle_summary["ret_val"]["battles"]
         bugfrags_gained_battle += timed_battle_summary["ret_val"]["bugfrags_gained"]
         zenny_gained_battle += timed_battle_summary["ret_val"]["zenny_gained"]
-        duration_travel += TimedCallTruncated("S", TravelArmorCompToHigsbysAtHigsbysChipShop)
+        duration_travel += TimedCallTruncated("S", TravelArmorCompToHigsbysAtChipShop)
     } else if (pet_text["zenny"] < Min(zenny_gain_start + zenny_per_chip_orders, zenny_max)) {
         zenny_non_wasteful_gamble_limit := zenny_max - Mod((zenny_max - pet_text["zenny"]), zenny_per_gamble_win)
         zenny_to_gamble_for := Min(zenny_gain_stop - pet_text["zenny"], zenny_non_wasteful_gamble_limit - pet_text["zenny"])
@@ -143,12 +143,12 @@ while (true) {
             total_gamble_runs += timed_gambler_summary["ret_val"]["num_runs"]
             total_gamble_wins += timed_gambler_summary["ret_val"]["num_wins"]
             zenny_gained_gambler += timed_gambler_summary["ret_val"]["zenny_won"]
-            duration_travel += TimedCallTruncated("S", TravelVendingCompAtGamblerToHigsbysAtHigsbysChipShop)
+            duration_travel += TimedCallTruncated("S", TravelVendingCompAtGamblerToHigsbysAtChipShop)
         } else {
-            duration_travel += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_higsbys_chip_shop)
+            duration_travel += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_chip_shop)
         }
     } else {
-        duration_travel += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_higsbys_chip_shop)
+        duration_travel += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_chip_shop)
     }
 
     chips_per_chip_order := Min(max_chips_per_chip_orders, max_num_chips - highest_chip_count)
@@ -190,7 +190,7 @@ while (true) {
     )
     tool_tip_cfg_summary.DisplayMsg(MapToStr(main_summary), w_win, h_win)
 
-    duration_travel += TimedCallTruncated("S", travel_higsbys_at_higsbys_chip_shop_to_chip_trader)
+    duration_travel += TimedCallTruncated("S", travel_higsbys_at_chip_shop_to_chip_trader)
 }
 
 $Esc:: {

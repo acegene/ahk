@@ -121,26 +121,41 @@ TravelAcdcAtAcdcStnToHisbys() {
     Sleep(1000)
 }
 
-TravelHigsbysAtHigsbysChipShopToAcdc() {
+TravelHigsbysAtChipShopToAcdc() {
     HoldKeysE(["s", "d", "k"], 100)
     HoldKeysE(["s", "a", "k"], 1500)
     Sleep(1000)
 }
 
-TravelHigsbysAtHigsbysChipTraderToAcdc() {
-    HoldKeysE(["a", "k"], 900)
+TravelHigsbysAtChipTraderToAcdc() {
+    HoldKeysE(["a", "k"], 1200)
     Sleep(1000)
 }
 
-TravelHisgsbysAtAcdcToHigsbysAtHigsbysChipTrader() {
-    HoldKeysE(["d", "s", "k"], 550)
-    HoldKeysE(["d", "w", "k"], 300)
-    Sleep(1000)
-}
-
-TravelHigsbysAtAcdcToHigsbysChipShop() {
+TravelHigsbysAtAcdcToHigsbysAtChipShop() {
     HoldKeysE(["w", "a", "k"], 100)
     HoldKeysE(["d", "w", "k"], 1300)
+}
+
+TravelHisgsbysAtAcdcToHigsbysAtChipTrader() {
+    HoldKeysE(["d", "s", "k"], 650)
+    HoldKeysE(["d", "w", "k"], 400)
+    HoldKeyE("a", 50)
+    Sleep(1000)
+}
+
+TravelHigsbysAtChipShopToHigsbysAtChipTrader() {
+    TravelHigsbysAtChipShopToAcdc()
+    HoldKeysE(["w", "k"], 100)
+    Sleep(1000)
+    TravelHisgsbysAtAcdcToHigsbysAtChipTrader()
+}
+
+TravelHigsbysAtChipTraderToHigsbysAtChipShop() {
+    TravelHigsbysAtChipTraderToAcdc()
+    HoldKeysE(["w", "k"], 100)
+    Sleep(1000)
+    TravelHigsbysAtAcdcToHigsbysAtChipShop()
 }
 
 ;; yoka
@@ -329,15 +344,8 @@ TravelTVStnHallAtTVStnLobbyToTVStnHallAtChipTrader() {
 }
 
 ;; combination
-TravelHigsbysAtHigsbysChipShopToHigsbysAtHigsbysChipTrader() {
-    HoldKeysE(["s", "a", "k"], 1100)
-    HoldKeysE(["d", "s", "k"], 600)
-    HoldKeysE(["d", "w", "k"], 200)
-    Sleep(1000)
-}
-
-TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader() {
-    TravelHigsbysAtHigsbysChipShopToAcdc()
+TravelHigsbysAtChipShopToHospLobbyAtChipTrader() {
+    TravelHigsbysAtChipShopToAcdc()
     TravelAcdcAtHisbysToAcdcStn()
     TravelAcdcStnAtAcdcToStn("beach")
     TravelBeachStnAtGateToBeachSt()
@@ -346,8 +354,8 @@ TravelHigsbysAtHigsbysChipShopToHospLobbyAtChipTrader() {
     TravelHospLobbyAtShorelineToHospLobbyAtChipTrader()
 }
 
-TravelHigsbysAtHigsbysChipShopToTVStnHallAtChipTrader() {
-    TravelHigsbysAtHigsbysChipShopToAcdc()
+TravelHigsbysAtChipShopToTVStnHallAtChipTrader() {
+    TravelHigsbysAtChipShopToAcdc()
     TravelAcdcAtHisbysToAcdcStn()
     TravelAcdcStnAtAcdcToStn("beach")
     TravelBeachStnAtGateToBeachSt()
@@ -356,8 +364,8 @@ TravelHigsbysAtHigsbysChipShopToTVStnHallAtChipTrader() {
     TravelTVStnHallAtTVStnLobbyToTVStnHallAtChipTrader()
 }
 
-TravelHigsbysAtHigsbysChipTraderToVendingCompAtGambler(w_win, h_win) {
-    TravelHigsbysAtHigsbysChipTraderToAcdc()
+TravelHigsbysAtChipTraderToVendingCompAtGambler(w_win, h_win) {
+    TravelHigsbysAtChipTraderToAcdc()
     TravelAcdcAtHisbysToAcdcStn()
     TravelAcdcStnAtAcdcToStn("beach")
     TravelBeachStnAtGateToBeachSt()
@@ -367,15 +375,8 @@ TravelHigsbysAtHigsbysChipTraderToVendingCompAtGambler(w_win, h_win) {
     TravelHospLobbyAtChipTraderToVendingCompAtGambler(w_win, h_win)
 }
 
-TravelHigsbysAtHigsbysChipTraderToHigsbysAtHigsbysChipShop() {
-    HoldKeysE(["a", "k"], 450)
-    HoldKeysE(["w", "k"], 450)
-    HoldKeysE(["d", "w", "k"], 1000)
-    Sleep(1000)
-}
-
-TravelHigsbysAtHigsbysChipTraderToArmorComp() {
-    TravelHigsbysAtHigsbysChipTraderToAcdc()
+TravelHigsbysAtChipTraderToArmorComp() {
+    TravelHigsbysAtChipTraderToAcdc()
     TravelAcdcAtHisbysToAcdcStn()
     TravelAcdcStnAtAcdcToStn("yoka")
     TravelYokaStnAtGateToFrontOfZoo()
@@ -395,24 +396,24 @@ TravelArmorCompToHospLobbyAtChipTrader() {
     TravelHospLobbyAtShorelineToHospLobbyAtChipTrader()
 }
 
-TravelArmorCompToHigsbysAtHigsbysChipShop() {
+TravelArmorCompToHigsbysAtChipShop() {
     TravelHotelLobbyAtArmorCompToHotelFront()
     TravelHotelFrontAtHotelLobbyToFrontOfZoo()
     TravelFrontOfZooAtHotelFrontToYokaStn()
     TravelYokaStnAtFrontOfZooToStn("acdc")
     TravelAcdcStnAtGateToAcdc()
     TravelAcdcAtAcdcStnToHisbys()
-    TravelHigsbysAtAcdcToHigsbysChipShop()
+    TravelHigsbysAtAcdcToHigsbysAtChipShop()
 }
 
-TravelHospLobbyAtChipTraderToHigsbysAtHigsbysChipShop() {
+TravelHospLobbyAtChipTraderToHigsbysAtChipShop() {
     TravelHospLobbyAtChipTraderToShoreline()
     TravelShorelineAtHospLobbyToBeachSt()
     TravelBeachStAtShorelineToBeachStn()
     TravelBeachStnAtBeachStToStn("acdc")
     TravelAcdcStnAtGateToAcdc()
     TravelAcdcAtAcdcStnToHisbys()
-    TravelHigsbysAtAcdcToHigsbysChipShop()
+    TravelHigsbysAtAcdcToHigsbysAtChipShop()
 }
 
 TravelHospLobbyAtChipTraderToArmorComp() {
@@ -426,9 +427,9 @@ TravelHospLobbyAtChipTraderToArmorComp() {
     TravelHotelLobbyAtHotelFrontToArmorComp()
 }
 
-TravelVendingCompAtGamblerToHigsbysAtHigsbysChipShop() {
+TravelVendingCompAtGamblerToHigsbysAtChipShop() {
     TravelVendingCompAtGamblerToHospLobbyAtChipTrader()
-    TravelHospLobbyAtChipTraderToHigsbysAtHigsbysChipShop()
+    TravelHospLobbyAtChipTraderToHigsbysAtChipShop()
 }
 
 TravelTVStnHallAtChipTraderToVendingCompAtGambler(w_win, h_win) {
@@ -440,14 +441,14 @@ TravelTVStnHallAtChipTraderToVendingCompAtGambler(w_win, h_win) {
     TravelHospLobbyAtChipTraderToVendingCompAtGambler(w_win, h_win)
 }
 
-TravelTVStnHallAtChipTraderToHigsbysAtHigsbysChipShop() {
+TravelTVStnHallAtChipTraderToHigsbysAtChipShop() {
     TravelTVStnHallAtChipTraderToTVStnLobby()
     TravelTVStnLobbyAtTVStnHallToBeachSt()
     TravelBeachStAtTVStnLobbyToBeachStn()
     TravelBeachStnAtBeachStToStn("acdc")
     TravelAcdcStnAtGateToAcdc()
     TravelAcdcAtAcdcStnToHisbys()
-    TravelHigsbysAtAcdcToHigsbysChipShop()
+    TravelHigsbysAtAcdcToHigsbysAtChipShop()
 }
 
 TravelTVStnHallAtChipTraderToArmorComp() {
