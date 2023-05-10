@@ -116,6 +116,8 @@ SimonGameGrinder(w_win, h_win, bugfrags_to_win := 9999, tool_tip := ToolTipCfg()
         )
 
         tool_tip.DisplayMsg(MapToStr(simon_summary), w_win, h_win)
+
+        loop_index += 1
     }
 
     return simon_summary
