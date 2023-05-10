@@ -173,7 +173,7 @@ if (error_code_user_input.Result = "OK") {
 
 tool_tip.DisplayMsg("", w_win, h_win)
 
-Esc:: {
-    ClearHeldKeysE("w a s d j k e enter")
+$Esc:: {
+    ClearHeldKeysE("w a s d j k q e enter")
     ExitApp
 }

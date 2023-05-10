@@ -22,6 +22,6 @@ RepeatHoldKeyForDurationE("k", 50, 2500)
 GamblerLoop(w_win, h_win, "", tool_tip_cfg_gambler)
 
 $Esc:: {
-    ClearHeldKeysE("w a s d j k e enter")
+    ClearHeldKeysE("w a s d j k q e enter")
     ExitApp
 }

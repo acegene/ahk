@@ -20,11 +20,27 @@ HoldKeysE(keys, duration) {
     keys_down_str := ""
     keys_up_str := ""
     for (key in keys) {
-        keys_down_str := keys_down_str . "{" . key . " down}"
-        keys_up_str := keys_up_str . "{" . key . " up}"
+        keys_down_str .= "{" . key . " down}"
+        keys_up_str .= "{" . key . " up}"
     }
     SendEvent(keys_down_str)
     Sleep(duration)
+    SendEvent(keys_up_str)
+}
+
+KeysDownE(keys) {
+    keys_down_str := ""
+    for (key in keys) {
+        keys_down_str .= "{" . key . " down}"
+    }
+    SendEvent(keys_down_str)
+}
+
+KeysUpE(keys) {
+    keys_up_str := ""
+    for (key in keys) {
+        keys_up_str .= "{" . key . " up}"
+    }
     SendEvent(keys_up_str)
 }
 

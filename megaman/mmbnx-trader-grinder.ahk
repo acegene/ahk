@@ -121,7 +121,7 @@ LB := gui_trader_selection.AddListBox('w230', ['Chip', 'Bugfrag', 'Number'])
 gui_trader_selection.AddButton('wp Default', 'OK').OnEvent('Click', TradeSelection)
 gui_trader_selection.Show
 
-Esc:: {
-    ClearHeldKeysE("j k")
+$Esc:: {
+    ClearHeldKeysE("w a s d j k q e enter")
     ExitApp
 }

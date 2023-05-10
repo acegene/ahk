@@ -12,6 +12,7 @@
 ;; location: 'Yoka'::'Front of Zoo'::'Hotel Front'::'Hotel Lobby'::'Armor Comp'
 ;; * can reach after first Flashman arc during Beastman arc
 ;; NOTE: max bugfrags 9999, max chip duplicates 99
+;; NOTE: always uses first chip against japanman
 ;; TODO: always selects top option during style change prompt (i.e. upgrade fully then force)
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
@@ -34,7 +35,7 @@ WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
-BattleLoop(
+BattleGrinder(
     w_win,
     h_win,
     battle_func,
@@ -48,7 +49,7 @@ BattleLoop(
     tool_tip_cfg_battle,
 )
 
-Esc:: {
-    ClearHeldKeysE("w a s d j k e enter")
+$Esc:: {
+    ClearHeldKeysE("w a s d j k q e enter")
     ExitApp
 }

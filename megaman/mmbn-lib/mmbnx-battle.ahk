@@ -60,6 +60,22 @@ StartBattle(start_battle_chip_state) {
     }
 }
 
+RunFromBattle() {
+    ;; timed at 4015 ms
+    static battle_exit_duration := 1000
+    static battle_run_confirm_duration := 2100
+
+    HoldKeyE("q", 50)
+    Sleep(100)
+    HoldKeyE("j", 50)
+    Sleep(200)
+    HoldKeyE("j", 50)
+    Sleep(battle_run_confirm_duration)
+    HoldKeyE("j", 50)
+    Sleep(200)
+    HoldKeyE("j", 50)
+    Sleep(battle_exit_duration)
+}
 
 ChooseStartBattleChipState(start_battle_chip_state_str) {
     if (start_battle_chip_state_str = "custom") {
@@ -88,7 +104,7 @@ PrintBattleDebug(w_win, h_win) {
     MsgBox(GenerateDebugStr("lu lm ld mu mm md ru rm rd x_ratio_l x_ratio_m x_ratio_r y_ratio_u y_ratio_m y_ratio_d"))
 }
 
-BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save := 100, health_heal_ratio := "", num_battles_max := "", num_battles_check_text := "", bugfrags_stop := "", zenny_stop := "", tool_tip_cfg := ToolTipCfg()) {
+BattleGrinder(w_win, h_win, fight_func, fight_func_param, num_battles_until_save := 100, health_heal_ratio := "", num_battles_max := "", num_battles_check_text := "", bugfrags_stop := "", zenny_stop := "", tool_tip_cfg := ToolTipCfg()) {
     timer_battles := Timer()
 
     break_loop := false
@@ -103,7 +119,7 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
         "duration_loop", 0,
         "duration_total", 0,
         "health_current", pet_text_initial["health_current"],
-        "health_heal_ratio", health_heal_ratio,
+        "health_heal_ratio", Round(health_heal_ratio, 2),
         "health_total", pet_text_initial["health_total"],
         "num_battles_check_text", num_battles_check_text,
         "num_battles_max", num_battles_max,
@@ -129,6 +145,8 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
         }
 
         battle_summary["battles"] += 1
+        battle_summary["duration_loop"] := timer_battles.ElapsedSecTruncated()
+        battle_summary["duration_total"] += battle_summary["duration_loop"]
 
         if (num_battles_until_save != "" && Mod(A_Index, num_battles_until_save) = 0) {
             SaveProgressOrStartGame(w_win, h_win)
@@ -139,8 +157,10 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
             pet_text := GetPetText(w_win, h_win, ["bugfrags", "health_current", "health_total", "zenny"])
             battle_summary["bugfrags"] := pet_text["bugfrags"]
             battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - battle_summary["bugfrags_initial"]
+            battle_summary["bugfrags_per_sec"] := Round(battle_summary["bugfrags_gained"] / battle_summary["duration_total"], 2)
             battle_summary["zenny"] := pet_text["zenny"]
             battle_summary["zenny_gained"] := pet_text["zenny"] - battle_summary["zenny_initial"]
+            battle_summary["zenny_per_sec"] := Round(battle_summary["zenny_gained"] / battle_summary["duration_total"], 2)
 
             if (bugfrags_stop != "" && pet_text["bugfrags"] >= bugfrags_stop) {
                 break_loop := true
@@ -157,14 +177,13 @@ BattleLoop(w_win, h_win, fight_func, fight_func_param, num_battles_until_save :=
             pet_text := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
             battle_summary["bugfrags"] := pet_text["bugfrags"]
             battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - battle_summary["bugfrags_initial"]
+            battle_summary["bugfrags_per_sec"] := Round(battle_summary["bugfrags_gained"] / battle_summary["duration_total"], 2)
             battle_summary["zenny"] := pet_text["zenny"]
             battle_summary["zenny_gained"] := pet_text["zenny"] - battle_summary["zenny_initial"]
+            battle_summary["zenny_per_sec"] := Round(battle_summary["zenny_gained"] / battle_summary["duration_total"], 2)
             break_loop := true
         }
 
-
-        battle_summary["duration_loop"] := timer_battles.ElapsedSecTruncated()
-        battle_summary["duration_total"] += battle_summary["duration_loop"]
         tool_tip_cfg.DisplayMsg(MapToStr(battle_summary), w_win, h_win)
 
         if (break_loop) {

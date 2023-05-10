@@ -34,7 +34,7 @@ RepeatHoldKeyForDurationE("k", 50, 2500)
 Mmbn3InitiateChipOrder(w_win, h_win)
 Mmbn3SpamChipOrder()
 
-Esc:: {
-    ClearHeldKeysE("s j k")
+$Esc:: {
+    ClearHeldKeysE("w a s d j k q e enter")
     ExitApp
 }

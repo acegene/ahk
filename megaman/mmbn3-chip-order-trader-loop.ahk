@@ -16,53 +16,84 @@
 #include <tool-tip-utils>
 #include <window-utils>
 
+CallChipTraderLoopAndPopulateSummary(&summary, w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg_trader, max_chips_per_chip_orders, max_num_chips, zenny_per_chip) {
+    timed_summary_trader := TimedCallTruncatedWReturn(
+        "S",
+        Mmbn3TradeUntilMinChipThresh,
+        w_win,
+        h_win,
+        chip_min_thresh,
+        chips_per_trade,
+        tool_tip_cfg_trader,
+    )
+
+    summary["duration_chip_trader"] += timed_summary_trader["duration"]
+    summary["total_trader_in"] += timed_summary_trader["ret_val"]["trader_in"]
+    summary["total_trader_out"] += timed_summary_trader["ret_val"]["trader_out"]
+    summary["total_fails_enter_trader"] += timed_summary_trader["ret_val"]["num_fails_enter_trader"]
+    summary["chips_per_chip_order"] := Min(max_chips_per_chip_orders, max_num_chips - timed_summary_trader["ret_val"]["highest_chip_count"])
+    summary["zenny_per_chip_orders"] := zenny_per_chip * summary["chips_per_chip_order"]
+}
+
+CallGamblerLoopAndPopulateSummary(&summary, w_win, h_win, zenny_to_gamble_for, tool_tip_cfg_gambler) {
+    timed_summary_gambler := TimedCallTruncatedWReturn("S", GamblerLoop, w_win, h_win, zenny_to_gamble_for, tool_tip_cfg_gambler)
+
+    summary["duration_gambler"] += timed_summary_gambler["duration"]
+    summary["total_gamble_runs"] += timed_summary_gambler["ret_val"]["num_runs"]
+    summary["total_gamble_wins"] += timed_summary_gambler["ret_val"]["num_wins"]
+    summary["zenny_gained_gambler"] += timed_summary_gambler["ret_val"]["zenny_won"]
+}
+
+CallChipOrderLoopAndPopulateSummary(&summary, w_win, h_win, zenny_per_chip_orders) {
+    timed_summary_chip_order := TimedCallTruncatedWReturn("S", Mmbn3ChipOrderGuards, w_win, h_win, main_summary["find_chip_actual_index"], main_summary["chips_per_chip_order"])
+
+    main_summary["duration_chip_order"] += timed_summary_chip_order["duration"]
+    main_summary["find_chip_actual_index"] := timed_summary_chip_order["ret_val"]["find_chip_actual_index"]
+
+    main_summary["total_chips_ordered"] += main_summary["chips_per_chip_order"]
+    main_summary["total_zenny_spent"] += zenny_per_chip_orders
+}
+
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
-bugfrags_max := 9999
 max_num_chips := 99
 zenny_max := 999999
 zenny_per_chip := 100
 zenny_per_gamble_win := 64000
 
-bugfrags_gain_stop := 9999 ;; max 9999
 chip_min_thresh := 10
 find_chip_start_index := 118 ; max value of guard * is #133; NOTE: index is less if missing chips
-num_battles_check_text := 10
-num_battles_max := ""
-num_battles_per_save := 50
-health_heal_ratio := 0.7
-start_battle_chip_state := ChooseStartBattleChipState("custom")
 zenny_gain_start := 500000
 zenny_gain_stop := 999999
-zenny_per_bugfrag_battle := 30
 
 max_chips_per_chip_orders := max_num_chips - chip_min_thresh
 zenny_per_chip_orders := zenny_per_chip * max_chips_per_chip_orders
 
-tool_tip_cfg_trader := ToolTipCfg("dl", 1)
-tool_tip_cfg_battle := ToolTipCfg("ur", 2)
-tool_tip_cfg_gambler := ToolTipCfg("dr", 3)
-tool_tip_cfg_summary := ToolTipCfg("ul", 4)
+tool_tip_cfg_gambler := ToolTipCfg("ur", 2)
+tool_tip_cfg_summary := ToolTipCfg("ul", 1)
+tool_tip_cfg_trader := ToolTipCfg("dl", 3)
 
-bugfrags_gained_battle := 0
-duration_battle := 0
-duration_chip_order := 0
-duration_chip_trader := 0
-duration_gambler := 0
-duration_travel := 0
-duration_total := 0
-highest_chip_count := chip_min_thresh
-find_chip_actual_index := find_chip_start_index
-total_battles := 0
-total_chips_ordered := 0
-total_gamble_runs := 0
-total_gamble_wins := 0
-total_fails_enter_trader := 0
-total_trader_in := 0
-total_trader_out := 0
-total_zenny_spent := 0
-zenny_gained_battle := 0
-zenny_gained_gambler := 0
+main_summary := Map(
+    "chips_per_chip_order", zenny_per_chip * max_chips_per_chip_orders,
+    "find_chip_actual_index", find_chip_start_index,
+    "find_chip_start_index", find_chip_start_index,
+    "duration_chip_order", 0,
+    "duration_chip_trader", 0,
+    "duration_gambler", 0,
+    "duration_travel", 0,
+    "total_chips_ordered", 0,
+    "total_gamble_runs", 0,
+    "total_gamble_wins", 0,
+    "total_fails_enter_trader", 0,
+    "total_trader_in", 0,
+    "total_trader_out", 0,
+    "total_zenny_spent", 0,
+    "zenny", 0,
+    "zenny_gain_start", zenny_gain_start,
+    "zenny_gain_stop", zenny_gain_stop,
+    "zenny_gained_gambler", 0,
+    "zenny_per_chip_orders", zenny_per_chip * max_chips_per_chip_orders,
+)
 
 MaximizeAndFocusWindow(title_megaman_collection_1)
 WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
@@ -73,128 +104,49 @@ chip_trader_type := Mmbn3GetTraderType(w_win, h_win)
 
 if (chip_trader_type = "higsbys") {
     chips_per_trade := 3
-    travel_chip_trader_to_higsbys_at_chip_shop := TravelHigsbysAtChipTraderToHigsbysAtChipShop
-    travel_chip_trader_to_vending_comp_at_gambler := TravelHigsbysAtChipTraderToVendingCompAtGambler
-    travel_chip_trader_to_armor_comp := TravelHigsbysAtChipTraderToArmorComp
-    travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtChipShopToHigsbysAtChipTrader
+    travel_chip_trader_to_higsbys_at_chip_shop := TravelHigsbysAtTraderToHigsbysAtShop
+    travel_chip_trader_to_vending_comp_at_gambler := TravelHigsbysAtTraderToVendingCompAtGambler
+    travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtShopToHigsbysAtTrader
 } else if (chip_trader_type = "hospital") {
     chips_per_trade := 10
-    travel_chip_trader_to_higsbys_at_chip_shop := TravelHospLobbyAtChipTraderToHigsbysAtChipShop
-    travel_chip_trader_to_vending_comp_at_gambler := TravelHospLobbyAtChipTraderToVendingCompAtGambler
-    travel_chip_trader_to_armor_comp := TravelHospLobbyAtChipTraderToArmorComp
-    travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtChipShopToHospLobbyAtChipTrader
+    travel_chip_trader_to_higsbys_at_chip_shop := TravelHospLobbyAtTraderToHigsbysAtShop
+    travel_chip_trader_to_vending_comp_at_gambler := TravelHospLobbyAtTraderToVendingCompAtGambler
+    travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtShopToHospLobbyAtTrader
 } else if (chip_trader_type = "dnn") {
     chips_per_trade := 10
-    travel_chip_trader_to_higsbys_at_chip_shop := TravelTVStnHallAtChipTraderToHigsbysAtChipShop
-    travel_chip_trader_to_vending_comp_at_gambler := TravelTVStnHallAtChipTraderToVendingCompAtGambler
-    travel_chip_trader_to_armor_comp := TravelTVStnHallAtChipTraderToArmorComp
-    travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtChipShopToTVStnHallAtChipTrader
+    travel_chip_trader_to_higsbys_at_chip_shop := TravelTVStnHallAtTraderToHigsbysAtShop
+    travel_chip_trader_to_vending_comp_at_gambler := TravelTVStnHallAtTraderToVendingCompAtGambler
+    travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtShopToTVStnHallAtTrader
 } else {
-    MsgBox("FATAL: unexpected chip_trader_type=" . chip_trader_type)
+    MsgBox("ERROR: unexpected chip_trader_type=" . chip_trader_type)
     ExitApp(1)
 }
 
 while (true) {
-    timed_trade_summary := TimedCallTruncatedWReturn(
-        "S",
-        Mmbn3TradeUntilMinChipThresh,
-        w_win,
-        h_win,
-        chip_min_thresh,
-        chips_per_trade,
-        tool_tip_cfg_trader,
-    )
-    duration_chip_trader += timed_trade_summary["duration"]
-    total_trader_in += timed_trade_summary["ret_val"]["trader_in"]
-    total_trader_out += timed_trade_summary["ret_val"]["trader_out"]
-    total_fails_enter_trader += timed_trade_summary["ret_val"]["num_fails_enter_trader"]
-    highest_chip_count := timed_trade_summary["ret_val"]["highest_chip_count"]
+    CallChipTraderLoopAndPopulateSummary(main_summary, w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg_trader, max_chips_per_chip_orders, max_num_chips, zenny_per_chip)
 
-    pet_text := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
-    bugfrags_zenny_start := Max(zenny_max - ((bugfrags_gain_stop - pet_text["bugfrags"]) * zenny_per_bugfrag_battle), 0)
-    if (pet_text["bugfrags"] < bugfrags_gain_stop && pet_text["zenny"] < bugfrags_zenny_start) {
-        duration_travel += TimedCallTruncated("S", travel_chip_trader_to_armor_comp)
-        timed_battle_summary := TimedCallTruncatedWReturn(
-            "S",
-            BattleLoop,
-            w_win,
-            h_win,
-            ExecuteArmorCompBattleIfDetected,
-            start_battle_chip_state,
-            num_battles_per_save,
-            health_heal_ratio,
-            num_battles_max,
-            num_battles_check_text,
-            bugfrags_gain_stop,
-            "",
-            tool_tip_cfg_battle
-        )
-        duration_battle += timed_battle_summary["duration"]
-        total_battles += timed_battle_summary["ret_val"]["battles"]
-        bugfrags_gained_battle += timed_battle_summary["ret_val"]["bugfrags_gained"]
-        zenny_gained_battle += timed_battle_summary["ret_val"]["zenny_gained"]
-        duration_travel += TimedCallTruncated("S", TravelArmorCompToHigsbysAtChipShop)
-    } else if (pet_text["zenny"] < Min(zenny_gain_start + zenny_per_chip_orders, zenny_max)) {
-        zenny_non_wasteful_gamble_limit := zenny_max - Mod((zenny_max - pet_text["zenny"]), zenny_per_gamble_win)
-        zenny_to_gamble_for := Min(zenny_gain_stop - pet_text["zenny"], zenny_non_wasteful_gamble_limit - pet_text["zenny"])
+    main_summary["zenny"] := GetPetText(w_win, h_win, ["zenny"])["zenny"]
+    if (main_summary["zenny"] < Min(zenny_gain_start + zenny_per_chip_orders, zenny_max)) {
+        zenny_non_wasteful_gamble_limit := zenny_max - Mod((zenny_max - main_summary["zenny"]), zenny_per_gamble_win)
+        zenny_to_gamble_for := Min(zenny_gain_stop - main_summary["zenny"], zenny_non_wasteful_gamble_limit - main_summary["zenny"])
         if (zenny_to_gamble_for > 0) {
-            duration_travel += TimedCallTruncated("S", travel_chip_trader_to_vending_comp_at_gambler, w_win, h_win)
-            timed_gambler_summary := TimedCallTruncatedWReturn("S", GamblerLoop, w_win, h_win, zenny_to_gamble_for, tool_tip_cfg_gambler)
-            duration_gambler += timed_gambler_summary["duration"]
-            total_gamble_runs += timed_gambler_summary["ret_val"]["num_runs"]
-            total_gamble_wins += timed_gambler_summary["ret_val"]["num_wins"]
-            zenny_gained_gambler += timed_gambler_summary["ret_val"]["zenny_won"]
-            duration_travel += TimedCallTruncated("S", TravelVendingCompAtGamblerToHigsbysAtChipShop)
+            main_summary["duration_travel"] += TimedCallTruncated("S", travel_chip_trader_to_vending_comp_at_gambler, w_win, h_win)
+            CallGamblerLoopAndPopulateSummary(&main_summary, w_win, h_win, zenny_to_gamble_for, tool_tip_cfg_gambler)
+            main_summary["duration_travel"] += TimedCallTruncated("S", TravelVendingCompAtGamblerToHigsbysAtShop)
         } else {
-            duration_travel += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_chip_shop)
+            main_summary["duration_travel"] += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_chip_shop)
         }
     } else {
-        duration_travel += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_chip_shop)
+        main_summary["duration_travel"] += TimedCallTruncated("S", travel_chip_trader_to_higsbys_at_chip_shop)
     }
 
-    chips_per_chip_order := Min(max_chips_per_chip_orders, max_num_chips - highest_chip_count)
-    zenny_per_chip_orders := zenny_per_chip * chips_per_chip_order
-    timed_chip_order_summary := TimedCallTruncatedWReturn("S", Mmbn3ChipOrderGuardLoop, w_win, h_win, find_chip_actual_index, chips_per_chip_order)
-    duration_chip_order += timed_chip_order_summary["duration"]
-    find_chip_actual_index := timed_chip_order_summary["ret_val"]["find_chip_actual_index"]
+    CallChipOrderLoopAndPopulateSummary(&main_summary, w_win, h_win, zenny_per_chip_orders)
+    main_summary["duration_travel"] += TimedCallTruncated("S", travel_higsbys_at_chip_shop_to_chip_trader)
 
-    total_chips_ordered += chips_per_chip_order
-    total_zenny_spent += zenny_per_chip_orders
-    main_summary := Map(
-        "bugfrags", pet_text["bugfrags"],
-        "bugfrags_gained_battle", bugfrags_gained_battle,
-        "bugfrags_gain_stop", bugfrags_gain_stop,
-        "bugfrags_zenny_start", bugfrags_zenny_start,
-        "chips_per_chip_order", chips_per_chip_order,
-        "find_chip_actual_index", find_chip_actual_index,
-        "find_chip_start_index", find_chip_start_index,
-        "duration_battle", duration_battle,
-        "duration_chip_order", duration_chip_order,
-        "duration_chip_trader", duration_chip_trader,
-        "duration_gambler", duration_gambler,
-        "duration_travel", duration_travel,
-        "total_battles", total_battles,
-        "total_chips_ordered", total_chips_ordered,
-        "total_gamble_runs", total_gamble_runs,
-        "total_gamble_wins", total_gamble_wins,
-        "total_fails_enter_trader", total_fails_enter_trader,
-        "total_trader_in", total_trader_in,
-        "total_trader_out", total_trader_out,
-        "total_zenny_spent", total_zenny_spent,
-        "zenny", pet_text["zenny"],
-        "zenny_gain_start", zenny_gain_start,
-        "zenny_gain_stop", zenny_gain_stop,
-        "zenny_gained_battle", zenny_gained_battle,
-        "zenny_gained_gambler", zenny_gained_gambler,
-        "zenny_per_bugfrag_battle", zenny_per_bugfrag_battle,
-        "zenny_per_chip_orders", zenny_per_chip_orders,
-    )
     tool_tip_cfg_summary.DisplayMsg(MapToStr(main_summary), w_win, h_win)
-
-    duration_travel += TimedCallTruncated("S", travel_higsbys_at_chip_shop_to_chip_trader)
 }
 
 $Esc:: {
-    ClearHeldKeysE("w a s d j k e enter")
+    ClearHeldKeysE("w a s d j k q e enter")
     ExitApp
 }

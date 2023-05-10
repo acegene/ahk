@@ -53,8 +53,8 @@ Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, too
     while (true) {
         Loop num_enter_trader_attempts {
             Mmbn3EnterInsertChipsMenuChipTrader()
-            if (mmbn3_ratio_rgb_chip_trader_insert_menu_blue.DoesWindowMatchRatioRgbs(w_win, h_win) ||
-                mmbn3_ratio_rgb_chip_trader_insert_menu_white.DoesWindowMatchRatioRgbs(w_win, h_win)) {
+            if (mmbn3_ratio_rgbs_chip_count_menu_blue.DoesWindowMatchRatioRgbs(w_win, h_win) ||
+                mmbn3_ratio_rgbs_chip_count_menu_white.DoesWindowMatchRatioRgbs(w_win, h_win)) {
                 break
             }
             num_fails_enter_trader += 1
@@ -66,7 +66,7 @@ Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, too
             Mmbn3InitializeChipTrader()
         }
         if (check_only_top_chip) {
-            highest_chip_count := Integer(Join(mmbn3_digits_chip_trader.GetCharsRow(1, w_win, h_win)))
+            highest_chip_count := Integer(Join(mmbn3_digits_chip_count.GetCharsRow(1, w_win, h_win)))
             trader_summary := Map(
                 "chip_min_thresh", chip_min_thresh,
                 "chips_per_trade", chips_per_trade,
@@ -77,7 +77,7 @@ Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, too
             )
             tool_tip_cfg.DisplayMsg(MapToStr(trader_summary), w_win, h_win)
         } else {
-            digits_2d := mmbn3_digits_chip_trader.GetChars2D(w_win, h_win)
+            digits_2d := mmbn3_digits_chip_count.GetChars2D(w_win, h_win)
             highest_chip_count := Integer(Join(digits_2d[1]))
             trader_summary := Map(
                 "chip_min_thresh", chip_min_thresh,
@@ -118,30 +118,3 @@ Mmbn3GetTraderType(w_win, h_win) {
     MsgBox("ERROR: could not discern chip trader type")
     ExitApp(1)
 }
-
-mmbn3_x_ratio_l_chip_trader_digit_1_edge := 0.528646
-mmbn3_x_ratio_r_chip_trader_digit_1_edge := 0.546615
-mmbn3_x_ratio_l_chip_trader_digit_2_edge := 0.553646
-;; mmbn3_x_ratio_r_chip_trader_digit_2_edge := 0.571615
-mmbn3_y_ratio_u_chip_trader_chip_1_edge := 0.248611
-mmbn3_y_ratio_d_chip_trader_chip_1_edge := 0.304167
-
-mmbn3_y_ratio_u_chip_trader_chip_7_edge := 0.781944
-
-mmbn3_rgb_chip_trader_digit_background := [mmbn3_rgb_chip_trader_insert_menu_blue, mmbn3_rgb_chip_trader_insert_menu_white]
-mmbn3_chip_trader_num_rows := 7
-mmbn3_chip_trader_num_columns := 2
-
-mmbn3_digits_chip_trader := CharGridColorChecker(
-    mmbn3_x_ratio_l_chip_trader_digit_1_edge,
-    mmbn3_y_ratio_u_chip_trader_chip_1_edge,
-    mmbn3_x_ratio_r_chip_trader_digit_1_edge - mmbn3_x_ratio_l_chip_trader_digit_1_edge,
-    mmbn3_y_ratio_d_chip_trader_chip_1_edge - mmbn3_y_ratio_u_chip_trader_chip_1_edge,
-    (mmbn3_y_ratio_u_chip_trader_chip_7_edge - mmbn3_y_ratio_u_chip_trader_chip_1_edge) / 6.0,
-    mmbn3_x_ratio_l_chip_trader_digit_2_edge - mmbn3_x_ratio_l_chip_trader_digit_1_edge,
-    mmbn3_chip_trader_num_rows,
-    mmbn3_chip_trader_num_columns,
-    mmbn3_digit_check_ratios,
-    mmbn3_digit_check_map,
-    mmbn3_rgb_chip_trader_digit_background,
-)

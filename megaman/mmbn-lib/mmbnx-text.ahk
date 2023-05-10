@@ -1,3 +1,5 @@
+#include "%A_ScriptDir%\mmbn-lib\mmbnx-ratio-rgbs.ahk"
+
 #include <array-utils>
 #include <geometry-utils>
 #include <string-utils>
@@ -141,4 +143,48 @@ mmbn3_digit_check_map := Map(
     "8", [0, 0, 0, 0, 1],
     "9", [0, 0, 1, 0, 1],
     "NULL", [1, 1, 1, 1, 1],
+)
+
+GetLargestLibraryChipCount(w_win, h_win) {
+    HoldKeyE("enter", 50)
+    Sleep(1000)
+    HoldKeyE("j", 50)
+    Sleep(300)
+    HoldKeyE("j", 50)
+    Sleep(300)
+    HoldKeyE("j", 50)
+    Sleep(300)
+    HoldKeyE("j", 50)
+    Sleep(700)
+    HoldKeyE("d", 50)
+    Sleep(300)
+    return Join(mmbn3_digits_chip_count.GetCharsRow(1, w_win, h_win), "")
+}
+
+
+mmbn3_x_ratio_l_chip_count_digit_1_edge := 0.528646
+mmbn3_x_ratio_r_chip_count_digit_1_edge := 0.546615
+mmbn3_x_ratio_l_chip_count_digit_2_edge := 0.553646
+;; mmbn3_x_ratio_r_chip_count_digit_2_edge := 0.571615
+mmbn3_y_ratio_u_chip_count_chip_1_edge := 0.248611
+mmbn3_y_ratio_d_chip_count_chip_1_edge := 0.304167
+
+mmbn3_y_ratio_u_chip_count_chip_7_edge := 0.781944
+
+mmbn3_rgb_chip_count_digit_background := [mmbn3_rgb_chip_count_menu_blue, mmbn3_rgb_chip_count_menu_white]
+mmbn3_chip_count_num_rows := 7
+mmbn3_chip_count_num_columns := 2
+
+mmbn3_digits_chip_count := CharGridColorChecker(
+    mmbn3_x_ratio_l_chip_count_digit_1_edge,
+    mmbn3_y_ratio_u_chip_count_chip_1_edge,
+    mmbn3_x_ratio_r_chip_count_digit_1_edge - mmbn3_x_ratio_l_chip_count_digit_1_edge,
+    mmbn3_y_ratio_d_chip_count_chip_1_edge - mmbn3_y_ratio_u_chip_count_chip_1_edge,
+    (mmbn3_y_ratio_u_chip_count_chip_7_edge - mmbn3_y_ratio_u_chip_count_chip_1_edge) / 6.0,
+    mmbn3_x_ratio_l_chip_count_digit_2_edge - mmbn3_x_ratio_l_chip_count_digit_1_edge,
+    mmbn3_chip_count_num_rows,
+    mmbn3_chip_count_num_columns,
+    mmbn3_digit_check_ratios,
+    mmbn3_digit_check_map,
+    mmbn3_rgb_chip_count_digit_background,
 )

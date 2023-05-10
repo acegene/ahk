@@ -22,7 +22,7 @@ Mmbn3InitiateChipOrder(w_win, h_win) {
     }
 }
 
-Mmbn3FindAndOrderChipOrderGuard(find_chip_start_index, chips_per_chip_orders) {
+Mmbn3ChipOrderFindAndOrderGuards(find_chip_start_index, chips_per_chip_orders) {
     static starting_index := 1
     static offset_for_chip_to_top := 4
     static chips_per_page_flip := 5
@@ -66,7 +66,7 @@ Mmbn3FindAndOrderChipOrderGuard(find_chip_start_index, chips_per_chip_orders) {
     )
 }
 
-Mmbn3ChipOrderGuardLoop(w_win, h_win, find_chip_start_index, chips_per_chip_orders) {
+Mmbn3ChipOrderGuards(w_win, h_win, find_chip_start_index, chips_per_chip_orders) {
     Mmbn3InitiateChipOrder(w_win, h_win)
-    return Mmbn3FindAndOrderChipOrderGuard(find_chip_start_index, chips_per_chip_orders)
+    return Mmbn3ChipOrderFindAndOrderGuards(find_chip_start_index, chips_per_chip_orders)
 }

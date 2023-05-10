@@ -110,4 +110,6 @@ ShowWindowRatio() {
     frozen := !frozen
 }
 
-Esc:: ExitApp
+$Esc:: {
+    ExitApp
+}
