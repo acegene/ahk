@@ -141,7 +141,7 @@ TravelHigsbysAtAcdcToHigsbysAtShop() {
     HoldKeysE(["d", "w", "k"], 1300)
 }
 
-TravelHisgsbysAtAcdcToHigsbysAtTrader() {
+TravelHigsbysAtAcdcToHigsbysAtTrader() {
     HoldKeysE(["d", "s", "k"], 650)
     HoldKeysE(["d", "w", "k"], 400)
     HoldKeyE("a", 50)
@@ -152,7 +152,7 @@ TravelHigsbysAtShopToHigsbysAtTrader() {
     TravelHigsbysAtShopToAcdc()
     HoldKeysE(["w", "k"], 100)
     Sleep(1000)
-    TravelHisgsbysAtAcdcToHigsbysAtTrader()
+    TravelHigsbysAtAcdcToHigsbysAtTrader()
 }
 
 TravelHigsbysAtTraderToHigsbysAtShop() {
@@ -205,6 +205,13 @@ TravelHotelFrontAtHotelLobbyToFrontOfZoo() {
     Sleep(1000)
 }
 
+TravelHotelFrontAtTamakosHPToFrontOfZoo() {
+    HoldKeysE(["a", "k"], 100)
+    HoldKeysE(["s", "k"], 3200)
+    HoldKeysE(["d", "k"], 1200)
+    Sleep(1000)
+}
+
 TravelHotelFrontAtFrontOfZooToHotelLobby() {
     HoldKeysE(["a", "k"], 4000)
     HoldKeysE(["d", "k"], 1500)
@@ -246,7 +253,7 @@ TravelTamakosHPAtHotelFrontToBeachSquare() {
     Sleep(3000)
 }
 
-TravelHotelLobbyAtArmorCompToHotelFront() {
+TravelArmorCompToHotelFront() {
     JackOut()
     HoldKeysE(["s", "k"], 2000)
     HoldKeysE(["a", "k"], 1200)
@@ -639,48 +646,116 @@ TravelSecretArea3AtSecretArea2ToSecretArea3AtTrader(w_win, h_win) {
     TravelRunnableDuration(w_win, h_win, ["w", "a", "k"], 600)
 }
 
-;; combination
-TravelHigsbysAtShopToHospLobbyAtTrader() {
+;; combination to stn
+TravelHigsbysAtShopToStn(to_stn) {
     TravelHigsbysAtShopToAcdc()
     TravelAcdcAtHisbysToAcdcStn()
-    TravelAcdcStnAtAcdcToStn("beach")
-    TravelBeachStnAtGateToBeachSt()
-    TravelBeachStAtBeachStnToShoreline()
-    TravelShorelineAtBeachStToHospLobby()
-    TravelHospLobbyAtShorelineToHospLobbyAtTrader()
+    TravelAcdcStnAtAcdcToStn(to_stn)
 }
 
-TravelHigsbysAtShopToTVStnHallAtTrader() {
-    TravelHigsbysAtShopToAcdc()
-    TravelAcdcAtHisbysToAcdcStn()
-    TravelAcdcStnAtAcdcToStn("beach")
-    TravelBeachStnAtGateToBeachSt()
-    TravelBeachStAtBeachStnToTVStnLobby()
-    TravelTVStnLobbyAtBeachStToTVStnHall()
-    TravelTVStnHallAtTVStnLobbyToTVStnHallAtTrader()
-}
-
-TravelHigsbysAtTraderToVendingCompAtGambler(w_win, h_win) {
+TravelHigsbysAtTraderToStn(to_stn) {
     TravelHigsbysAtTraderToAcdc()
     TravelAcdcAtHisbysToAcdcStn()
-    TravelAcdcStnAtAcdcToStn("beach")
-    TravelBeachStnAtGateToBeachSt()
-    TravelBeachStAtBeachStnToShoreline()
-    TravelShorelineAtBeachStToHospLobby()
-    TravelHospLobbyAtShorelineToHospLobbyAtTrader()
-    TravelHospLobbyAtTraderToVendingCompAtGambler(w_win, h_win)
+    TravelAcdcStnAtAcdcToStn(to_stn)
 }
 
-TravelHigsbysAtTraderToArmorComp() {
-    TravelHigsbysAtTraderToAcdc()
-    TravelAcdcAtHisbysToAcdcStn()
-    TravelAcdcStnAtAcdcToStn("yoka")
+TravelHotelFrontAtTamakosHPToStn(to_stn) {
+    TravelHotelFrontAtTamakosHPToFrontOfZoo()
+    TravelFrontOfZooAtHotelFrontToYokaStn()
+    TravelYokaStnAtFrontOfZooToStn(to_stn)
+}
+
+TravelArmorCompToStn(to_stn) {
+    TravelArmorCompToHotelFront()
+    TravelHotelFrontAtHotelLobbyToFrontOfZoo()
+    TravelFrontOfZooAtHotelFrontToYokaStn()
+    TravelYokaStnAtFrontOfZooToStn(to_stn)
+}
+
+TravelHospLobbyAtTraderToStn(to_stn) {
+    TravelHospLobbyAtTraderToShoreline()
+    TravelShorelineAtHospLobbyToBeachSt()
+    TravelBeachStAtShorelineToBeachStn()
+    TravelBeachStnAtBeachStToStn(to_stn)
+}
+
+TravelTVStnHallAtTraderToStn(to_stn) {
+    TravelTVStnHallAtTraderToTVStnLobby()
+    TravelTVStnLobbyAtTVStnHallToBeachSt()
+    TravelBeachStAtTVStnLobbyToBeachStn()
+    TravelBeachStnAtBeachStToStn(to_stn)
+}
+
+;; combination from stn
+TravelAcdcStnAtGateToHigsbysAtShop() {
+    TravelAcdcStnAtGateToAcdc()
+    TravelAcdcAtAcdcStnToHisbys()
+    TravelHigsbysAtAcdcToHigsbysAtShop()
+}
+
+TravelAcdcStnAtGateToHigsbysAtTrader() {
+    TravelAcdcStnAtGateToAcdc()
+    TravelAcdcAtAcdcStnToHisbys()
+    TravelHigsbysAtAcdcToHigsbysAtTrader()
+}
+
+TravelYokaStnAtGateToHotelFrontAtTamakosHP() {
+    TravelYokaStnAtGateToFrontOfZoo()
+    TravelFrontOfZooAtYokaStnToHotelFront()
+    TravelHotelFrontAtFrontOfZooToHoteelFrontAtTamakosHP()
+}
+
+TravelYokaStnAtGateToArmorComp() {
     TravelYokaStnAtGateToFrontOfZoo()
     TravelFrontOfZooAtYokaStnToHotelFront()
     TravelHotelFrontAtFrontOfZooToHotelLobby()
     TravelHotelLobbyAtHotelFrontToArmorComp()
 }
 
+TravelBeachStnAtGateToHospLobbyAtTrader() {
+    TravelBeachStnAtGateToBeachSt()
+    TravelBeachStAtBeachStnToShoreline()
+    TravelShorelineAtBeachStToHospLobby()
+    TravelHospLobbyAtShorelineToHospLobbyAtTrader()
+}
+
+TravelBeachStnAtGateToTVStnHallAtTrader() {
+    TravelBeachStnAtGateToBeachSt()
+    TravelBeachStAtBeachStnToTVStnLobby()
+    TravelTVStnLobbyAtBeachStToTVStnHall()
+    TravelTVStnHallAtTVStnLobbyToTVStnHallAtTrader()
+}
+
+TravelBeachStnAtGateToVendingCompAtGambler(w_win, h_win) {
+    TravelBeachStnAtGateToHospLobbyAtTrader()
+    TravelHospLobbyAtTraderToVendingCompAtGambler(w_win, h_win)
+}
+
+;; combination
+TravelHigsbysAtShopToHospLobbyAtTrader() {
+    TravelHigsbysAtShopToStn("beach")
+    TravelBeachStnAtGateToHospLobbyAtTrader()
+}
+
+TravelHigsbysAtShopToTVStnHallAtTrader() {
+    TravelHigsbysAtShopToStn("beach")
+    TravelBeachStnAtGateToTVStnHallAtTrader()
+}
+
+TravelHigsbysAtTraderToHotelFrontAtTamakosHP() {
+    TravelHigsbysAtTraderToStn("yoka")
+    TravelYokaStnAtGateToHotelFrontAtTamakosHP()
+}
+
+TravelHigsbysAtTraderToVendingCompAtGambler(w_win, h_win) {
+    TravelHigsbysAtTraderToStn("beach")
+    TravelBeachStnAtGateToVendingCompAtGambler(w_win, h_win)
+}
+
+TravelHigsbysAtTraderToArmorComp() {
+    TravelHigsbysAtTraderToStn("yoka")
+    TravelYokaStnAtGateToArmorComp()
+}
 
 TravelHotelFrontAtTamakosHPToUnderSquareAtSimon() {
     TravelHotelFrontAtTamakosHPToBeachSquare()
@@ -704,51 +779,59 @@ TravelHotelFrontAtTamakosHPToSecretArea3AtTrader(w_win, h_win) {
     TravelSecretArea3AtSecretArea2ToSecretArea3AtTrader(w_win, h_win)
 }
 
+TravelHotelFrontAtTamakosHPToHigsbysAtTrader() {
+    TravelHotelFrontAtTamakosHPToStn("acdc")
+    TravelAcdcStnAtGateToHigsbysAtTrader()
+}
+
+TravelHotelFrontAtTamakosHPToHospLobbyAtTrader() {
+    TravelHotelFrontAtTamakosHPToStn("beach")
+    TravelBeachStnAtGateToHospLobbyAtTrader()
+}
+
+TravelHotelFrontAtTamakosHPToTVStnHallAtTrader() {
+    TravelHotelFrontAtTamakosHPToStn("beach")
+    TravelBeachStnAtGateToTVStnHallAtTrader()
+}
+
 TravelArmorCompToHospLobbyAtTrader() {
-    TravelHotelLobbyAtArmorCompToHotelFront()
-    TravelHotelFrontAtHotelLobbyToFrontOfZoo()
-    TravelFrontOfZooAtHotelFrontToYokaStn()
-    TravelYokaStnAtFrontOfZooToStn("beach")
-    TravelBeachStnAtGateToBeachSt()
-    TravelBeachStAtBeachStnToShoreline()
-    TravelShorelineAtBeachStToHospLobby()
-    TravelHospLobbyAtShorelineToHospLobbyAtTrader()
+    TravelArmorCompToStn("beach")
+    TravelBeachStnAtGateToHospLobbyAtTrader()
 }
 
 TravelArmorCompToHigsbysAtShop() {
-    TravelHotelLobbyAtArmorCompToHotelFront()
-    TravelHotelFrontAtHotelLobbyToFrontOfZoo()
-    TravelFrontOfZooAtHotelFrontToYokaStn()
-    TravelYokaStnAtFrontOfZooToStn("acdc")
-    TravelAcdcStnAtGateToAcdc()
-    TravelAcdcAtAcdcStnToHisbys()
-    TravelHigsbysAtAcdcToHigsbysAtShop()
+    TravelArmorCompToStn("acdc")
+    TravelAcdcStnAtGateToHigsbysAtShop()
 }
 
 TravelHospLobbyAtTraderToHigsbysAtShop() {
-    TravelHospLobbyAtTraderToShoreline()
-    TravelShorelineAtHospLobbyToBeachSt()
-    TravelBeachStAtShorelineToBeachStn()
-    TravelBeachStnAtBeachStToStn("acdc")
-    TravelAcdcStnAtGateToAcdc()
-    TravelAcdcAtAcdcStnToHisbys()
-    TravelHigsbysAtAcdcToHigsbysAtShop()
+    TravelHospLobbyAtTraderToStn("acdc")
+    TravelAcdcStnAtGateToHigsbysAtShop()
+}
+
+TravelHospLobbyAtTraderToHotelFrontAtTamakosHP() {
+    TravelHospLobbyAtTraderToStn("yoka")
+    TravelYokaStnAtGateToHotelFrontAtTamakosHP()
 }
 
 TravelHospLobbyAtTraderToArmorComp() {
-    TravelHospLobbyAtTraderToShoreline()
-    TravelShorelineAtHospLobbyToBeachSt()
-    TravelBeachStAtShorelineToBeachStn()
-    TravelBeachStnAtBeachStToStn("yoka")
-    TravelYokaStnAtGateToFrontOfZoo()
-    TravelFrontOfZooAtYokaStnToHotelFront()
-    TravelHotelFrontAtFrontOfZooToHotelLobby()
-    TravelHotelLobbyAtHotelFrontToArmorComp()
+    TravelHospLobbyAtTraderToStn("yoka")
+    TravelYokaStnAtGateToArmorComp()
 }
 
 TravelVendingCompAtGamblerToHigsbysAtShop() {
     TravelVendingCompAtGamblerToHospLobbyAtTrader()
     TravelHospLobbyAtTraderToHigsbysAtShop()
+}
+
+TravelTVStnHallAtTraderToHigsbysAtShop() {
+    TravelTVStnHallAtTraderToStn("acdc")
+    TravelAcdcStnAtGateToHigsbysAtShop()
+}
+
+TravelTVStnHallAtTraderToHotelFrontAtTamakosHP() {
+    TravelTVStnHallAtTraderToStn("yoka")
+    TravelYokaStnAtGateToHotelFrontAtTamakosHP()
 }
 
 TravelTVStnHallAtTraderToVendingCompAtGambler(w_win, h_win) {
@@ -760,25 +843,9 @@ TravelTVStnHallAtTraderToVendingCompAtGambler(w_win, h_win) {
     TravelHospLobbyAtTraderToVendingCompAtGambler(w_win, h_win)
 }
 
-TravelTVStnHallAtTraderToHigsbysAtShop() {
-    TravelTVStnHallAtTraderToTVStnLobby()
-    TravelTVStnLobbyAtTVStnHallToBeachSt()
-    TravelBeachStAtTVStnLobbyToBeachStn()
-    TravelBeachStnAtBeachStToStn("acdc")
-    TravelAcdcStnAtGateToAcdc()
-    TravelAcdcAtAcdcStnToHisbys()
-    TravelHigsbysAtAcdcToHigsbysAtShop()
-}
-
 TravelTVStnHallAtTraderToArmorComp() {
-    TravelTVStnHallAtTraderToTVStnLobby()
-    TravelTVStnLobbyAtTVStnHallToBeachSt()
-    TravelBeachStAtTVStnLobbyToBeachStn()
-    TravelBeachStnAtBeachStToStn("yoka")
-    TravelYokaStnAtGateToFrontOfZoo()
-    TravelFrontOfZooAtYokaStnToHotelFront()
-    TravelHotelFrontAtFrontOfZooToHotelLobby()
-    TravelHotelLobbyAtHotelFrontToArmorComp()
+    TravelTVStnHallAtTraderToStn("yoka")
+    TravelYokaStnAtGateToArmorComp()
 }
 
 TravelUnderSquareAtSimonToSecretArea3AtTrader(w_win, h_win) {

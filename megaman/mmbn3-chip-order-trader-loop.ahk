@@ -16,14 +16,14 @@
 #include <tool-tip-utils>
 #include <window-utils>
 
-CallChipTraderLoopAndPopulateSummary(&summary, w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg_trader, max_chips_per_chip_orders, max_num_chips, zenny_per_chip) {
+CallChipTraderLoopAndPopulateSummary(&summary, w_win, h_win, chip_trader_type, chip_min_thresh, tool_tip_cfg_trader, max_chips_per_chip_orders, max_num_chips, zenny_per_chip) {
     timed_summary_trader := TimedCallTruncatedWReturn(
         "S",
         Mmbn3TradeUntilMinChipThresh,
         w_win,
         h_win,
+        chip_trader_type,
         chip_min_thresh,
-        chips_per_trade,
         tool_tip_cfg_trader,
     )
 
@@ -103,17 +103,14 @@ RepeatHoldKeyForDurationE("k", 50, 2500)
 chip_trader_type := Mmbn3GetTraderType(w_win, h_win)
 
 if (chip_trader_type = "higsbys") {
-    chips_per_trade := 3
     travel_chip_trader_to_higsbys_at_chip_shop := TravelHigsbysAtTraderToHigsbysAtShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelHigsbysAtTraderToVendingCompAtGambler
     travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtShopToHigsbysAtTrader
 } else if (chip_trader_type = "hospital") {
-    chips_per_trade := 10
     travel_chip_trader_to_higsbys_at_chip_shop := TravelHospLobbyAtTraderToHigsbysAtShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelHospLobbyAtTraderToVendingCompAtGambler
     travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtShopToHospLobbyAtTrader
 } else if (chip_trader_type = "dnn") {
-    chips_per_trade := 10
     travel_chip_trader_to_higsbys_at_chip_shop := TravelTVStnHallAtTraderToHigsbysAtShop
     travel_chip_trader_to_vending_comp_at_gambler := TravelTVStnHallAtTraderToVendingCompAtGambler
     travel_higsbys_at_chip_shop_to_chip_trader := TravelHigsbysAtShopToTVStnHallAtTrader
@@ -123,9 +120,9 @@ if (chip_trader_type = "higsbys") {
 }
 
 while (true) {
-    CallChipTraderLoopAndPopulateSummary(main_summary, w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg_trader, max_chips_per_chip_orders, max_num_chips, zenny_per_chip)
+    CallChipTraderLoopAndPopulateSummary(&main_summary, w_win, h_win, chip_trader_type, chip_min_thresh, tool_tip_cfg_trader, max_chips_per_chip_orders, max_num_chips, zenny_per_chip)
 
-    main_summary["zenny"] := GetPetText(w_win, h_win, ["zenny"])["zenny"]
+    main_summary["zenny"] := Mmbn3GetPetText(w_win, h_win, ["zenny"])["zenny"]
     if (main_summary["zenny"] < Min(zenny_gain_start + zenny_per_chip_orders, zenny_max)) {
         zenny_non_wasteful_gamble_limit := zenny_max - Mod((zenny_max - main_summary["zenny"]), zenny_per_gamble_win)
         zenny_to_gamble_for := Min(zenny_gain_stop - main_summary["zenny"], zenny_non_wasteful_gamble_limit - main_summary["zenny"])

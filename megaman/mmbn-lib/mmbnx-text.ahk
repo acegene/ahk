@@ -145,23 +145,6 @@ mmbn3_digit_check_map := Map(
     "NULL", [1, 1, 1, 1, 1],
 )
 
-GetLargestLibraryChipCount(w_win, h_win) {
-    HoldKeyE("enter", 50)
-    Sleep(1000)
-    HoldKeyE("j", 50)
-    Sleep(300)
-    HoldKeyE("j", 50)
-    Sleep(300)
-    HoldKeyE("j", 50)
-    Sleep(300)
-    HoldKeyE("j", 50)
-    Sleep(700)
-    HoldKeyE("d", 50)
-    Sleep(300)
-    return Join(mmbn3_digits_chip_count.GetCharsRow(1, w_win, h_win), "")
-}
-
-
 mmbn3_x_ratio_l_chip_count_digit_1_edge := 0.528646
 mmbn3_x_ratio_r_chip_count_digit_1_edge := 0.546615
 mmbn3_x_ratio_l_chip_count_digit_2_edge := 0.553646

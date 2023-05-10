@@ -45,7 +45,16 @@ Mmbn3InsertChipsChipTrader(chips_per_trade) {
     Sleep(400)
 }
 
-Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade, tool_tip_cfg := ToolTipCfg(), check_only_top_chip := true, num_enter_trader_attempts := 3) {
+Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_trader_type, chip_min_thresh, tool_tip_cfg := ToolTipCfg(), check_only_top_chip := true, num_enter_trader_attempts := 3) {
+    if (chip_trader_type = "higsbys") {
+        chips_per_trade := 3
+    } else if (chip_trader_type = "hospital" || chip_trader_type = "dnn") {
+        chips_per_trade := 10
+    } else {
+        MsgBox("FATAL: unexpected chip_trader_type=" . chip_trader_type)
+        ExitApp(1)
+    }
+
     trader_in := 0
     trader_out := 0
     num_fails_enter_trader := 0

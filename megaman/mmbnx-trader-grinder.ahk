@@ -27,18 +27,7 @@ TradeChips() {
 
     RepeatHoldKeyForDurationE("k", 50, 2500)
 
-    chip_trader_type := Mmbn3GetTraderType(w_win, h_win)
-
-    if (chip_trader_type = "higsbys") {
-        chips_per_trade := 3
-    } else if (chip_trader_type = "hopital" || chip_trader_type = "dnn") {
-        chips_per_trade := 10
-    } else {
-        MsgBox("ERROR: unexpected chip_trader_type=" . chip_trader_type)
-        ExitApp(1)
-    }
-
-    Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_min_thresh, chips_per_trade)
+    Mmbn3TradeUntilMinChipThresh(w_win, h_win, Mmbn3GetTraderType(w_win, h_win), chip_min_thresh)
 }
 
 TradeNumber() {

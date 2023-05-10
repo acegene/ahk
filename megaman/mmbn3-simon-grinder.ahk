@@ -24,7 +24,7 @@ WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)
 
 RepeatHoldKeyForDurationE("k", 50, 2500)
 
-bugfrags_initial := GetPetText(w_win, h_win, ["bugfrags"])["bugfrags"]
+bugfrags_initial := Mmbn3GetPetText(w_win, h_win, ["bugfrags"])["bugfrags"]
 bugfrags_to_win := bugfrags_max - bugfrags_initial
 
 SimonGameGrinder(w_win, h_win, bugfrags_to_win, tool_tip, buttons_per_simon, bugfrags_per_win)

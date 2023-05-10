@@ -5,7 +5,7 @@
 #include <keypress-utils>
 #include <string-utils>
 
-GetPetText(w_win, h_win, text_list) {
+Mmbn3GetPetText(w_win, h_win, text_list) {
     HoldKeyE("enter", 50)
     Sleep(1000)
     ret_dict := Map()
@@ -26,6 +26,32 @@ GetPetText(w_win, h_win, text_list) {
     HoldKeyE("k", 50)
     Sleep(500)
     return ret_dict
+}
+
+Mmbn3GetLargestLibraryChipCount(w_win, h_win) {
+    HoldKeyE("enter", 50)
+    Sleep(1000)
+    HoldKeyE("j", 50)
+    Sleep(300)
+    HoldKeyE("j", 50)
+    Sleep(300)
+    HoldKeyE("j", 50)
+    Sleep(300)
+    HoldKeyE("j", 50)
+    Sleep(700)
+    HoldKeyE("d", 50)
+    Sleep(300)
+    HoldKeyE("enter", 50)
+    Sleep(200)
+    HoldKeyE("w", 50)
+    Sleep(100)
+    HoldKeyE("w", 50)
+    Sleep(100)
+    HoldKeyE("j", 50)
+    Sleep(300)
+    ret_val := Join(mmbn3_digits_chip_count.GetCharsRow(1, w_win, h_win), "")
+    RepeatHoldKeyForDurationE("k", 50, 2500)
+    return ret_val
 }
 
 mmbn3_x_ratio_l_pet_zenny_digit_1_edge := 0.603646

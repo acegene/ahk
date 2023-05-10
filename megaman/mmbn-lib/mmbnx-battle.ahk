@@ -1,4 +1,5 @@
 #include "%A_ScriptDir%\mmbn-lib\mmbn3-misc.ahk"
+#include "%A_ScriptDir%\mmbn-lib\mmbnx-pet.ahk"
 
 #include <keypress-utils>
 #include <string-utils>
@@ -110,7 +111,7 @@ BattleGrinder(w_win, h_win, fight_func, fight_func_param, num_battles_until_save
     break_loop := false
     deaths := 0
 
-    pet_text_initial := GetPetText(w_win, h_win, ["bugfrags", "health_current", "health_total", "zenny"])
+    pet_text_initial := Mmbn3GetPetText(w_win, h_win, ["bugfrags", "health_current", "health_total", "zenny"])
     battle_summary := Map(
         "battles", 0,
         "bugfrags_initial", pet_text_initial["bugfrags"],
@@ -154,7 +155,7 @@ BattleGrinder(w_win, h_win, fight_func, fight_func_param, num_battles_until_save
         }
 
         if (num_battles_check_text != "" && Mod(A_Index, num_battles_check_text) = 0) {
-            pet_text := GetPetText(w_win, h_win, ["bugfrags", "health_current", "health_total", "zenny"])
+            pet_text := Mmbn3GetPetText(w_win, h_win, ["bugfrags", "health_current", "health_total", "zenny"])
             battle_summary["bugfrags"] := pet_text["bugfrags"]
             battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - battle_summary["bugfrags_initial"]
             battle_summary["bugfrags_per_sec"] := Round(battle_summary["bugfrags_gained"] / battle_summary["duration_total"], 2)
@@ -174,7 +175,7 @@ BattleGrinder(w_win, h_win, fight_func, fight_func_param, num_battles_until_save
         }
 
         if (num_battles_max != "" && battle_summary["battles"] >= num_battles_max) {
-            pet_text := GetPetText(w_win, h_win, ["bugfrags", "zenny"])
+            pet_text := Mmbn3GetPetText(w_win, h_win, ["bugfrags", "zenny"])
             battle_summary["bugfrags"] := pet_text["bugfrags"]
             battle_summary["bugfrags_gained"] := pet_text["bugfrags"] - battle_summary["bugfrags_initial"]
             battle_summary["bugfrags_per_sec"] := Round(battle_summary["bugfrags_gained"] / battle_summary["duration_total"], 2)
