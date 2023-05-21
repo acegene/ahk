@@ -1,0 +1,1 @@
+../../third-party/ahk-v1/WindHumanMouse/WindHumanMouse.ahk
