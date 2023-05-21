@@ -1,0 +1,3 @@
+[submodule "WindHumanMouse"]
+    path = ahk-v1/WindHumanMouse
+    url = https://github.com/HowDoIStayInDreams/WindHumanMouse.git
