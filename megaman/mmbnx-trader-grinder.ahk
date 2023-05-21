@@ -8,8 +8,15 @@
 #include <tool-tip-utils>
 #include <window-utils>
 
-;; support:
-;; * mmbn3: higsby_3 hospital_10, dnn_10, number
+/**
+ * Repeatedly use either the bugfrag, chip, or number traders
+ * 
+ * Usage
+ *       * stand facing the desired trader and execute script
+ *       * exit script by pressing escape key
+ * Compatibility
+ *       * mmbn3
+ */
 
 TradeBugfrags() {
     MaximizeAndFocusWindow(title_megaman_collection_1)

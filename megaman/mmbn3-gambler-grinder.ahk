@@ -8,7 +8,18 @@
 #include <tool-tip-utils>
 #include <window-utils>
 
-;; location: Beach::'Beach St'::Shoreline::'Hosp Lobby'::'Vending Comp'
+/**
+ * Grind gambler to obtain zenny
+ * 
+ * Prereqs
+ *       * PlantMan arc is active or completed in order to make location available
+ * Usage
+ *       * location: Beach::'Beach St'::Shoreline::'Hosp Lobby'::'Vending Comp'
+ *       * stand facing gambler then execute script
+ *       * exit script by pressing escape key
+ * Notes
+ *       * 3 wins of gambler are the max because 4 wins causes gambler to go bankrupt indefinitely
+ */
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 

@@ -55,10 +55,18 @@ StartBattle(start_battle_chip_state) {
     Sleep(200)
     HoldKeyE("j", 50)
     Sleep(1320)
+}
+
+UseChips(start_battle_chip_state) {
     Loop start_battle_chip_state.num_chips_to_use {
         HoldKeyE("j", 50)
         Sleep(start_battle_chip_state.post_chip_sleeps[A_Index])
     }
+}
+
+StartBattleWUseChips(start_battle_chip_state) {
+    StartBattle(start_battle_chip_state)
+    UseChips(start_battle_chip_state)
 }
 
 RunFromBattle() {
@@ -78,13 +86,24 @@ RunFromBattle() {
     Sleep(battle_exit_duration)
 }
 
-ChooseStartBattleChipState(start_battle_chip_state_str) {
+/**
+ * Return a start_battle_chip_state object to describe start of battle chip actions.
+ * @param start_battle_chip_state_str String: determines which start_battle_chip_state to return.
+ *   custom: sends all chips, but does not use them; helps to obtain custom style
+ *   invis:  sends preset chip which should be invis; helps to obtain shadow style in mmbn3-blue
+ *   none:   sends no chips
+ *   team:   sends preset chip which should be a navi chip (recommended FlashMan); helps to obtain team style
+ * @returns returns a start_battle_chip_state object.
+ */
+Mmbn3ChooseStartBattleChipState(start_battle_chip_state_str) {
     if (start_battle_chip_state_str = "custom") {
-        return { chip_slots_to_send: [1, 2, 3, 4, 5], num_chips_to_use: 0, post_chip_sleeps: [] }
+        return { chip_slots_to_send: [1, 2, 3, 4, 5], num_chips_to_use: 0, post_chip_sleeps: [], timestop_duration: 0 }
     } else if (start_battle_chip_state_str = "none") {
-        return { chip_slots_to_send: [], num_chips_to_use: 0, post_chip_sleeps: [] }
+        return { chip_slots_to_send: [], num_chips_to_use: 0, post_chip_sleeps: [], timestop_duration: 0 }
     } else if (start_battle_chip_state_str = "team") {
-        return { chip_slots_to_send: [1], num_chips_to_use: 0, post_chip_sleeps: [] }
+        return { chip_slots_to_send: [1], num_chips_to_use: 0, post_chip_sleeps: [], timestop_duration: 0 }
+    } else if (start_battle_chip_state_str = "invis") {
+        return { chip_slots_to_send: [1], num_chips_to_use: 1, post_chip_sleeps: [125], timestop_duration: 0 }
     }
 
     MsgBox("FATAL: unexpected start_battle_chip_state_str=" . start_battle_chip_state_str)

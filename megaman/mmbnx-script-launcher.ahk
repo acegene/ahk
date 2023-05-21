@@ -5,6 +5,22 @@
 #Include <keypress-utils>
 #Include <window-utils>
 
+/**
+ * Script that allows launching of any script relevant to selected mmbn version
+ * 
+ * Usage
+ *       * execute script as <SCRIPT_PATH> <DIGIT_FOR_MMBN_VERSION>
+ *       * while script is running, press alt + m to display script launch menu
+ *           * while menu is displayed:
+ *               * pressing number adjacent to script name will launch that script
+ *               * script can be selected with mouse and executed by clicking 'OK'
+ *               * script can be selected with keyboard arrows and executed by pressing enter key
+ *               * menu is destroyed if it is unfocused or alt + m is pressed
+ *       * exit script by pressing shift + escape keys
+ * Compatibility
+ *       * all mmbn
+ */
+
 MenuSelection(btn, info) {
     global gui_focus_timer
     global gui_script_selection
@@ -49,7 +65,7 @@ FocusActions() {
 }
 
 if (A_Args.Length != 1) {
-    MsgBox("ERROR: expected one cmd line argument equal to the mmbn version")
+    MsgBox("ERROR: expected one cmd line argument equal to the mmbn version number")
     ExitApp(1)
 }
 

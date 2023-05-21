@@ -113,7 +113,7 @@ Mmbn3TradeUntilMinChipThresh(w_win, h_win, chip_trader_type, chip_min_thresh, to
 
 Mmbn3GetTraderType(w_win, h_win) {
     static ratio_rgbs_higsbys_at_chip_trader := RatioRgbs([0.591406, 0.842969], [0.467130, 0.868056], [0x005000, 0x005000])
-    static ratio_rgbs_hosp_lobby_at_chip_trader := RatioRgbs([0.665104, 0.666667], [0.129167, 0.267130], [0xffffe8, 0xffffe8])
+    static ratio_rgbs_hosp_lobby_at_chip_trader := RatioRgbs([0.680990, 0.810677], [0.060185, 0.060185], [0xffffe8, 0xffffe8])
     static ratio_rgbs_tv_stn_hall_at_chip_trader := RatioRgbs([0.429167, 0.545573], [0.074074, 0.070370], [0xb6b69b, 0xb6b69b])
 
     if (ratio_rgbs_higsbys_at_chip_trader.DoesWindowMatchRatioRgbs(w_win, h_win)) {

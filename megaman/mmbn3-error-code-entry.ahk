@@ -6,6 +6,17 @@
 #include <tool-tip-utils>
 #include <window-utils>
 
+/**
+ * Automate entry of error codes or ex codes into navicustomizer
+ * 
+ * Prereqs
+ *       * Modtools has been obtained
+ * Usage
+ *       * open error/ex code entry menu then execute script
+ *       * either enter an error code, or one of the options displayed in the top right corner (case insensitive)
+ *       * exit script by pressing escape key
+ */
+
 RepeatKey(key, repetetitons) {
     Loop repetetitons {
         HoldKeyE(key, 50)
@@ -17,7 +28,7 @@ title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
 tool_tip := ToolTipCfg()
 
-navicust_addition_error_codes := Map(
+ex_code_map := Map(
     "AirShoes", { error_code: "ZN3UDOIQ", bug: "Custom-1" },
     "AntiDamage", { error_code: "L3KJGUEO", bug: "Custom-1" },
     "Block", { error_code: "ZBKDEU1W", bug: "" },
@@ -87,10 +98,10 @@ error_code_map := Map(
     "S2S", "F2AAFETG",
 )
 
-navicust_addition_error_codes_str := ""
-for (key, value in navicust_addition_error_codes) {
+ex_code_str := ""
+for (key, value in ex_code_map) {
     error_code_map[key] := value.error_code
-    navicust_addition_error_codes_str .= key . (value.bug != "" ? ("; BUG: " . value.bug) : "") . "`n"
+    ex_code_str .= key . (value.bug != "" ? ("; BUG: " . value.bug) : "") . "`n"
 }
 
 char_move_map := Map(
@@ -131,7 +142,7 @@ MaximizeAndFocusWindow(title_megaman_collection_1)
 Sleep(500)
 HoldKeyE("k", 50)
 
-tool_tip.DisplayMsg(navicust_addition_error_codes_str, w_win, h_win)
+tool_tip.DisplayMsg(ex_code_str, w_win, h_win)
 
 error_code_user_input := InputBox("PROMPT: Please enter error code:")
 

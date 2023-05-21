@@ -11,6 +11,20 @@
 
 #include <keypress-utils>
 
+/**
+ * Prereqs
+ *       * path to SecretArea3 bugfrag trader is unblocked
+ *       * for sneakrun to work in undernet 1-3, must have 720 Total HP without navicust modifications
+ * Usage
+ *       * can start at following locations:
+ *           * right of bugfrag trader as up as possible while looking left
+ *           * left of tamako's HP while as up as possible while looking right
+ *           * above simon says minigame navi in Under Square
+ *       * sneakrun navicust program must be equipped
+ *       * set 'settable vars' below based on your preferences
+ *       * exit script by pressing escape key
+ */
+
 CallBugFragTraderAndPopulateSummary(&summary, w_win, h_win, bugfrags_to_trade, tool_tip_bugfrag_trader) {
     timed_summary_trader := TimedCallTruncatedWReturn("S", Mmbn3TradeNBugfragsWInitiate, w_win, h_win, bugfrags_to_trade, tool_tip_bugfrag_trader)
 
@@ -60,12 +74,14 @@ ConditionallyCallChipTraderWTravelAndPopulateSummary(&summary, w_win, h_win, chi
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
+;; settable vars
 initial_bugfrags_to_trader := 6000
 max_bugfrags := 9999
 chip_min_thresh := 10
 chip_trader_start := 99
 chip_trader_type := "dnn"
 
+;; hardcoded vars
 tool_tip_bugfrag_trader := ToolTipCfg("dl", 3)
 tool_tip_chip_trader := ToolTipCfg("dr", 4)
 tool_tip_simon := ToolTipCfg("ur", 2)

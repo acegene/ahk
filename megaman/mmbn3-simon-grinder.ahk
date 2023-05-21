@@ -8,16 +8,24 @@
 #include <tool-tip-utils>
 #include <window-utils>
 
-;; location: 'Under Square'
+/**
+ * Grind gambler to obtain zenny
+ * 
+ * Prereqs
+ *       * 'Under Square' location is available
+ * Usage
+ *       * location: 'Under Square'
+ *       * stand facing simon minigame navi then execute script
+ *       * exit script by pressing escape key
+ */
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
-tool_tip := ToolTipCfg()
-
-buttons_per_simon := 99
+;; hardcoded vars
 bugfrags_max := 9999
 bugfrags_per_win := 30
-bugfrags_to_win := 70
+buttons_per_simon := 99
+tool_tip := ToolTipCfg()
 
 MaximizeAndFocusWindow(title_megaman_collection_1)
 WinGetPos(&x_win, &y_win, &w_win, &h_win, title_megaman_collection_1)

@@ -7,6 +7,15 @@
 #include <keypress-utils>
 #include <window-utils>
 
+/**
+ * Script to buy all chips from chip order
+ * 
+ * Usage
+ *       * stand facing Higby then execute script
+ *       * if script gets stuck trying to purchase one undesired chip, spam down key until next chip is highlighted
+ *       * exit script by pressing escape key
+ */
+
 Mmbn3SpamChipOrder() {
     While (true) {
         HoldKeyE("j", 50)

@@ -16,6 +16,21 @@
 #include <tool-tip-utils>
 #include <window-utils>
 
+/**
+ * Prereqs
+ *       * 99 guard chips are available in chip order (i.e. the chip trader has had 99 guard chips inserted)
+ *           * see 'grind_guard_chips' in mmbn3-battle-grinder.ahk
+ *       * higsby's chip order is available
+ *       * desired chip trader is available
+ * Usage
+ *       * can start at any of three chip traders
+ *           * higsbys: right of trader as up as possible while looking left
+ *           * hospital: above trader as left as possible while looking down
+ *           * dnn: left of trader as up as possible while looking right
+ *       * set 'settable vars' below based on your preferences
+ *       * exit script by pressing escape key
+ */
+
 CallChipTraderLoopAndPopulateSummary(&summary, w_win, h_win, chip_trader_type, chip_min_thresh, tool_tip_cfg_trader, max_chips_per_chip_orders, max_num_chips, zenny_per_chip) {
     timed_summary_trader := TimedCallTruncatedWReturn(
         "S",
@@ -56,22 +71,24 @@ CallChipOrderLoopAndPopulateSummary(&summary, w_win, h_win, zenny_per_chip_order
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"
 
+;; settable vars
+chip_min_thresh := 10
+find_chip_start_index := 50 ; max value of guard * is #133; NOTE: index must be less than 1 + 'num down presses necessary to select guard'
+zenny_gain_start := 500000
+zenny_gain_stop := 999999
+
+;; hardcoded vars
 max_num_chips := 99
+tool_tip_cfg_gambler := ToolTipCfg("ur", 2)
+tool_tip_cfg_summary := ToolTipCfg("ul", 1)
+tool_tip_cfg_trader := ToolTipCfg("dl", 3)
 zenny_max := 999999
 zenny_per_chip := 100
 zenny_per_gamble_win := 64000
 
-chip_min_thresh := 10
-find_chip_start_index := 118 ; max value of guard * is #133; NOTE: index is less if missing chips
-zenny_gain_start := 500000
-zenny_gain_stop := 999999
-
+;; derived vars
 max_chips_per_chip_orders := max_num_chips - chip_min_thresh
 zenny_per_chip_orders := zenny_per_chip * max_chips_per_chip_orders
-
-tool_tip_cfg_gambler := ToolTipCfg("ur", 2)
-tool_tip_cfg_summary := ToolTipCfg("ul", 1)
-tool_tip_cfg_trader := ToolTipCfg("dl", 3)
 
 main_summary := Map(
     "chips_per_chip_order", zenny_per_chip * max_chips_per_chip_orders,
