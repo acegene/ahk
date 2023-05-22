@@ -17,18 +17,20 @@
 #include <window-utils>
 
 /**
- * Prereqs
- *       * 99 guard chips are available in chip order (i.e. the chip trader has had 99 guard chips inserted)
- *           * see 'grind_guard_chips' in mmbn3-battle-grinder.ahk
- *       * higsby's chip order is available
- *       * desired chip trader is available
- * Usage
- *       * can start at any of three chip traders
- *           * higsbys: right of trader as up as possible while looking left
- *           * hospital: above trader as left as possible while looking down
- *           * dnn: left of trader as up as possible while looking right
- *       * set 'settable vars' below based on your preferences
- *       * exit script by pressing escape key
+ * Loop to use chip trader, gain zenny, then buy chips from the chip order
+ * 
+ * prereqs
+ *   * 99 guard chips are available in chip order (i.e. the chip trader has had 99 guard chips inserted)
+ *       * see 'grind_guard_chips' in mmbn3-battle-grinder.ahk
+ *   * higsby's chip order is available
+ *   * desired chip trader is available
+ * usage
+ *   * can start at any of three chip traders
+ *       * higsbys: right of trader as up as possible while looking left
+ *       * hospital: above trader as left as possible while looking down
+ *       * dnn: left of trader as up as possible while looking right
+ *   * set 'settable vars' below based on your preferences
+ *   * exit script by pressing escape key
  */
 
 CallChipTraderLoopAndPopulateSummary(&summary, w_win, h_win, chip_trader_type, chip_min_thresh, tool_tip_cfg_trader, max_chips_per_chip_orders, max_num_chips, zenny_per_chip) {

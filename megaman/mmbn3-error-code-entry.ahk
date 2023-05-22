@@ -9,12 +9,12 @@
 /**
  * Automate entry of error codes or ex codes into navicustomizer
  * 
- * Prereqs
- *       * Modtools has been obtained
- * Usage
- *       * open error/ex code entry menu then execute script
- *       * either enter an error code, or one of the options displayed in the top right corner (case insensitive)
- *       * exit script by pressing escape key
+ * prereqs
+ *   * Modtools has been obtained
+ * usage
+ *   * open error/ex code entry menu then execute script
+ *   * either enter an error code, or one of the options displayed in the top right corner (case insensitive)
+ *   * exit script by pressing escape key
  */
 
 RepeatKey(key, repetetitons) {

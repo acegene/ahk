@@ -13,16 +13,16 @@
 /**
  * Grind battles primarily to facilitate style changes, bugfrags, and guard chips
  * 
- * Prereqs
- *       * BeastMan arc is active or completed in order to make location available
- * Usage
- *       * location: 'Yoka'::'Front of Zoo'::'Hotel Front'::'Hotel Lobby'::'Armor Comp'
- *           * can start script at warp jackin entry point or left corner
- *       * set 'settable vars' below based on your preferences
- *       * exit script by pressing escape key
- * Notes
- *       * zenny can be better obtained using mmbn3-gambler-grinder.ahk
- *       * bugfrags can be better obtained using mmbn3-simon-grinder.ahk
+ * prereqs
+ *   * BeastMan arc is active or completed in order to make location available
+ * usage
+ *   * location: 'Yoka'::'Front of Zoo'::'Hotel Front'::'Hotel Lobby'::'Armor Comp'
+ *       * can start script at warp jackin entry point or left corner
+ *   * set 'settable vars' below based on your preferences
+ *   * exit script by pressing escape key
+ * notes
+ *   * zenny can be better obtained using mmbn3-gambler-grinder.ahk
+ *   * bugfrags can be better obtained using mmbn3-simon-grinder.ahk
  */
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"

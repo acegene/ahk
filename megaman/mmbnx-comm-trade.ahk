@@ -8,12 +8,12 @@
 /**
  * Automate 'Wait for a Request' + 'Send no chip' or 'Send a Request' + 'Get to chip seleciton menu'
  * 
- * Usage
- *       * Go to comm menu with 'NetBattle' and 'Trade' listed and highlight 'NetBattle'
- *       * set 'settable vars' below based on your preferences
- *       * exit script by pressing escape key
- * Compatibility
- *       * mmbn3
+ * usage
+ *   * Go to comm menu with 'NetBattle' and 'Trade' listed and highlight 'NetBattle'
+ *   * set 'settable vars' below based on your preferences
+ *   * exit script by pressing escape key
+ * compatibility
+ *   * mmbn3
  */
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"

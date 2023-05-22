@@ -11,12 +11,12 @@
 /**
  * Grind gambler to obtain zenny
  * 
- * Prereqs
- *       * 'Under Square' location is available
- * Usage
- *       * location: 'Under Square'
- *       * stand facing simon minigame navi then execute script
- *       * exit script by pressing escape key
+ * prereqs
+ *   * 'Under Square' location is available
+ * usage
+ *   * location: 'Under Square'
+ *   * stand facing simon minigame navi then execute script
+ *   * exit script by pressing escape key
  */
 
 title_megaman_collection_1 := "MegaMan_BattleNetwork_LegacyCollection_Vol1"

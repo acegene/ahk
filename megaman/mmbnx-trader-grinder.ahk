@@ -11,11 +11,11 @@
 /**
  * Repeatedly use either the bugfrag, chip, or number traders
  * 
- * Usage
- *       * stand facing the desired trader and execute script
- *       * exit script by pressing escape key
- * Compatibility
- *       * mmbn3
+ * usage
+ *   * stand facing the desired trader and execute script
+ *   * exit script by pressing escape key
+ * compatibility
+ *   * mmbn3
  */
 
 TradeBugfrags() {
