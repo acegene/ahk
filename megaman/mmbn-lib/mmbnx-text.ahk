@@ -82,7 +82,7 @@ class CharGridColorChecker extends CharGrid {
             char_locations_found.Push(this.__IsRatioColorEqualToAnyColor__(w_win, h_win, char_check_location))
         }
         for (key, val in this.char_check_map) {
-            if (IsArrEq(val, char_locations_found)) {
+            if (AreArrsEq(val, char_locations_found)) {
                 if (key = "NULL") {
                     return Integer(null_str)
                 } else {

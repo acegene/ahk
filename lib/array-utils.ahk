@@ -1,4 +1,4 @@
-IsArrEq(lhs, rhs) {
+AreArrsEq(lhs, rhs) {
     if (lhs.Length != rhs.Length) {
         return false
     }
@@ -10,4 +10,13 @@ IsArrEq(lhs, rhs) {
     }
 
     return true
+}
+
+ArrHasVal(arr, val) {
+    for (index, arr_val in arr) {
+        if (val == arr_val) {
+            return true
+        }
+    }
+    return false
 }

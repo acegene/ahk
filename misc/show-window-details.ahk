@@ -7,6 +7,22 @@ Persistent(true)
 #include <string-utils>
 #include <tool-tip-utils>
 
+MoveMouse(direction) {
+    global tool_tip_cfg
+    if (direction = "~!Down") {
+        MouseMove(0, 1, 10, "R")
+    } else if (direction = "~!Up") {
+        MouseMove(0, -1, 10, "R")
+    } else if (direction = "~!Right") {
+        MouseMove(1, 0, 10, "R")
+    } else if (direction = "~!Left") {
+        MouseMove(-1, 0, 10, "R")
+    } else {
+        MsgBox("FATAL: unexpected MoveMouse() direction=" . direction)
+        ExitApp(1)
+    }
+}
+
 MoveToolTip(direction) {
     global tool_tip_cfg
     if (direction = "~+Down") {
@@ -34,7 +50,7 @@ MoveToolTip(direction) {
             tool_tip_cfg.location := "dl"
         }
     } else {
-        MsgBox("FATAL: unexpected direction=" . direction)
+        MsgBox("FATAL: unexpected MoveToolTip() direction=" . direction)
         ExitApp(1)
     }
 }
@@ -42,21 +58,24 @@ MoveToolTip(direction) {
 tool_tip_cfg := ToolTipCfg()
 frozen := false
 msg_map := Map()
+clipboard_cleared := false
+num_clipboard_decimals := 6
 
 SetTimer(ShowWindowRatio, 500)
 
 ShowWindowRatio() {
     global msg_map
     if (frozen) {
-        CoordMode("Mouse", "Client")
-        WinGetPos(&unused_x, &unused_y, &w_win, &h_win, "A")
-        ; tool_tip_cfg.DisplayMsg(MapToStr(msg_map), w_win, h_win)
         return
     }
 
-    win_class := WinGetClass("A")
-    win_pid := WinGetPID("A")
-    win_title := WinGetTitle("A")
+    try {
+        win_class := WinGetClass("A")
+        win_pid := WinGetPID("A")
+        win_title := WinGetTitle("A")
+    } catch TargetError {
+        return
+    }
 
     CoordMode("Mouse", "Client")
     MouseGetPos(&mouse_cli_x, &mouse_cli_y)
@@ -96,6 +115,29 @@ ShowWindowRatio() {
 
     CoordMode("ToolTip", "Client")
     tool_tip_cfg.DisplayMsg(MapToStr(msg_map), win_cli_w, win_cli_h)
+}
+
+$^c:: {
+    global clipboard_cleared
+    global num_clipboard_decimals
+    if (!clipboard_cleared) {
+        A_Clipboard := ""
+        clipboard_cleared := true
+    }
+    A_Clipboard := A_Clipboard . Round(msg_map["mouse_cli_x_ratio"], num_clipboard_decimals) . ", " . Round(msg_map["mouse_cli_y_ratio"], num_clipboard_decimals) . ", " . StrLower(msg_map["rgb"]) . "`n"
+}
+
+$^+c:: {
+    global clipboard_cleared
+    clipboard_cleared := true
+    A_Clipboard := ""
+}
+
+~!Down::
+~!Left::
+~!Right::
+~!Up:: {
+    MoveMouse(A_ThisHotkey)
 }
 
 ~+Down::

@@ -67,10 +67,44 @@ class RatioRgbs {
     }
 }
 
+;; TODO: what coordmode is this?
 GetRatioColor(w_win, h_win, x_ratio, y_ratio) {
     return PixelGetColor(x_ratio * w_win, y_ratio * h_win, "RGB")
 }
 
+;; TODO: what coordmode is this?
 IsRatioColorEqualToColor(w_win, h_win, x_ratio, y_ratio, rgb_color) {
-    return rgb_color = PixelGetColor(x_ratio * w_win, y_ratio * h_win, "RGB")
+    return rgb_color == PixelGetColor(x_ratio * w_win, y_ratio * h_win, "RGB")
+}
+
+IsRatioColorNearColor(w_win, h_win, x_ratio, y_ratio, rgb_color, eps) {
+    return AreColorsNear(rgb_color, PixelGetColor(x_ratio * w_win, y_ratio * h_win, "RGB"), eps)
+}
+
+IsRatioColorNearRGB(w_win, h_win, x_ratio, y_ratio, rgb_color, r_eps, g_eps, b_eps) {
+    return AreColorsNearRGB(rgb_color, PixelGetColor(x_ratio * w_win, y_ratio * h_win, "RGB"), r_eps, g_eps, b_eps)
+}
+
+SplitRGB(rgb) {
+    return { r: (rgb >> 16) & 0xFF, g: (rgb >> 8) & 0xFF, b: rgb & 0xFF }
+}
+
+AreColorsNear(lhs_rgb, rhs_rgb, eps) {
+    return IsRGBNear(SplitRGB(lhs_rgb), SplitRGB(rhs_rgb), eps)
+}
+
+AreColorsNearRGB(lhs_rgb, rhs_rgb, r_eps, g_eps, b_eps) {
+    return IsRGBNearEachRGB(SplitRGB(lhs_rgb), SplitRGB(rhs_rgb), r_eps, g_eps, b_eps)
+}
+
+IsRGBNear(lhs_rgb, rhs_rgb, eps) {
+    return (Abs(lhs_rgb.r - rhs_rgb.r) < eps) &&
+    (Abs(lhs_rgb.g - rhs_rgb.g) < eps) &&
+    (Abs(lhs_rgb.b - rhs_rgb.b) < eps)
+}
+
+IsRGBNearEachRGB(lhs_rgb, rhs_rgb, r_eps, g_eps, b_eps) {
+    return (Abs(lhs_rgb.r - rhs_rgb.r) < r_eps) &&
+    (Abs(lhs_rgb.g - rhs_rgb.g) < g_eps) &&
+    (Abs(lhs_rgb.b - rhs_rgb.b) < b_eps)
 }
