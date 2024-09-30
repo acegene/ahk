@@ -12,7 +12,7 @@
 
 /**
  * Grind battles primarily to facilitate style changes, bugfrags, and guard chips
- * 
+ *
  * prereqs
  *   * BeastMan arc is active or completed in order to make location available
  * usage

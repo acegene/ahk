@@ -10,7 +10,7 @@
 
 /**
  * Grind gambler to obtain zenny
- * 
+ *
  * prereqs
  *   * 'Under Square' location is available
  * usage

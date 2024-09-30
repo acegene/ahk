@@ -7,7 +7,7 @@
 
 /**
  * Script that allows launching of any script relevant to selected mmbn version
- * 
+ *
  * usage
  *   * execute script as <SCRIPT_PATH> <DIGIT_FOR_MMBN_VERSION>
  *   * while script is running, press alt + m to display script launch menu

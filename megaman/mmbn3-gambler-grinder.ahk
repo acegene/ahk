@@ -10,7 +10,7 @@
 
 /**
  * Grind gambler to obtain zenny
- * 
+ *
  * prereqs
  *   * PlantMan arc is active or completed in order to make location available
  * usage

@@ -13,7 +13,7 @@
 
 /**
  * A loop between gaining bugfrags from the simon minigame then using the bugfrag trader
- * 
+ *
  * prereqs
  *   * path to SecretArea3 bugfrag trader is unblocked
  *   * for sneakrun to work in undernet 1-3, must have 720 Total HP without navicust modifications

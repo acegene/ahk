@@ -18,7 +18,7 @@
 
 /**
  * Loop to use chip trader, gain zenny, then buy chips from the chip order
- * 
+ *
  * prereqs
  *   * 99 guard chips are available in chip order (i.e. the chip trader has had 99 guard chips inserted)
  *       * see 'grind_guard_chips' in mmbn3-battle-grinder.ahk

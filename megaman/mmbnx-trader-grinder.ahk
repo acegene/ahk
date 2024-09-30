@@ -10,7 +10,7 @@
 
 /**
  * Repeatedly use either the bugfrag, chip, or number traders
- * 
+ *
  * usage
  *   * stand facing the desired trader and execute script
  *   * exit script by pressing escape key

@@ -7,7 +7,7 @@
 
 /**
  * Automate 'Wait for a Request' + 'Send no chip' or 'Send a Request' + 'Get to chip seleciton menu'
- * 
+ *
  * usage
  *   * Go to comm menu with 'NetBattle' and 'Trade' listed and highlight 'NetBattle'
  *   * set 'settable vars' below based on your preferences

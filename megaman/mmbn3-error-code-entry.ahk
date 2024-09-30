@@ -8,7 +8,7 @@
 
 /**
  * Automate entry of error codes or ex codes into navicustomizer
- * 
+ *
  * prereqs
  *   * Modtools has been obtained
  * usage
