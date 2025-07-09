@@ -1,21 +1,21 @@
-#Requires AutoHotkey v2.0-a
+#Requires AutoHotkey v2.0
 #SingleInstance Force
 
-MaximizeWindow(window_title){
+MaximizeWindow(window_title) {
     style := WinGetStyle(window_title)
     ; 0x1000000 is the WS_MAXIMIZE style
-    if !(style & 0x1000000){
+    if !(style & 0x1000000) {
         WinMaximize window_title
     }
 }
 
-FocusWindow(window_title){
-    if not WinActive(window_title){
+FocusWindow(window_title) {
+    if not WinActive(window_title) {
         WinActivate window_title
     }
 }
 
-ClickMouseWindowRatio(window_title, x_ratio, y_ratio, which_button := "L"){
+ClickMouseWindowRatio(window_title, x_ratio, y_ratio, which_button := "L") {
     CoordMode("Mouse", "Client")
     WinGetPos &x, &y, &w, &h, window_title
     x := w * x_ratio
@@ -23,7 +23,7 @@ ClickMouseWindowRatio(window_title, x_ratio, y_ratio, which_button := "L"){
     MouseClick which_button, x, y
 }
 
-MoveMouseWindowRatio(window_title, x_ratio, y_ratio){
+MoveMouseWindowRatio(window_title, x_ratio, y_ratio) {
     CoordMode("Mouse", "Client")
     WinGetPos &x, &y, &w, &h, window_title
     x := w * x_ratio
@@ -31,26 +31,26 @@ MoveMouseWindowRatio(window_title, x_ratio, y_ratio){
     MouseMove x, y
 }
 
-BlockUntilWindowDoesNotExist(window_title, sleep_duration := 1000){
+BlockUntilWindowDoesNotExist(window_title, sleep_duration := 1000) {
     SetTitleMatchMode 3 ; exact matching
-    while(true){
-        if (!WinExist(window_title)){
+    while (true) {
+        if (!WinExist(window_title)) {
             break
         }
         Sleep sleep_duration
     }
 }
 
-DoesWindowExist(window_title){
+DoesWindowExist(window_title) {
     SetTitleMatchMode 3 ; exact matching
     return WinExist(window_title)
 }
 
-StrReplaceNonAlpha(str, replace_str){
+StrReplaceNonAlpha(str, replace_str) {
     return RegExReplace(str, "[^A-Za-z]+", replace_str)
 }
 
-GetCleanedWindowFieldText(window_title, field_name){
+GetCleanedWindowFieldText(window_title, field_name) {
     field_text := ControlGetText(field_name, window_title)
     cleaned_field_text := StrLower(field_text)
     cleaned_field_text := RegExReplace(cleaned_field_text, "[^A-Za-z0-9]+", "")
@@ -58,7 +58,7 @@ GetCleanedWindowFieldText(window_title, field_name){
     return cleaned_field_text
 }
 
-ManuallyFill5thGenTimeFinderYear(window_title, year){
+ManuallyFill5thGenTimeFinderYear(window_title, year) {
     MaximizeWindow(window_title)
     Sleep 100
     FocusWindow(window_title)
@@ -76,7 +76,7 @@ ManuallyFill5thGenTimeFinderYear(window_title, year){
     Sleep 200
 }
 
-ManuallyClick5thGenTimeFinderGenerate(window_title){
+ManuallyClick5thGenTimeFinderGenerate(window_title) {
     MaximizeWindow(window_title)
     Sleep 100
     FocusWindow(window_title)
@@ -85,7 +85,7 @@ ManuallyClick5thGenTimeFinderGenerate(window_title){
     ClickMouseWindowRatio(window_title, 0.057692, 0.338196) ; CoordMode Client
 }
 
-ManuallySave(window_title, dir, filename){
+ManuallySave(window_title, dir, filename) {
     MaximizeWindow(title_save_output_to_txt)
     Sleep 100
     FocusWindow(title_save_output_to_txt)
@@ -104,7 +104,7 @@ ManuallySave(window_title, dir, filename){
     Sleep 3000
 }
 
-ManuallyOutputResultsToTXT(window_title){
+ManuallyOutputResultsToTXT(window_title) {
     MaximizeWindow(window_title)
     Sleep 100
     FocusWindow(window_title)
@@ -117,7 +117,7 @@ ManuallyOutputResultsToTXT(window_title){
     Sleep 5000
 }
 
-AutoSave(window_name, field_name_dir, field_name_filename, dir, filename){
+AutoSave(window_name, field_name_dir, field_name_filename, dir, filename) {
     MaximizeWindow(window_name)
     Sleep 100
     FocusWindow(window_name)
@@ -135,12 +135,12 @@ AutoSave(window_name, field_name_dir, field_name_filename, dir, filename){
     Sleep 1000
 }
 
-GetMostRecentFile(dir){
+GetMostRecentFile(dir) {
     ; Initialize variables to store the file name and creation time
     most_recent_file := ""
     most_recent_time := 0
 
-    Loop Files, dir "\*"{
+    Loop Files, dir "\*" {
         ; Get the file's creation time
         time_created := FileGetTime(A_LoopFilePath, "C")
 
@@ -183,7 +183,7 @@ button_save_output_to_text_save := "Button2"
 
 sleep 2000
 
-while(true){
+while (true) {
     filename_base := rng_reporter_version . "-" . os . "-" . year "-" . method . "-" . encounter_type
     filename := filename_base . ".txt"
     filename_screenshot := filename_base . ".png"
@@ -202,7 +202,7 @@ while(true){
 
     ManuallyOutputResultsToTXT(title_5th_gen_time_finder)
 
-    if(DoesWindowExist(title_save_output_to_txt)){
+    if (DoesWindowExist(title_save_output_to_txt)) {
         ; ManuallySave(title_save_output_to_txt, dir. filename)
         AutoSave(title_save_output_to_txt, field_name_save_output_to_text_dir, field_name_save_output_to_text_filename, dir, filename)
         BlockUntilWindowDoesNotExist(title_save_output_to_txt)
@@ -217,10 +217,10 @@ while(true){
         FileMove(dir_screenshots . "\" . filepath_orig, dir . "\" . filename_screenshot)
     }
 
-    if(year = year_final){
+    if (year = year_final) {
         break
     }
     year++
 }
 
-Esc::ExitApp
+Esc:: ExitApp

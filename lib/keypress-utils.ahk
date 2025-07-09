@@ -1,3 +1,7 @@
+;; SendEvent based keyboard utils
+;; * respects global SetKeyDelay
+;; * faster than SendPlay, slower than SendInput
+
 HoldKeyE(key, duration) {
     SendEvent("{" . key . " down}")
     Sleep(duration)

@@ -1,4 +1,4 @@
-#Requires AutoHotkey v2.0-a
+#Requires AutoHotkey v2.0
 #SingleInstance Force
 Persistent(true)
 
