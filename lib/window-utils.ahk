@@ -97,6 +97,10 @@ AreColorsNearRGB(lhs_rgb, rhs_rgb, r_eps, g_eps, b_eps) {
     return IsRGBNearEachRGB(SplitRGB(lhs_rgb), SplitRGB(rhs_rgb), r_eps, g_eps, b_eps)
 }
 
+IsRGBEqual(lhs_rgb, rhs_rgb) {
+    return (lhs_rgb.r == rhs_rgb.r) && (lhs_rgb.g == rhs_rgb.g) && (lhs_rgb.b == rhs_rgb.b)
+}
+
 IsRGBNear(lhs_rgb, rhs_rgb, eps) {
     return (Abs(lhs_rgb.r - rhs_rgb.r) < eps) &&
     (Abs(lhs_rgb.g - rhs_rgb.g) < eps) &&

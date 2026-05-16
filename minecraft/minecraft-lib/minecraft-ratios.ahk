@@ -93,26 +93,26 @@ CreateRatiosChestStorage() {
 
 CreateRatioRGBsInventoryMenu() {
     ratio_x_inventory_menu_crafting_page_left_edge := 0.168566
-    ratio_rgb_inventory_menu_crafting_page_left_edge := 0x535353
+    rgb_inventory_menu_crafting_page_left_edge := 0x535353
     ratios_x_inventory_menu := [ratio_x_inventory_menu_crafting_page_left_edge]
     ratios_y_inventory_menu := [ratios_hotbar[1].y]
-    ratios_rgb_inventory_menu := [ratio_rgb_inventory_menu_crafting_page_left_edge]
+    ratios_rgb_inventory_menu := [rgb_inventory_menu_crafting_page_left_edge]
     for (_, row in ratios_inventory) {
         ratios_x_inventory_menu.Push(ratio_x_inventory_menu_crafting_page_left_edge)
         ratios_y_inventory_menu.Push(row[1].y)
-        ratios_rgb_inventory_menu.Push(ratio_rgb_inventory_menu_crafting_page_left_edge)
+        ratios_rgb_inventory_menu.Push(rgb_inventory_menu_crafting_page_left_edge)
     }
     for (_, ratio in ratios_armor) {
         ratios_x_inventory_menu.Push(ratio_x_inventory_menu_crafting_page_left_edge)
         ratios_y_inventory_menu.Push(ratio.y)
-        ratios_rgb_inventory_menu.Push(ratio_rgb_inventory_menu_crafting_page_left_edge)
+        ratios_rgb_inventory_menu.Push(rgb_inventory_menu_crafting_page_left_edge)
     }
     return RatioRgbs(ratios_x_inventory_menu, ratios_y_inventory_menu, ratios_rgb_inventory_menu)
 }
 
 CreateRatioRGBsChestOrUnknownMenu() {
     ratio_x_chest_or_unknown_menu := 0.325738
-    ratio_rgb_chest_or_unknown_menu := 0x535353
+    rgb_chest_or_unknown_menu := 0x535353
 
     ratios_x_chest_or_unknown_menu := []
     ratios_y_chest_or_unknown_menu := []
@@ -120,12 +120,12 @@ CreateRatioRGBsChestOrUnknownMenu() {
     for (_, row in ratios_chest_inventory) {
         ratios_x_chest_or_unknown_menu.Push(ratio_x_chest_or_unknown_menu)
         ratios_y_chest_or_unknown_menu.Push(row[1].y)
-        ratios_rgbs_chest_or_unknown_menu.Push(ratio_rgb_chest_or_unknown_menu)
+        ratios_rgbs_chest_or_unknown_menu.Push(rgb_chest_or_unknown_menu)
     }
     for (_, row in ratios_chest_storage) {
         ratios_x_chest_or_unknown_menu.Push(ratio_x_chest_or_unknown_menu)
         ratios_y_chest_or_unknown_menu.Push(row[1].y)
-        ratios_rgbs_chest_or_unknown_menu.Push(ratio_rgb_chest_or_unknown_menu)
+        ratios_rgbs_chest_or_unknown_menu.Push(rgb_chest_or_unknown_menu)
     }
     return RatioRgbs(ratios_x_chest_or_unknown_menu, ratios_y_chest_or_unknown_menu, ratios_rgbs_chest_or_unknown_menu)
 }
@@ -172,3 +172,9 @@ ratio_rgbs_chest_or_unknown_menu := CreateRatioRGBsChestOrUnknownMenu()
 ratio_rgbs_start_menu := RatioRgbs([0.715432, 0.753755, 0.800621, 0.854997, 0.899016, 0.952615], [0.040758, 0.040758, 0.040758, 0.040758, 0.040758, 0.040758], [0x6b6b6b, 0x6b6b6b, 0x6b6b6b, 0x6b6b6b, 0x6b6b6b, 0x6b6b6b]) ; topright corner of screen
 
 ratio_rgbs_potions := CreateRatioRGBsPotions()
+
+rgb_raid_health_empty := 0x494949
+rgb_raid_health_full := 0x870000
+ratios_raid_health := [{ x: 0.32, y: 0.079 }, { x: 0.5, y: 0.079 }, { x: 0.67, y: 0.079 }]
+
+ratio_rgbs_not_in_menu_position_word := RatioRgbs([0.008027, 0.008027, 0.081564], [0.229384, 0.254028, 0.243602], [0xffffff, 0xffffff, 0xffffff])
